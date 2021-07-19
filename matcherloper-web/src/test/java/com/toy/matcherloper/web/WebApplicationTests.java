@@ -1,10 +1,10 @@
-package com.toy.matcherloper;
+package com.toy.matcherloper.web;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MatcherloperApplicationTests {
+class WebApplicationTests {
 
     @Test
     void contextLoads() {
