@@ -1,5 +1,6 @@
 package com.toy.matcherloper.core.room.model;
 
+import com.toy.matcherloper.core.user.model.PositionType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;

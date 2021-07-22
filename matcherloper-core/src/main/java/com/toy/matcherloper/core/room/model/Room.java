@@ -1,5 +1,7 @@
 package com.toy.matcherloper.core.room.model;
 
+import com.toy.matcherloper.core.user.model.Owner;
+import com.toy.matcherloper.core.user.model.Participant;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +21,7 @@ import static javax.persistence.FetchType.*;
 public class Room {
 
     @Id
-    @Column("room_id")
+    @Column(name = "room_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
