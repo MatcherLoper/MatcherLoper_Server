@@ -23,7 +23,7 @@ public class UserPosition {
     @JoinColumn(name = "user_id")
     private User user;
 
-    public void setUser(User user) {
+    public void changeUser(User user) {
         this.user = user;
     }
 }
