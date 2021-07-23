@@ -46,12 +46,12 @@ public class User {
     private Address address;
 
     @Builder
-    public User(Long id, String email, String password, String username, String phoneNumber, String introduction,
+    public User(Long id, String email, String password, String name, String phoneNumber, String introduction,
                 List<UserPosition> userPositionList, List<Skill> skillList, Address address) {
         this.id = id;
         this.email = email;
         this.password = password;
-        this.username = username;
+        this.name = name;
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
         this.userPositionList = userPositionList;
