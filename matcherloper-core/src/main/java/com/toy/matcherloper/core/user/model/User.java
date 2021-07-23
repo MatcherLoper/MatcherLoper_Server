@@ -28,7 +28,7 @@ public class User {
     private String password;
 
     @Column(name = "username")
-    private String username;
+    private String name;
 
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -62,11 +62,11 @@ public class User {
     //연관관계 메서드
     public void addUserPosition(UserPosition position) {
         this.userPositionList.add(position);
-        position.setUser(this);
+        position.changeUser(this);
     }
 
     public void addSkill(Skill skill) {
         this.skillList.add(skill);
-        skill.setUser(this);
+        skill.changeUser(this);
     }
 }
