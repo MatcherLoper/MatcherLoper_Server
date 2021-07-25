@@ -45,10 +45,24 @@ public class User {
     @Embedded
     private Address address;
 
+    //consructor
     @Builder
     public User(Long id, String email, String password, String name, String phoneNumber, String introduction,
                 List<UserPosition> userPositionList, List<Skill> skillList, Address address) {
         this.id = id;
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.introduction = introduction;
+        this.userPositionList = userPositionList;
+        this.skillList = skillList;
+        this.address = address;
+    }
+
+    //method
+    public void update(String email, String password, String name, String phoneNumber, String introduction,
+                       List<UserPosition> userPositionList, List<Skill> skillList, Address address) {
         this.email = email;
         this.password = password;
         this.name = name;

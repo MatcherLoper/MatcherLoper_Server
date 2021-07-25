@@ -23,6 +23,12 @@ public class Skill {
     @JoinColumn(name = "user_id")
     private User user;
 
+    //constructor
+    public Skill(String name) {
+        this.name = name;
+    }
+
+    //method
     public void changeUser(User user) {
         this.user = user;
     }
