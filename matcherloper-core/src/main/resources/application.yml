@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/matcherloper
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    initialization-mode: always
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100
+    open-in-view: false
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 1000

@@ -1,5 +1,6 @@
 package com.toy.matcherloper.core.room.model;
 
+import com.toy.matcherloper.core.config.entity.BaseEntity;
 import com.toy.matcherloper.core.user.model.Owner;
 import com.toy.matcherloper.core.user.model.Participant;
 import lombok.AccessLevel;
@@ -18,7 +19,7 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Room {
+public class Room extends BaseEntity {
 
     @Id
     @Column(name = "room_id")
