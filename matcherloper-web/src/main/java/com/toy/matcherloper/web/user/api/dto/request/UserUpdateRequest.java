@@ -21,7 +21,7 @@ public class UserUpdateRequest {
     @NotBlank(message = "비밀번호가 공백이면 안됩니다.")
     private String password;
 
-    @NotEmpty(message = "이름이 비어있으면 안됩니다.")
+    @NotBlank(message = "이름이 비어있으면 안됩니다.")
     private String name;
 
     @NotEmpty(message = "핸드폰 번호를 입력해주십시오.")

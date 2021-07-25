@@ -45,7 +45,7 @@ public class User {
     @Embedded
     private Address address;
 
-    //consructor
+    //constructor
     @Builder
     public User(Long id, String email, String password, String name, String phoneNumber, String introduction,
                 List<UserPosition> userPositionList, List<Skill> skillList, Address address) {
