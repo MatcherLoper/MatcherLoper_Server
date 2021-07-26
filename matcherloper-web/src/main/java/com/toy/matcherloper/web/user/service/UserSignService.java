@@ -6,7 +6,9 @@ import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.UserPosition;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
+import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
 import com.toy.matcherloper.web.user.api.dto.request.SignUpRequest;
+import com.toy.matcherloper.web.user.api.dto.response.SignInResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,20 +21,21 @@ import java.util.stream.Collectors;
 public class UserSignService {
 
     private final UserRepository userRepository;
+    private final UserFindService userFindService;
 
     @Transactional
-    public Long signUp(SignUpRequest request) {
-        checkDuplicatedEmail(request.getEmail());
+    public Long signUp(SignUpRequest signUpRequest) {
+        checkDuplicatedEmail(signUpRequest.getEmail());
 
         User user = User.builder()
-                .email(request.getEmail())
-                .password(request.getPassword())
-                .name(request.getName())
-                .phoneNumber(request.getPhoneNumber())
-                .introduction(request.getIntroduction())
-                .userPositionList(toUserPosition(request))
-                .skillList(toSkill(request))
-                .address(toAddress(request))
+                .email(signUpRequest.getEmail())
+                .password(signUpRequest.getPassword())
+                .name(signUpRequest.getName())
+                .phoneNumber(signUpRequest.getPhoneNumber())
+                .introduction(signUpRequest.getIntroduction())
+                .userPositionList(requestToUserPositionList(signUpRequest))
+                .skillList(requestToSkillList(signUpRequest))
+                .address(toAddress(signUpRequest))
                 .build();
 
         userRepository.save(user);
@@ -40,6 +43,13 @@ public class UserSignService {
         return user.getId();
     }
 
+    @Transactional(readOnly = true)
+    public SignInResponse signIn(SignInRequest signInRequest) {
+        User user = userFindService.findUserByEmail(signInRequest.getEmail());
+        checkMatchedPassword(signInRequest.getPassword(), user.getPassword());
+
+        return new SignInResponse(user.getId());
+    }
 
     private void checkDuplicatedEmail(String email) {
         if (userRepository.findUserByEmail(email).isPresent()) {
@@ -47,13 +57,23 @@ public class UserSignService {
         }
     }
 
-    private List<UserPosition> toUserPosition(SignUpRequest request) {
+    /**
+     * 추후, Spring Security -> PasswordEncoder 로 매치 확인
+     */
+    private void checkMatchedPassword(String requestPassword, String userPassword) {
+        if (!requestPassword.equals(userPassword)) {
+            throw new IllegalArgumentException("Password is not matched");
+        }
+    }
+
+    private List<UserPosition> requestToUserPositionList(SignUpRequest request) {
         return request.getUserPositionList().stream()
                 .map(p -> new UserPosition(p.getType()))
                 .collect(Collectors.toList());
+
     }
 
-    private List<Skill> toSkill(SignUpRequest request) {
+    private List<Skill> requestToSkillList(SignUpRequest request) {
         return request.getSkillList().stream()
                 .map(s -> new Skill(s.getName()))
                 .collect(Collectors.toList());
