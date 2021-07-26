@@ -23,12 +23,10 @@ public class UserPosition {
     @JoinColumn(name = "user_id")
     private User user;
 
-    //constructor
     public UserPosition(PositionType type) {
         this.type = type;
     }
 
-    //method
     public void changeUser(User user) {
         this.user = user;
     }
