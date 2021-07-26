@@ -5,8 +5,6 @@ import com.toy.matcherloper.core.user.model.Skill;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.UserPosition;
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
-import com.toy.matcherloper.web.user.api.dto.PositionDto;
-import com.toy.matcherloper.web.user.api.dto.SkillDto;
 import com.toy.matcherloper.web.user.api.dto.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -22,33 +20,33 @@ public class UserUpdateService {
     private final UserFindService userFindService;
 
     @Transactional
-    public Long update(Long userId, UserUpdateRequest request) {
+    public Long update(Long userId, UserUpdateRequest userUpdateRequest) {
         User user = userFindService.findById(userId);
 
         user.update(
-                request.getEmail(),
-                request.getPassword(),
-                request.getName(),
-                request.getPhoneNumber(),
-                request.getIntroduction(),
-                toUserPosition(request.getUserPositionList()),
-                toSkill(request.getSkillList()),
-                toAddress(request.getAddress())
+                userUpdateRequest.getEmail(),
+                userUpdateRequest.getPassword(),
+                userUpdateRequest.getName(),
+                userUpdateRequest.getPhoneNumber(),
+                userUpdateRequest.getIntroduction(),
+                dtoToUserPositionList(userUpdateRequest),
+                dtoToSkillList(userUpdateRequest),
+                toAddress(userUpdateRequest.getAddress())
                 );
         return user.getId();
     }
 
-    private List<UserPosition> toUserPosition(List<PositionDto> dto) {
+    private List<UserPosition> dtoToUserPositionList(UserUpdateRequest userUpdateRequest) {
 
-        List<UserPosition> collect = dto.stream()
+        List<UserPosition> collect = userUpdateRequest.getUserPositionList().stream()
                 .map(p -> new UserPosition(p.getType()))
                 .collect(Collectors.toList());
 
         return collect;
     }
 
-    private List<Skill> toSkill(List<SkillDto> dto) {
-        List<Skill> collect = dto.stream()
+    private List<Skill> dtoToSkillList(UserUpdateRequest userUpdateRequest) {
+        List<Skill> collect = userUpdateRequest.getSkillList().stream()
                 .map(s -> new Skill(s.getName()))
                 .collect(Collectors.toList());
 

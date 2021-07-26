@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -16,14 +16,17 @@ public class UserFindService {
     private final UserRepository userRepository;
 
     public User findById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
     }
 
-    public List<User> findAll() {
+    /*public List<User> findAll() {
         return userRepository.findAll();
-    }
+    }*/
 
+    /**
+     * 추후, Spring security -> UsernameNotFoundException(email)
+     */
     public User findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+        return userRepository.findUserByEmail(email).orElseThrow(NoSuchElementException::new);
     }
 }
