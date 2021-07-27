@@ -60,4 +60,8 @@ public class Room extends BaseEntity {
         this.possibleOfflineArea = possibleOfflineArea;
         this.requiredUserNumber = requiredUserNumber;
     }
+
+    public boolean isOpen() {
+        return this.status == RoomStatus.OPEN;
+    }
 }
