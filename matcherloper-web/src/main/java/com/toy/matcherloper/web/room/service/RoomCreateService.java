@@ -23,20 +23,15 @@ public class RoomCreateService {
     public Long create(CreateRoomRequest request) {
         Owner owner = ownerFindService.findById(request.getOwnerId());
         checkOwnerHaveAnotherOpenRoom(owner);
-        final Room room = Room.builder()
-                .name(request.getName())
-                .owner(owner)
-                .possibleOfflineArea(request.getPossibleOfflineArea())
-                .requiredUserNumber(request.getRequiredUserNumber())
-                .requiredPositionList(request.getRoomPositionList())
-                .build();
+        final Room room = Room.create(owner, request.getRoomPositionList(), request.getName(),
+                request.getPossibleOfflineArea(), request.getRequiredUserNumber());
         roomRepository.save(room);
         return room.getId();
     }
 
     private void checkOwnerHaveAnotherOpenRoom(Owner owner) {
         final Optional<Room> room = roomRepository.findByOwner(owner);
-        if(room.isPresent() && room.get().isOpen()){
+        if (room.isPresent() && room.get().isOpen()) {
             throw new NotCreateRoomException("owner already  have another open room");
         }
     }

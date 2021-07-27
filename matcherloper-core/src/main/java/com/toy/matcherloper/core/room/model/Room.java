@@ -61,6 +61,20 @@ public class Room extends BaseEntity {
         this.requiredUserNumber = requiredUserNumber;
     }
 
+    public Room(Owner owner, List<RoomPosition> requiredPositionList, String name,
+                String possibleOfflineArea, int requiredUserNumber) {
+        this.owner = owner;
+        this.requiredPositionList = requiredPositionList;
+        this.name = name;
+        this.possibleOfflineArea = possibleOfflineArea;
+        this.requiredUserNumber = requiredUserNumber;
+    }
+
+    public static Room create(Owner owner, List<RoomPosition> positionList, String name,
+                              String possibleOfflineArea, int requiredUserNumber) {
+        return new Room(owner, positionList, name, possibleOfflineArea, requiredUserNumber);
+    }
+
     public boolean isOpen() {
         return this.status == RoomStatus.OPEN;
     }
