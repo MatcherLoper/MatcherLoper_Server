@@ -1,4 +1,4 @@
-package com.toy.matcherloper.core.config.entity;
+package com.toy.matcherloper.core.common.entity;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
