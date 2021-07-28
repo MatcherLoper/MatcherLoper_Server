@@ -1,7 +1,7 @@
 package com.toy.matcherloper.web.user.api.dto.request;
 
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
-import com.toy.matcherloper.web.user.api.dto.PositionDto;
+import com.toy.matcherloper.web.user.api.dto.UserPositionDto;
 import com.toy.matcherloper.web.user.api.dto.SkillDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class SignUpRequest {
 
     private String introduction;
 
-    private List<PositionDto> userPositionList;
+    private List<UserPositionDto> userPositionList;
 
     private List<SkillDto> skillList;
 

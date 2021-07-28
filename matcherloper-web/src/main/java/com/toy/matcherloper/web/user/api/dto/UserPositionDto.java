@@ -9,16 +9,16 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @NoArgsConstructor
-public class PositionDto {
+public class UserPositionDto {
 
     @NotEmpty(message = "포지션 타입을 명시해주세요")
     private PositionType type;
 
-    public PositionDto(PositionType type) {
+    public UserPositionDto(PositionType type) {
         this.type = type;
     }
 
-    public PositionDto(UserPosition position) {
+    public UserPositionDto(UserPosition position) {
         this.type = position.getType();
     }
 }
