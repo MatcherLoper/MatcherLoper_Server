@@ -2,6 +2,7 @@ package com.toy.matcherloper.web.user.service;
 
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.repository.UserRepository;
+import com.toy.matcherloper.web.user.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +17,14 @@ public class UserFindService {
     private final UserRepository userRepository;
 
     public User findById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(NoSuchElementException::new);
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다. User id = " + userId));
     }
 
-    /*public List<User> findAll() {
-        return userRepository.findAll();
-    }*/
-
     /**
-     * 추후, Spring security -> UsernameNotFoundException(email)
+     * 추후, Spring security 를 이용한 UsernameNotFoundException(email)
      */
-    public User findUserByEmail(String email) {
+    public User findByEmail(String email) {
         return userRepository.findUserByEmail(email).orElseThrow(NoSuchElementException::new);
     }
 }

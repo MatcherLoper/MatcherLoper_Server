@@ -33,8 +33,8 @@ public class UserSignService {
                 .name(signUpRequest.getName())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .introduction(signUpRequest.getIntroduction())
-                .userPositionList(requestToUserPositionList(signUpRequest))
-                .skillList(requestToSkillList(signUpRequest))
+                .userPositionList(ToUserPositionList(signUpRequest))
+                .skillList(ToSkillList(signUpRequest))
                 .address(toAddress(signUpRequest))
                 .build();
 
@@ -45,7 +45,7 @@ public class UserSignService {
 
     @Transactional(readOnly = true)
     public SignInResponse signIn(SignInRequest signInRequest) {
-        User user = userFindService.findUserByEmail(signInRequest.getEmail());
+        User user = userFindService.findByEmail(signInRequest.getEmail());
         checkMatchedPassword(signInRequest.getPassword(), user.getPassword());
 
         return new SignInResponse(user.getId());
@@ -66,14 +66,14 @@ public class UserSignService {
         }
     }
 
-    private List<UserPosition> requestToUserPositionList(SignUpRequest request) {
+    private List<UserPosition> ToUserPositionList(SignUpRequest request) {
         return request.getUserPositionList().stream()
                 .map(p -> new UserPosition(p.getType()))
                 .collect(Collectors.toList());
 
     }
 
-    private List<Skill> requestToSkillList(SignUpRequest request) {
+    private List<Skill> ToSkillList(SignUpRequest request) {
         return request.getSkillList().stream()
                 .map(s -> new Skill(s.getName()))
                 .collect(Collectors.toList());
