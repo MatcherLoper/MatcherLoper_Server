@@ -1,6 +1,6 @@
 package com.toy.matcherloper.core.user.model;
 
-import com.toy.matcherloper.core.config.entity.BaseEntity;
+import com.toy.matcherloper.core.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -60,7 +60,6 @@ public class User extends BaseEntity {
         this.address = address;
     }
 
-    //연관관계 메서드
     public void addUserPosition(UserPosition position) {
         this.userPositionList.add(position);
         position.changeUser(this);

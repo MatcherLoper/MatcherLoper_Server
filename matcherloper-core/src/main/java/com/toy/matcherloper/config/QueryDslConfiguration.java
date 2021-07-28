@@ -1,4 +1,4 @@
-package com.toy.matcherloper.core.config;
+package com.toy.matcherloper.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.springframework.context.annotation.Bean;

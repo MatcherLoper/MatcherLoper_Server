@@ -1,4 +1,4 @@
-package com.toy.matcherloper.core.config;
+package com.toy.matcherloper.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
