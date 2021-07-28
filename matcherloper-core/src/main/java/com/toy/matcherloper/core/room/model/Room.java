@@ -1,6 +1,6 @@
 package com.toy.matcherloper.core.room.model;
 
-import com.toy.matcherloper.core.config.entity.BaseEntity;
+import com.toy.matcherloper.core.common.entity.BaseEntity;
 import com.toy.matcherloper.core.user.model.Owner;
 import com.toy.matcherloper.core.user.model.Participant;
 import lombok.AccessLevel;
@@ -26,14 +26,14 @@ public class Room extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "participant", fetch = LAZY)
+    @OneToMany(mappedBy = "room", fetch = LAZY)
     private List<Participant> participantList = new ArrayList<>();
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "room_id")
     private Owner owner;
 
-    @OneToMany(mappedBy = "room_position", fetch = LAZY)
+    @OneToMany(mappedBy = "room", fetch = LAZY)
     private List<RoomPosition> requiredPositionList = new ArrayList<>();
 
     @Column(name = "name")
