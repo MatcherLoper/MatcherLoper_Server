@@ -16,11 +16,6 @@ public class AddressDto {
     @NotEmpty(message = "상세 주소를 입력하주십시오.")
     private String detailed;
 
-    public AddressDto(String city, String detailed) {
-        this.city = city;
-        this.detailed = detailed;
-    }
-
     public AddressDto(Address address) {
         this.city = address.getCity();
         this.detailed = address.getDetailed();
