@@ -46,7 +46,7 @@ public class UserSignService {
     @Transactional(readOnly = true)
     public SignInResponse signIn(SignInRequest signInRequest) {
         User user = userFindService.findByEmail(signInRequest.getEmail());
-        checkMatchedPassword(signInRequest.getPassword(), user.getPassword());
+        user.checkMatchedPassword(signInRequest.getPassword(), user.getPassword());
 
         return new SignInResponse(user.getId());
     }
@@ -54,15 +54,6 @@ public class UserSignService {
     private void checkDuplicatedEmail(String email) {
         if (userRepository.findUserByEmail(email).isPresent()) {
             throw new IllegalArgumentException(String.format("%s is duplicated email", email));
-        }
-    }
-
-    /**
-     * 추후, Spring Security -> PasswordEncoder 로 매치 확인
-     */
-    private void checkMatchedPassword(String requestPassword, String userPassword) {
-        if (!requestPassword.equals(userPassword)) {
-            throw new IllegalArgumentException("Password is not matched");
         }
     }
 

@@ -82,4 +82,10 @@ public class User extends BaseEntity {
         this.skillList = skillList;
         this.address = address;
     }
+
+    public void checkMatchedPassword(String requestPassword, String userPassword){
+        if (!requestPassword.equals(userPassword)) {
+            throw new IllegalArgumentException("Password is not matched");
+        }
+    }
 }
