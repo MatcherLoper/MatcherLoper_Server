@@ -5,6 +5,7 @@ import com.toy.matcherloper.core.room.repository.RoomRepository;
 import com.toy.matcherloper.core.user.model.Owner;
 import com.toy.matcherloper.web.room.api.dto.request.CreateRoomRequest;
 import com.toy.matcherloper.web.room.exception.NotCreateRoomException;
+import com.toy.matcherloper.web.user.service.OwnerFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
