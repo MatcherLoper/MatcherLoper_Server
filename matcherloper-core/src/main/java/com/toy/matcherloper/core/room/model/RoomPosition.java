@@ -37,4 +37,9 @@ public class RoomPosition {
         this.position = position;
         this.isExist = isExist;
     }
+
+    public RoomPosition(PositionType position, boolean isExist) {
+        this.position = position;
+        this.isExist = isExist;
+    }
 }
