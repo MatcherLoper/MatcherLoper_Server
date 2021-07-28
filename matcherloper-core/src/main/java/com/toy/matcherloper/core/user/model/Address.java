@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
+@Getter
 @Embeddable
 @Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
