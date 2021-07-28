@@ -4,10 +4,12 @@ import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.room.api.dto.request.CreateRoomRequest;
 import com.toy.matcherloper.web.room.service.RoomCreateService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class RoomCreateApi {
@@ -19,6 +21,7 @@ public class RoomCreateApi {
         try {
             return ApiResult.succeed(roomCreateService.create(request));
         } catch (Exception e) {
+            log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());
         }
     }
