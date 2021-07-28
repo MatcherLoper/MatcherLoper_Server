@@ -1,10 +1,12 @@
 package com.toy.matcherloper.core.user.model;
 
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 
+@Getter
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Address {
