@@ -1,6 +1,5 @@
-package com.toy.matcherloper.web.config;
+package com.toy.matcherloper.config;
 
-import com.toy.matcherloper.core.config.CoreConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;

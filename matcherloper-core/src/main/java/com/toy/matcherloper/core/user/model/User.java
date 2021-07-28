@@ -1,5 +1,6 @@
 package com.toy.matcherloper.core.user.model;
 
+import com.toy.matcherloper.core.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,19 +60,6 @@ public class User {
         this.address = address;
     }
 
-    public void update(String email, String password, String name, String phoneNumber, String introduction,
-                       List<UserPosition> userPositionList, List<Skill> skillList, Address address) {
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
-        this.introduction = introduction;
-        this.userPositionList = userPositionList;
-        this.skillList = skillList;
-        this.address = address;
-    }
-
-    //연관관계 메서드
     public void addUserPosition(UserPosition position) {
         this.userPositionList.add(position);
         position.changeUser(this);

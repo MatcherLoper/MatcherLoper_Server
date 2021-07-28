@@ -1,5 +1,6 @@
 package com.toy.matcherloper.core.room.model;
 
+import com.toy.matcherloper.core.common.entity.BaseEntity;
 import com.toy.matcherloper.core.user.model.Owner;
 import com.toy.matcherloper.core.user.model.Participant;
 import lombok.AccessLevel;
@@ -18,21 +19,21 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Room {
+public class Room extends BaseEntity {
 
     @Id
     @Column(name = "room_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "participant", fetch = LAZY)
+    @OneToMany(mappedBy = "room", fetch = LAZY)
     private List<Participant> participantList = new ArrayList<>();
 
     @OneToOne(fetch = LAZY)
     @JoinColumn(name = "room_id")
     private Owner owner;
 
-    @OneToMany(mappedBy = "room_position", fetch = LAZY)
+    @OneToMany(mappedBy = "room", fetch = LAZY)
     private List<RoomPosition> requiredPositionList = new ArrayList<>();
 
     @Column(name = "name")
@@ -58,5 +59,23 @@ public class Room {
         this.status = status;
         this.possibleOfflineArea = possibleOfflineArea;
         this.requiredUserNumber = requiredUserNumber;
+    }
+
+    public Room(Owner owner, List<RoomPosition> requiredPositionList, String name,
+                String possibleOfflineArea, int requiredUserNumber) {
+        this.owner = owner;
+        this.requiredPositionList = requiredPositionList;
+        this.name = name;
+        this.possibleOfflineArea = possibleOfflineArea;
+        this.requiredUserNumber = requiredUserNumber;
+    }
+
+    public static Room create(Owner owner, List<RoomPosition> positionList, String name,
+                              String possibleOfflineArea, int requiredUserNumber) {
+        return new Room(owner, positionList, name, possibleOfflineArea, requiredUserNumber);
+    }
+
+    public boolean isOpen() {
+        return this.status == RoomStatus.OPEN;
     }
 }

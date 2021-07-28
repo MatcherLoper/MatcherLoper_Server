@@ -22,7 +22,7 @@ public class RoomPosition {
     private Long id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "room_position_id")
+    @JoinColumn(name = "room_id")
     private Room room;
 
     @Enumerated(value = STRING)
