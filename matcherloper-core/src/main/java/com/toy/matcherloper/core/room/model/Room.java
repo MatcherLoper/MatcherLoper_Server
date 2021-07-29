@@ -78,4 +78,8 @@ public class Room extends BaseEntity {
     public boolean isOpen() {
         return this.status == RoomStatus.OPEN;
     }
+
+    public void start() {
+        this.status = RoomStatus.CLOSED;
+    }
 }
