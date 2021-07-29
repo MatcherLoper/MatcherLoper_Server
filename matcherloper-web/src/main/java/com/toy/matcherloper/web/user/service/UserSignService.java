@@ -57,21 +57,21 @@ public class UserSignService {
         }
     }
 
-    private List<UserPosition> ToUserPositionList(SignUpRequest request) {
-        return request.getUserPositionList().stream()
+    private List<UserPosition> ToUserPositionList(SignUpRequest signUpRequest) {
+        return signUpRequest.getUserPositionDtoList().stream()
                 .map(p -> new UserPosition(p.getType()))
                 .collect(Collectors.toList());
 
     }
 
-    private List<Skill> ToSkillList(SignUpRequest request) {
-        return request.getSkillList().stream()
+    private List<Skill> ToSkillList(SignUpRequest signUpRequest) {
+        return signUpRequest.getSkillDtoList().stream()
                 .map(s -> new Skill(s.getName()))
                 .collect(Collectors.toList());
     }
 
-    private Address toAddress(SignUpRequest request) {
-        AddressDto addressDto = request.getAddress();
+    private Address toAddress(SignUpRequest signUpRequest) {
+        AddressDto addressDto = signUpRequest.getAddressDto();
 
         return new Address(addressDto.getCity(), addressDto.getDetailed());
     }

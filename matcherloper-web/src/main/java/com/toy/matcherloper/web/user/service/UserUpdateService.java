@@ -31,14 +31,14 @@ public class UserUpdateService {
                 userUpdateRequest.getIntroduction(),
                 ToUserPositionList(userUpdateRequest),
                 ToSkillList(userUpdateRequest),
-                toAddress(userUpdateRequest.getAddress())
+                toAddress(userUpdateRequest.getAddressDto())
                 );
         return user.getId();
     }
 
     private List<UserPosition> ToUserPositionList(UserUpdateRequest userUpdateRequest) {
 
-        List<UserPosition> collect = userUpdateRequest.getUserPositionList().stream()
+        List<UserPosition> collect = userUpdateRequest.getUserPositionDtoList().stream()
                 .map(p -> new UserPosition(p.getType()))
                 .collect(Collectors.toList());
 
@@ -46,7 +46,7 @@ public class UserUpdateService {
     }
 
     private List<Skill> ToSkillList(UserUpdateRequest userUpdateRequest) {
-        List<Skill> collect = userUpdateRequest.getSkillList().stream()
+        List<Skill> collect = userUpdateRequest.getSkillDtoList().stream()
                 .map(s -> new Skill(s.getName()))
                 .collect(Collectors.toList());
 
