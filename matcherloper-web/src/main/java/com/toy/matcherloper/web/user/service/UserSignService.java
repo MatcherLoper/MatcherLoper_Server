@@ -52,7 +52,7 @@ public class UserSignService {
     }
 
     private void checkDuplicatedEmail(String email) {
-        if (userRepository.findUserByEmail(email).isPresent()) {
+        if (userRepository.findByEmail(email).isPresent()) {
             throw new IllegalArgumentException(String.format("%s is duplicated email", email));
         }
     }
