@@ -72,19 +72,25 @@ public class User extends BaseEntity {
 
     public void update(String email, String password, String name, String phoneNumber, String introduction,
                 List<UserPosition> userPositionList, List<Skill> skillList, Address address) {
-        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
-        this.userPositionList = userPositionList;
-        this.skillList = skillList;
+
+        for (UserPosition userPosition : userPositionList) {
+            addUserPosition(userPosition);
+        }
+
+        for (Skill skill : skillList) {
+            addSkill(skill);
+        }
+
         this.address = address;
     }
 
-    public void checkMatchedPassword(String requestPassword, String userPassword){
-        if (!requestPassword.equals(userPassword)) {
+    public void checkMatchedPassword(String requestPassword){
+        if (!requestPassword.equals(password)) {
             throw new IllegalArgumentException("Password is not matched");
         }
     }
