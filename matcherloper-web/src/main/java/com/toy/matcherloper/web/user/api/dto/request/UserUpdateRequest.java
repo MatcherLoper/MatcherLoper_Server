@@ -6,9 +6,7 @@ import com.toy.matcherloper.web.user.api.dto.SkillDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.*;
 import java.util.List;
 
 @Getter
@@ -24,15 +22,19 @@ public class UserUpdateRequest {
     @NotBlank(message = "이름이 비어있으면 안됩니다.")
     private String name;
 
-    @NotEmpty(message = "핸드폰 번호를 입력해주십시오.")
+    @NotEmpty(message = "핸드폰 번호를 입력해주십시오(010-1234-1234).")
     private String phoneNumber;
 
+    @NotNull
     private String introduction;
 
-    private List<UserPositionDto> userPositionList;
+    @NotBlank(message = "개발 포지션을 추가해주세요.")
+    private List<UserPositionDto> userPositionDtoList;
 
-    private List<SkillDto> skillList;
+    @NotBlank(message = "주 사용 스펙을 입력해주세요.")
+    private List<SkillDto> skillDtoList;
 
-    private AddressDto address;
+    @NotBlank(message = "주소를 입력해주세요.")
+    private AddressDto addressDto;
 
 }
