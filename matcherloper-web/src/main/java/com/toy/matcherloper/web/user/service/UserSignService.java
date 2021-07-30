@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,8 +33,8 @@ public class UserSignService {
                 .name(signUpRequest.getName())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .introduction(signUpRequest.getIntroduction())
-                .userPositionList(ToUserPositionList(signUpRequest))
-                .skillList(ToSkillList(signUpRequest))
+                .userPositionSet(ToUserPositionSet(signUpRequest))
+                .skillSet(ToSkillSet(signUpRequest))
                 .address(toAddress(signUpRequest))
                 .build();
 
@@ -57,17 +57,17 @@ public class UserSignService {
         }
     }
 
-    private List<UserPosition> ToUserPositionList(SignUpRequest signUpRequest) {
+    private Set<UserPosition> ToUserPositionSet(SignUpRequest signUpRequest) {
         return signUpRequest.getUserPositionDtoList().stream()
                 .map(p -> new UserPosition(p.getType()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
     }
 
-    private List<Skill> ToSkillList(SignUpRequest signUpRequest) {
+    private Set<Skill> ToSkillSet(SignUpRequest signUpRequest) {
         return signUpRequest.getSkillDtoList().stream()
                 .map(s -> new Skill(s.getName()))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     private Address toAddress(SignUpRequest signUpRequest) {
