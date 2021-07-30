@@ -23,7 +23,6 @@ public class UserSignApi {
     public ApiResult<Long> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         try {
             Long signUpUserId = userSignService.signUp(signUpRequest);
-
             return ApiResult.succeed(signUpUserId);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -35,7 +34,6 @@ public class UserSignApi {
     public ApiResult<SignInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) {
         try {
             SignInResponse signInResponse = userSignService.signIn(signInRequest);
-
             return ApiResult.succeed(signInResponse);
         } catch (Exception e) {
             log.error(e.getMessage());
