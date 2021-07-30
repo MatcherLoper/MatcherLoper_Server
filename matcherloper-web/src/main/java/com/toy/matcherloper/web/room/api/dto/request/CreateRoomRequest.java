@@ -1,6 +1,6 @@
 package com.toy.matcherloper.web.room.api.dto.request;
 
-import com.toy.matcherloper.core.room.model.RoomPosition;
+import com.toy.matcherloper.web.room.api.dto.RoomPositionDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +15,7 @@ public class CreateRoomRequest {
     @NotNull(message = "방장 아이디가 필요합니다.")
     private Long ownerId;
 
-    private List<RoomPosition> roomPositionList;
+    private List<RoomPositionDto> roomPositionList;
 
     @NotBlank(message = "방 이름이 비어있으면 안됩니다.")
     private String name;
