@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,28 +29,23 @@ public class UserUpdateService {
                 userUpdateRequest.getName(),
                 userUpdateRequest.getPhoneNumber(),
                 userUpdateRequest.getIntroduction(),
-                ToUserPositionList(userUpdateRequest),
-                ToSkillList(userUpdateRequest),
+                ToUserPositionSet(userUpdateRequest),
+                ToSkillSet(userUpdateRequest),
                 toAddress(userUpdateRequest.getAddressDto())
                 );
         return user.getId();
     }
 
-    private List<UserPosition> ToUserPositionList(UserUpdateRequest userUpdateRequest) {
-
-        List<UserPosition> collect = userUpdateRequest.getUserPositionDtoList().stream()
+    private Set<UserPosition> ToUserPositionSet(UserUpdateRequest userUpdateRequest) {
+        return userUpdateRequest.getUserPositionDtoList().stream()
                 .map(p -> new UserPosition(p.getType()))
-                .collect(Collectors.toList());
-
-        return collect;
+                .collect(Collectors.toSet());
     }
 
-    private List<Skill> ToSkillList(UserUpdateRequest userUpdateRequest) {
-        List<Skill> collect = userUpdateRequest.getSkillDtoList().stream()
+    private Set<Skill> ToSkillSet(UserUpdateRequest userUpdateRequest) {
+         return userUpdateRequest.getSkillDtoList().stream()
                 .map(s -> new Skill(s.getName()))
-                .collect(Collectors.toList());
-
-        return collect;
+                .collect(Collectors.toSet());
     }
 
     private Address toAddress(AddressDto dto) {

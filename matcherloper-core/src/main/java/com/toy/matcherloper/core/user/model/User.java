@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -73,18 +72,18 @@ public class User extends BaseEntity {
     }
 
     public void update(String email, String password, String name, String phoneNumber, String introduction,
-                List<UserPosition> userPositionList, List<Skill> skillList, Address address) {
+                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
 
-        for (UserPosition userPosition : userPositionList) {
+        for (UserPosition userPosition : userPositionSet) {
             addUserPosition(userPosition);
         }
 
-        for (Skill skill : skillList) {
+        for (Skill skill : skillSet) {
             addSkill(skill);
         }
 
