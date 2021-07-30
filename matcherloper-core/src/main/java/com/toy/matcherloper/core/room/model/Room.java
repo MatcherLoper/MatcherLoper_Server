@@ -26,11 +26,10 @@ public class Room extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "room", fetch = LAZY)
+    @OneToMany(mappedBy = "room")
     private List<Participant> participantList = new ArrayList<>();
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "room_id")
+    @OneToOne(fetch = LAZY, mappedBy = "room")
     private Owner owner;
 
     @OneToMany(mappedBy = "room", fetch = LAZY)

@@ -1,14 +1,15 @@
 package com.toy.matcherloper.core.user.model;
 
 import com.toy.matcherloper.core.common.entity.BaseEntity;
+import com.toy.matcherloper.core.user.exception.NotMatchedPasswordException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -38,35 +39,60 @@ public class User extends BaseEntity {
     private String introduction;
 
     @OneToMany(mappedBy = "user")
-    private List<UserPosition> userPositionList = new ArrayList<>();
+    private Set<UserPosition> userPositionSet = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Skill> skillList = new ArrayList<>();
+    private Set<Skill> skillSet = new HashSet<>();
 
     @Embedded
     private Address address;
 
     @Builder
     public User(Long id, String email, String password, String name, String phoneNumber, String introduction,
-                List<UserPosition> userPositionList, List<Skill> skillList, Address address) {
+                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
-        this.userPositionList = userPositionList;
-        this.skillList = skillList;
+        this.userPositionSet = userPositionSet;
+        this.skillSet = skillSet;
         this.address = address;
     }
 
     public void addUserPosition(UserPosition position) {
-        this.userPositionList.add(position);
+        this.userPositionSet.add(position);
         position.changeUser(this);
     }
 
     public void addSkill(Skill skill) {
-        this.skillList.add(skill);
+        this.skillSet.add(skill);
         skill.changeUser(this);
+    }
+
+    public void update(String email, String password, String name, String phoneNumber, String introduction,
+                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.introduction = introduction;
+
+        for (UserPosition userPosition : userPositionSet) {
+            addUserPosition(userPosition);
+        }
+
+        for (Skill skill : skillSet) {
+            addSkill(skill);
+        }
+
+        this.address = address;
+    }
+
+    public void checkMatchedPassword(String requestPassword){
+        if (!requestPassword.equals(password)) {
+            throw new NotMatchedPasswordException("Password is not matched!");
+        }
     }
 }
