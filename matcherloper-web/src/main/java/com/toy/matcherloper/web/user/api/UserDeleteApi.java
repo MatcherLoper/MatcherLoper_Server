@@ -29,7 +29,6 @@ public class UserDeleteApi {
     public ApiResult<Long> delete(@PathVariable Long userId) {
         try {
             Long deletedUserId = userDeleteService.delete(userId);
-
             return ApiResult.succeed(deletedUserId);
         } catch (Exception e) {
             log.error(e.getMessage());

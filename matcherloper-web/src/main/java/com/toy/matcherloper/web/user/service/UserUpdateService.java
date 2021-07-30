@@ -29,20 +29,20 @@ public class UserUpdateService {
                 userUpdateRequest.getName(),
                 userUpdateRequest.getPhoneNumber(),
                 userUpdateRequest.getIntroduction(),
-                ToUserPositionSet(userUpdateRequest),
-                ToSkillSet(userUpdateRequest),
+                toUserPositionSet(userUpdateRequest),
+                toSkillSet(userUpdateRequest),
                 toAddress(userUpdateRequest.getAddressDto())
                 );
         return user.getId();
     }
 
-    private Set<UserPosition> ToUserPositionSet(UserUpdateRequest userUpdateRequest) {
+    private Set<UserPosition> toUserPositionSet(UserUpdateRequest userUpdateRequest) {
         return userUpdateRequest.getUserPositionDtoList().stream()
                 .map(p -> new UserPosition(p.getType()))
                 .collect(Collectors.toSet());
     }
 
-    private Set<Skill> ToSkillSet(UserUpdateRequest userUpdateRequest) {
+    private Set<Skill> toSkillSet(UserUpdateRequest userUpdateRequest) {
          return userUpdateRequest.getSkillDtoList().stream()
                 .map(s -> new Skill(s.getName()))
                 .collect(Collectors.toSet());

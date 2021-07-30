@@ -33,8 +33,8 @@ public class UserSignService {
                 .name(signUpRequest.getName())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .introduction(signUpRequest.getIntroduction())
-                .userPositionSet(ToUserPositionSet(signUpRequest))
-                .skillSet(ToSkillSet(signUpRequest))
+                .userPositionSet(toUserPositionSet(signUpRequest))
+                .skillSet(toSkillSet(signUpRequest))
                 .address(toAddress(signUpRequest))
                 .build();
 
@@ -57,14 +57,14 @@ public class UserSignService {
         }
     }
 
-    private Set<UserPosition> ToUserPositionSet(SignUpRequest signUpRequest) {
+    private Set<UserPosition> toUserPositionSet(SignUpRequest signUpRequest) {
         return signUpRequest.getUserPositionDtoList().stream()
                 .map(p -> new UserPosition(p.getType()))
                 .collect(Collectors.toSet());
 
     }
 
-    private Set<Skill> ToSkillSet(SignUpRequest signUpRequest) {
+    private Set<Skill> toSkillSet(SignUpRequest signUpRequest) {
         return signUpRequest.getSkillDtoList().stream()
                 .map(s -> new Skill(s.getName()))
                 .collect(Collectors.toSet());

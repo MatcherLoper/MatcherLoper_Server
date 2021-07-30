@@ -23,7 +23,6 @@ public class UserUpdateApi {
                                   @Valid @RequestBody UserUpdateRequest userUpdateRequest) {
         try {
             Long updatedUserId = userUpdateService.update(userId, userUpdateRequest);
-
             return ApiResult.succeed(updatedUserId);
         } catch (Exception e) {
             log.error(e.getMessage());
