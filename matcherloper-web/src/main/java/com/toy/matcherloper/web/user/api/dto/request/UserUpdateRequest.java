@@ -25,7 +25,7 @@ public class UserUpdateRequest {
     @NotEmpty(message = "핸드폰 번호를 입력해주십시오(010-1234-1234).")
     private String phoneNumber;
 
-    @NotNull
+    @NotNull(message = "간단한 자기소개를 입력해주세요.")
     private String introduction;
 
     @NotBlank(message = "개발 포지션을 추가해주세요.")
