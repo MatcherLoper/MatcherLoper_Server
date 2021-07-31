@@ -15,6 +15,7 @@ public class CreateRoomRequest {
     @NotNull(message = "방장 아이디가 필요합니다.")
     private Long ownerId;
 
+    @NotNull(message = "프로젝트에 필요한 포지션을 입력해 주세요.")
     private List<RoomPositionDto> roomPositionList;
 
     @NotBlank(message = "방 이름이 비어있으면 안됩니다.")
