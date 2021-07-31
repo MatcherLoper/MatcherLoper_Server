@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -20,8 +21,8 @@ public class OwnerWithoutPasswordDto {
     private String email;
     private String phoneNumber;
     private String introduction;
-    private List<UserPositionDto> userPositionList;
-    private List<SkillDto> skillList;
+    private List<UserPositionDto> userPositions;
+    private List<SkillDto> skills;
     private AddressDto address;
 
 
@@ -30,19 +31,19 @@ public class OwnerWithoutPasswordDto {
         this.email = owner.getEmail();
         this.phoneNumber = owner.getPhoneNumber();
         this.introduction = owner.getIntroduction();
-        this.userPositionList = toUserPositionList(owner.getUserPositionList());
-        this.skillList = toSkillList(owner.getSkillList());
+        this.userPositions = toUserPositionList(owner.getUserPositionSet());
+        this.skills = toSkillList(owner.getSkillSet());
         this.address = new AddressDto(owner.getAddress());
     }
 
-    private List<UserPositionDto> toUserPositionList(List<UserPosition> userPositionList) {
-        return userPositionList.stream()
+    private List<UserPositionDto> toUserPositionList(Set<UserPosition> userPositionSet) {
+        return userPositionSet.stream()
                 .map(UserPositionDto::new)
                 .collect(Collectors.toList());
     }
 
-    private List<SkillDto> toSkillList(List<Skill> skillList) {
-        return skillList.stream()
+    private List<SkillDto> toSkillList(Set<Skill> skillSet) {
+        return skillSet.stream()
                 .map(SkillDto::new)
                 .collect(Collectors.toList());
     }

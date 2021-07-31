@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -21,8 +22,8 @@ public class UserFindResponse {
     private String name;
     private String phoneNumber;
     private String introduction;
-    private List<UserPositionDto> userPositionDtoList;
-    private List<SkillDto> skillDtoList;
+    private List<UserPositionDto> userPositions;
+    private List<SkillDto> skills;
 
     public UserFindResponse(User user) {
         userId = user.getId();
@@ -31,18 +32,18 @@ public class UserFindResponse {
         name = user.getName();
         phoneNumber = user.getPhoneNumber();
         introduction = user.getIntroduction();
-        userPositionDtoList = toDtoUserPositionList(user.getUserPositionList());
-        skillDtoList = toDtoSkillList(user.getSkillList());
+        userPositions = toDtoUserPositionList(user.getUserPositionSet());
+        skills = toDtoSkillList(user.getSkillSet());
     }
 
-    private List<UserPositionDto> toDtoUserPositionList(List<UserPosition> userPositionList) {
-        return userPositionList.stream()
+    private List<UserPositionDto> toDtoUserPositionList(Set<UserPosition> userPositionSet) {
+        return userPositionSet.stream()
                 .map(UserPositionDto::new)
                 .collect(Collectors.toList());
     }
 
-    private List<SkillDto> toDtoSkillList(List<Skill> skillList) {
-        return skillList.stream()
+    private List<SkillDto> toDtoSkillList(Set<Skill> skillSet) {
+        return skillSet.stream()
                 .map(SkillDto::new)
                 .collect(Collectors.toList());
     }
