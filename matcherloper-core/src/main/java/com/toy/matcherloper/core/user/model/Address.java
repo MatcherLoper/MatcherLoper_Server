@@ -8,7 +8,6 @@ import javax.persistence.Embeddable;
 
 @Getter
 @Embeddable
-@Getter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 public class Address {
 
