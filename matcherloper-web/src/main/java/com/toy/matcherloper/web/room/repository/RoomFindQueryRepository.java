@@ -20,16 +20,17 @@ public class RoomFindQueryRepository {
         return queryFactory.selectFrom(room)
                 .distinct()
                 .innerJoin(room.owner).fetchJoin()
-                .innerJoin(room.participantList).fetchJoin()
+                .innerJoin(room.participantSet).fetchJoin()
                 .innerJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
     }
 
     public List<Room> findAllByOpenWithOwnerAndParticipant() {
         return queryFactory.selectFrom(room)
+                .distinct()
                 .where(room.status.eq(RoomStatus.OPEN))
                 .innerJoin(room.owner).fetchJoin()
-                .innerJoin(room.participantList).fetchJoin()
+                .innerJoin(room.participantSet).fetchJoin()
                 .innerJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
     }
