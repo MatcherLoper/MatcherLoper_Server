@@ -11,7 +11,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.EnumType.*;
 import static javax.persistence.FetchType.*;
@@ -27,7 +29,7 @@ public class Room extends BaseEntity {
     private Long id;
 
     @OneToMany(mappedBy = "room")
-    private List<Participant> participantList = new ArrayList<>();
+    private Set<Participant> participantSet = new HashSet<>();
 
     @OneToOne(fetch = LAZY, mappedBy = "room")
     private Owner owner;
@@ -49,9 +51,9 @@ public class Room extends BaseEntity {
     private int requiredUserNumber;
 
     @Builder
-    public Room(List<Participant> participantList, Owner owner, List<RoomPosition> requiredPositionList, String name,
+    public Room(Set<Participant> participantSet, Owner owner, List<RoomPosition> requiredPositionList, String name,
                 RoomStatus status, String possibleOfflineArea, int requiredUserNumber) {
-        this.participantList = participantList;
+        this.participantSet =  participantSet;
         this.owner = owner;
         this.requiredPositionList = requiredPositionList;
         this.name = name;
