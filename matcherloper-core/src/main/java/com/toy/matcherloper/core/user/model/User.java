@@ -38,10 +38,10 @@ public class User extends BaseEntity {
     @Column(name = "introduction")
     private String introduction;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserPosition> userPositionSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Skill> skillSet = new HashSet<>();
 
     @Embedded
