@@ -1,4 +1,4 @@
-package com.toy.matcherloper.web.user.repository;
+package com.toy.matcherloper.web.user.participant.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toy.matcherloper.core.user.model.Participant;

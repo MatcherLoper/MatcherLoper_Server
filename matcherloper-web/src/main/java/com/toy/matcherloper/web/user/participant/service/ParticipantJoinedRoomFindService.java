@@ -1,7 +1,7 @@
 package com.toy.matcherloper.web.user.participant.service;
 
 import com.toy.matcherloper.core.user.model.Participant;
-import com.toy.matcherloper.web.user.repository.ParticipantJoinedRoomFindQueryRepository;
+import com.toy.matcherloper.web.user.participant.repository.ParticipantJoinedRoomFindQueryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
