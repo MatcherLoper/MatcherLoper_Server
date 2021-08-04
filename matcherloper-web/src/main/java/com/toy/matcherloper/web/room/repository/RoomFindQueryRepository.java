@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.toy.matcherloper.core.room.model.QRoom.room;
 
@@ -33,5 +34,14 @@ public class RoomFindQueryRepository {
                 .innerJoin(room.participantSet).fetchJoin()
                 .innerJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
+    }
+
+    public Optional<Room> findByIdWithOwnerAndParticipant(Long roomId) {
+        return Optional.ofNullable(queryFactory.selectFrom(room)
+                .where(room.id.eq(roomId))
+                .innerJoin(room.owner).fetchJoin()
+                .innerJoin(room.participantSet).fetchJoin()
+                .innerJoin(room.requiredPositionList).fetchJoin()
+                .fetchOne());
     }
 }
