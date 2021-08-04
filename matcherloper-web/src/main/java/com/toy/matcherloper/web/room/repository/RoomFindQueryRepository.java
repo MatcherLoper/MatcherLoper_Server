@@ -7,8 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
-import static com.toy.matcherloper.core.room.model.QRoom.*;
+import static com.toy.matcherloper.core.room.model.QRoom.room;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,16 +19,29 @@ public class RoomFindQueryRepository {
 
     public List<Room> findAllWithOwnerAndParticipant() {
         return queryFactory.selectFrom(room)
-                .innerJoin(room.owner)
-                .innerJoin(room.participantList)
+                .distinct()
+                .innerJoin(room.owner).fetchJoin()
+                .innerJoin(room.participantSet).fetchJoin()
+                .innerJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
     }
 
     public List<Room> findAllByOpenWithOwnerAndParticipant() {
         return queryFactory.selectFrom(room)
+                .distinct()
                 .where(room.status.eq(RoomStatus.OPEN))
-                .innerJoin(room.owner)
-                .innerJoin(room.participantList)
+                .innerJoin(room.owner).fetchJoin()
+                .innerJoin(room.participantSet).fetchJoin()
+                .innerJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
+    }
+
+    public Optional<Room> findByIdWithOwnerAndParticipant(Long roomId) {
+        return Optional.ofNullable(queryFactory.selectFrom(room)
+                .where(room.id.eq(roomId))
+                .innerJoin(room.owner).fetchJoin()
+                .innerJoin(room.participantSet).fetchJoin()
+                .innerJoin(room.requiredPositionList).fetchJoin()
+                .fetchOne());
     }
 }

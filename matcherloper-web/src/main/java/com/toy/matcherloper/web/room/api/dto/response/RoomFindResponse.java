@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
@@ -23,8 +24,8 @@ public class RoomFindResponse {
     private String possibleOfflineArea;
     private int requiredUserNumber;
     private OwnerWithoutPasswordDto owner;
-    private List<ParticipantWithoutPasswordDto> participantList;
-    private List<RoomPositionDto> roomPositionList;
+    private Set<ParticipantWithoutPasswordDto> participants;
+    private List<RoomPositionDto> roomPositions;
 
     public RoomFindResponse(Room room) {
         this.roomId = room.getId();
@@ -33,14 +34,14 @@ public class RoomFindResponse {
         this.possibleOfflineArea = room.getPossibleOfflineArea();
         this.requiredUserNumber = room.getRequiredUserNumber();
         this.owner = new OwnerWithoutPasswordDto(room.getOwner());
-        this.participantList = toParticipantList(room.getParticipantList());
-        this.roomPositionList = toRoomPositionList(room.getRequiredPositionList());
+        this.participants = toParticipantList(room.getParticipantSet());
+        this.roomPositions = toRoomPositionList(room.getRequiredPositionList());
     }
 
-    private List<ParticipantWithoutPasswordDto> toParticipantList(List<Participant> participantList) {
+    private Set<ParticipantWithoutPasswordDto> toParticipantList(Set<Participant> participantList) {
         return participantList.stream()
                 .map(ParticipantWithoutPasswordDto::new)
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
     }
 
     private List<RoomPositionDto> toRoomPositionList(List<RoomPosition> requiredPositionList) {

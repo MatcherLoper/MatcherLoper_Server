@@ -38,10 +38,10 @@ public class User extends BaseEntity {
     @Column(name = "introduction")
     private String introduction;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<UserPosition> userPositionSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Skill> skillSet = new HashSet<>();
 
     @Embedded
@@ -72,7 +72,7 @@ public class User extends BaseEntity {
     }
 
     public void update(String email, String password, String name, String phoneNumber, String introduction,
-                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
+                       Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -90,7 +90,7 @@ public class User extends BaseEntity {
         this.address = address;
     }
 
-    public void checkMatchedPassword(String requestPassword){
+    public void checkMatchedPassword(String requestPassword) {
         if (!requestPassword.equals(password)) {
             throw new NotMatchedPasswordException("Password is not matched!");
         }
