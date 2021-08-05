@@ -35,7 +35,7 @@ public class RoomCreateService {
     }
 
     private void checkOwnerHaveAnotherOpenRoom(Owner owner) {
-        final Optional<Room> room = roomRepository.findByOwner(owner);
+        final Optional<Room> room = roomRepository.findOneByOwner(owner);
         if (room.isPresent() && room.get().isOpen()) {
             throw new NotCreateRoomException("owner already have another open room");
         }
