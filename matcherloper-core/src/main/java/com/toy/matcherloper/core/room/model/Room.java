@@ -63,17 +63,18 @@ public class Room extends BaseEntity {
     }
 
     public Room(Owner owner, List<RoomPosition> requiredPositionList, String name,
-                String possibleOfflineArea, int requiredUserNumber) {
-        this.owner = owner;
+                String possibleOfflineArea, int requiredUserNumber, RoomStatus status) {
+        addOwner(owner);
         this.requiredPositionList = requiredPositionList;
         this.name = name;
         this.possibleOfflineArea = possibleOfflineArea;
         this.requiredUserNumber = requiredUserNumber;
+        this.status = RoomStatus.OPEN;
     }
 
     public static Room create(Owner owner, List<RoomPosition> positionList, String name,
-                              String possibleOfflineArea, int requiredUserNumber) {
-        return new Room(owner, positionList, name, possibleOfflineArea, requiredUserNumber);
+                              String possibleOfflineArea, int requiredUserNumber, RoomStatus status) {
+        return new Room(owner, positionList, name, possibleOfflineArea, requiredUserNumber, status);
     }
 
     public boolean isOpen() {
@@ -82,5 +83,10 @@ public class Room extends BaseEntity {
 
     public void start() {
         this.status = RoomStatus.CLOSED;
+    }
+
+    private void addOwner(Owner owner) {
+        this.owner = owner;
+        owner.createRoom(this);
     }
 }

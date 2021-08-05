@@ -26,4 +26,13 @@ public class CreateRoomRequest {
 
     @NotNull(message = "필요한 유저 수를 입력해 주세요.")
     private int requiredUserNumber;
+
+    public CreateRoomRequest(Long ownerId, List<RoomPositionDto> roomPositionList,
+                             String name, String possibleOfflineArea, int requiredUserNumber) {
+        this.ownerId = ownerId;
+        this.roomPositionList = roomPositionList;
+        this.name = name;
+        this.possibleOfflineArea = possibleOfflineArea;
+        this.requiredUserNumber = requiredUserNumber;
+    }
 }
