@@ -1,7 +1,7 @@
 package com.toy.matcherloper.web.user.participant.api.dto.response;
 
-import com.toy.matcherloper.core.user.model.Participant;
 import com.toy.matcherloper.core.user.model.Skill;
+import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.UserPosition;
 import com.toy.matcherloper.web.user.api.dto.SkillDto;
 import com.toy.matcherloper.web.user.api.dto.UserPositionDto;
@@ -25,7 +25,7 @@ public class ParticipantJoinedRoomFindResponse {
     private List<UserPositionDto> userPositions;
     private List<SkillDto> skills;
 
-    public ParticipantJoinedRoomFindResponse(Participant participant) {
+    public ParticipantJoinedRoomFindResponse(User participant) {
         userId = participant.getId();
         email = participant.getEmail();
         password = participant.getPassword();

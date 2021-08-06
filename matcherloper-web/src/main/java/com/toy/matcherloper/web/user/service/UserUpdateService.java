@@ -22,17 +22,14 @@ public class UserUpdateService {
     @Transactional
     public Long update(Long userId, UserUpdateRequest userUpdateRequest) {
         User user = userFindService.findById(userId);
-
-        user.update(
-                userUpdateRequest.getEmail(),
+        user.update(userUpdateRequest.getEmail(),
                 userUpdateRequest.getPassword(),
                 userUpdateRequest.getName(),
                 userUpdateRequest.getPhoneNumber(),
                 userUpdateRequest.getIntroduction(),
                 toUserPositionSet(userUpdateRequest),
                 toSkillSet(userUpdateRequest),
-                toAddress(userUpdateRequest.getAddressDto())
-                );
+                toAddress(userUpdateRequest.getAddressDto()));
         return user.getId();
     }
 
@@ -43,7 +40,7 @@ public class UserUpdateService {
     }
 
     private Set<Skill> toSkillSet(UserUpdateRequest userUpdateRequest) {
-         return userUpdateRequest.getSkillDtoList().stream()
+        return userUpdateRequest.getSkillDtoList().stream()
                 .map(s -> new Skill(s.getName()))
                 .collect(Collectors.toSet());
     }

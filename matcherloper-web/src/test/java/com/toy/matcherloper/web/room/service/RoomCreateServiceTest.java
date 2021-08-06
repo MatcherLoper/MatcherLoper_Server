@@ -4,7 +4,6 @@ import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.room.model.RoomPosition;
 import com.toy.matcherloper.core.room.repository.RoomRepository;
 import com.toy.matcherloper.core.user.model.*;
-import com.toy.matcherloper.core.user.repository.OwnerRepository;
 import com.toy.matcherloper.web.room.api.dto.RoomPositionDto;
 import com.toy.matcherloper.web.room.api.dto.request.CreateRoomRequest;
 import org.junit.jupiter.api.BeforeEach;

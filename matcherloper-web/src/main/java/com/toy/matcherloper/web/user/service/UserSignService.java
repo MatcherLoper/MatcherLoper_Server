@@ -4,6 +4,7 @@ import com.toy.matcherloper.core.user.model.Address;
 import com.toy.matcherloper.core.user.model.Skill;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.UserPosition;
+import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
 import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
@@ -26,20 +27,18 @@ public class UserSignService {
     @Transactional
     public Long signUp(SignUpRequest signUpRequest) {
         checkDuplicatedEmail(signUpRequest.getEmail());
-
         User user = User.builder()
                 .email(signUpRequest.getEmail())
                 .password(signUpRequest.getPassword())
                 .name(signUpRequest.getName())
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .introduction(signUpRequest.getIntroduction())
+                .roleType(RoleType.NONE)
                 .userPositionSet(toUserPositionSet(signUpRequest))
                 .skillSet(toSkillSet(signUpRequest))
                 .address(toAddress(signUpRequest))
                 .build();
-
         userRepository.save(user);
-
         return user.getId();
     }
 
@@ -47,7 +46,6 @@ public class UserSignService {
     public SignInResponse signIn(SignInRequest signInRequest) {
         User user = userFindService.findByEmail(signInRequest.getEmail());
         user.checkMatchedPassword(signInRequest.getPassword());
-
         return new SignInResponse(user.getId());
     }
 
@@ -61,7 +59,6 @@ public class UserSignService {
         return signUpRequest.getUserPositionDtoList().stream()
                 .map(p -> new UserPosition(p.getType()))
                 .collect(Collectors.toSet());
-
     }
 
     private Set<Skill> toSkillSet(SignUpRequest signUpRequest) {

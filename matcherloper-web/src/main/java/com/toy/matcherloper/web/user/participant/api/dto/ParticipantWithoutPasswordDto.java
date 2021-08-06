@@ -25,24 +25,23 @@ public class ParticipantWithoutPasswordDto {
     private List<SkillDto> skills;
     private AddressDto address;
 
-
-    public ParticipantWithoutPasswordDto(User user) {
-        this.name = user.getName();
-        this.email = user.getEmail();
-        this.phoneNumber = user.getPhoneNumber();
-        this.introduction = user.getIntroduction();
-        this.userPositions = toUserPositionList(user.getUserPositionSet());
-        this.skills = toSkillList(user.getSkillSet());
-        this.address = new AddressDto(user.getAddress());
+    public ParticipantWithoutPasswordDto(User participant) {
+        this.name = participant.getName();
+        this.email = participant.getEmail();
+        this.phoneNumber = participant.getPhoneNumber();
+        this.introduction = participant.getIntroduction();
+        this.userPositions = toUserPositions(participant.getUserPositionSet());
+        this.skills = toSkills(participant.getSkillSet());
+        this.address = new AddressDto(participant.getAddress());
     }
 
-    private List<UserPositionDto> toUserPositionList(Set<UserPosition> userPositionSet) {
+    private List<UserPositionDto> toUserPositions(Set<UserPosition> userPositionSet) {
         return userPositionSet.stream()
                 .map(UserPositionDto::new)
                 .collect(Collectors.toList());
     }
 
-    private List<SkillDto> toSkillList(Set<Skill> skillSet) {
+    private List<SkillDto> toSkills(Set<Skill> skillSet) {
         return skillSet.stream()
                 .map(SkillDto::new)
                 .collect(Collectors.toList());

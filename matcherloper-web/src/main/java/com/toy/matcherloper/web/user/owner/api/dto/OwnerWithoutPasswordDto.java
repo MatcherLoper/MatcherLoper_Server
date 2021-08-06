@@ -1,7 +1,7 @@
 package com.toy.matcherloper.web.user.owner.api.dto;
 
-import com.toy.matcherloper.core.user.model.Owner;
 import com.toy.matcherloper.core.user.model.Skill;
+import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.UserPosition;
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
 import com.toy.matcherloper.web.user.api.dto.SkillDto;
@@ -26,7 +26,7 @@ public class OwnerWithoutPasswordDto {
     private AddressDto address;
 
 
-    public OwnerWithoutPasswordDto(Owner owner) {
+    public OwnerWithoutPasswordDto(User owner) {
         this.name = owner.getName();
         this.email = owner.getEmail();
         this.phoneNumber = owner.getPhoneNumber();

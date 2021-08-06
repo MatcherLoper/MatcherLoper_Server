@@ -25,6 +25,7 @@ public class UserFindService {
      * 추후, Spring security 를 이용한 UsernameNotFoundException(email)
      */
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email).orElseThrow(NoSuchElementException::new);
+        return userRepository.findByEmail(email)
+                .orElseThrow(NoSuchElementException::new);
     }
 }
