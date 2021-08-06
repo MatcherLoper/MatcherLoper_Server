@@ -2,6 +2,7 @@ package com.toy.matcherloper.core.user.model;
 
 import com.toy.matcherloper.core.common.entity.BaseEntity;
 import com.toy.matcherloper.core.room.model.Room;
+import com.toy.matcherloper.core.room.model.RoomPosition;
 import com.toy.matcherloper.core.user.exception.NotMatchedPasswordException;
 import com.toy.matcherloper.core.user.model.type.RoleType;
 import lombok.AccessLevel;
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
@@ -99,5 +101,11 @@ public class User extends BaseEntity {
         if (!requestPassword.equals(password)) {
             throw new NotMatchedPasswordException("Password is not matched!");
         }
+    }
+
+    public void createRoom(List<RoomPosition> roomPositionList, String name,
+                           int requiredUserNumber, String possibleOfflineArea) {
+        this.roleType = RoleType.OWNER;
+        this.room = Room.create(this, roomPositionList, name, possibleOfflineArea, requiredUserNumber);
     }
 }
