@@ -1,8 +1,7 @@
 package com.toy.matcherloper.core.room.model;
 
 import com.toy.matcherloper.core.common.entity.BaseEntity;
-import com.toy.matcherloper.core.user.model.Owner;
-import com.toy.matcherloper.core.user.model.Participant;
+import com.toy.matcherloper.core.user.model.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,15 +27,6 @@ public class Room extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "room")
-    private Set<Participant> participantSet = new HashSet<>();
-
-    @OneToOne(fetch = LAZY, mappedBy = "room")
-    private Owner owner;
-
-    @OneToMany(mappedBy = "room", fetch = LAZY)
-    private List<RoomPosition> requiredPositionList = new ArrayList<>();
-
     @Column(name = "name")
     private String name;
 
@@ -50,30 +40,25 @@ public class Room extends BaseEntity {
     @Column(name = "required_user_number")
     private int requiredUserNumber;
 
+    @Column(name = "create_user_id")
+    private Long createUserId;
+
+    @OneToMany(mappedBy = "room", fetch = LAZY)
+    private Set<User> userSet = new HashSet<>();
+
+    @OneToMany(mappedBy = "room", fetch = LAZY)
+    private List<RoomPosition> requiredPositionList = new ArrayList<>();
+
     @Builder
-    public Room(Set<Participant> participantSet, Owner owner, List<RoomPosition> requiredPositionList, String name,
-                RoomStatus status, String possibleOfflineArea, int requiredUserNumber) {
-        this.participantSet =  participantSet;
-        this.owner = owner;
-        this.requiredPositionList = requiredPositionList;
+    public Room(String name, RoomStatus status, String possibleOfflineArea, int requiredUserNumber, Long createUserId,
+                Set<User> userSet, List<RoomPosition> requiredPositionList) {
         this.name = name;
         this.status = status;
         this.possibleOfflineArea = possibleOfflineArea;
         this.requiredUserNumber = requiredUserNumber;
-    }
-
-    public Room(Owner owner, List<RoomPosition> requiredPositionList, String name,
-                String possibleOfflineArea, int requiredUserNumber) {
-        this.owner = owner;
+        this.createUserId = createUserId;
+        this.userSet = userSet;
         this.requiredPositionList = requiredPositionList;
-        this.name = name;
-        this.possibleOfflineArea = possibleOfflineArea;
-        this.requiredUserNumber = requiredUserNumber;
-    }
-
-    public static Room create(Owner owner, List<RoomPosition> positionList, String name,
-                              String possibleOfflineArea, int requiredUserNumber) {
-        return new Room(owner, positionList, name, possibleOfflineArea, requiredUserNumber);
     }
 
     public boolean isOpen() {
