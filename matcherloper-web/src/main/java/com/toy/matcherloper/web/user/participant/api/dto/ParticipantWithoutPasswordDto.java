@@ -1,7 +1,7 @@
 package com.toy.matcherloper.web.user.participant.api.dto;
 
-import com.toy.matcherloper.core.user.model.Participant;
 import com.toy.matcherloper.core.user.model.Skill;
+import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.UserPosition;
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
 import com.toy.matcherloper.web.user.api.dto.SkillDto;
@@ -25,7 +25,7 @@ public class ParticipantWithoutPasswordDto {
     private List<SkillDto> skills;
     private AddressDto address;
 
-    public ParticipantWithoutPasswordDto(Participant participant) {
+    public ParticipantWithoutPasswordDto(User participant) {
         this.name = participant.getName();
         this.email = participant.getEmail();
         this.phoneNumber = participant.getPhoneNumber();

@@ -1,6 +1,6 @@
 package com.toy.matcherloper.web.user.participant.api;
 
-import com.toy.matcherloper.core.user.model.Participant;
+import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.user.participant.api.dto.response.ParticipantJoinedRoomFindResponse;
 import com.toy.matcherloper.web.user.participant.service.ParticipantJoinedRoomFindService;
@@ -22,19 +22,18 @@ public class ParticipantJoinedRoomFindApi {
 
     private final ParticipantJoinedRoomFindService participantJoinedRoomFindService;
 
-    @GetMapping("/{roomId}/participants")
+    @GetMapping("/{roomId}/users/type/participant")
     public ApiResult<List<ParticipantJoinedRoomFindResponse>> findParticipants(@PathVariable("roomId") Long roomId) {
         try {
-            List<Participant> participantListByRoom = participantJoinedRoomFindService.findParticipantListByRoom(roomId);
-            List<ParticipantJoinedRoomFindResponse> participantJoinedRoomFindRespons = toParticipantFindResponses(participantListByRoom);
-            return ApiResult.succeed(participantJoinedRoomFindRespons);
+            List<User> participantList = participantJoinedRoomFindService.findParticipantListByRoom(roomId);
+            return ApiResult.succeed(toParticipantFindResponses(participantList));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());
         }
     }
 
-    private List<ParticipantJoinedRoomFindResponse> toParticipantFindResponses(List<Participant> participantList) {
+    private List<ParticipantJoinedRoomFindResponse> toParticipantFindResponses(List<User> participantList) {
         return participantList.stream()
                 .map(ParticipantJoinedRoomFindResponse::new)
                 .collect(Collectors.toList());
