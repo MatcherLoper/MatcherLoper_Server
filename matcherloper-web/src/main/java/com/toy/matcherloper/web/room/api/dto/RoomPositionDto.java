@@ -1,7 +1,7 @@
 package com.toy.matcherloper.web.room.api.dto;
 
 import com.toy.matcherloper.core.room.model.RoomPosition;
-import com.toy.matcherloper.core.user.model.PositionType;
+import com.toy.matcherloper.core.user.model.type.PositionType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
