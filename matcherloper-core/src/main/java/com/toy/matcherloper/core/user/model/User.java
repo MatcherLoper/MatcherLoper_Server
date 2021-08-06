@@ -1,7 +1,9 @@
 package com.toy.matcherloper.core.user.model;
 
 import com.toy.matcherloper.core.common.entity.BaseEntity;
+import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.user.exception.NotMatchedPasswordException;
+import com.toy.matcherloper.core.user.model.type.RoleType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,11 +13,12 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn
 public class User extends BaseEntity {
 
     @Id
@@ -38,26 +41,35 @@ public class User extends BaseEntity {
     @Column(name = "introduction")
     private String introduction;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @Enumerated(value = EnumType.STRING)
+    @Column(name = "role_type")
+    private RoleType roleType;
+
+    @OneToMany(mappedBy = "user", fetch = EAGER)
     private Set<UserPosition> userPositionSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = EAGER)
     private Set<Skill> skillSet = new HashSet<>();
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 
     @Embedded
     private Address address;
 
     @Builder
-    public User(Long id, String email, String password, String name, String phoneNumber, String introduction,
-                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
-        this.id = id;
+    public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
+                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Room room, Address address) {
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
+        this.roleType = roleType;
         this.userPositionSet = userPositionSet;
         this.skillSet = skillSet;
+        this.room = room;
         this.address = address;
     }
 
@@ -73,20 +85,13 @@ public class User extends BaseEntity {
 
     public void update(String email, String password, String name, String phoneNumber, String introduction,
                        Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
+        for (UserPosition userPosition : userPositionSet) addUserPosition(userPosition);
+        for (Skill skill : skillSet) addSkill(skill);
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
-
-        for (UserPosition userPosition : userPositionSet) {
-            addUserPosition(userPosition);
-        }
-
-        for (Skill skill : skillSet) {
-            addSkill(skill);
-        }
-
         this.address = address;
     }
 

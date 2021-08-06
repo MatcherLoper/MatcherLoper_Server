@@ -1,6 +1,6 @@
 package com.toy.matcherloper.web.user.api.dto;
 
-import com.toy.matcherloper.core.user.model.PositionType;
+import com.toy.matcherloper.core.user.model.type.PositionType;
 import com.toy.matcherloper.core.user.model.UserPosition;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

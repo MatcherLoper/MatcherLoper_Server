@@ -1,5 +1,6 @@
 package com.toy.matcherloper.core.user.model;
 
+import com.toy.matcherloper.core.user.model.type.PositionType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
