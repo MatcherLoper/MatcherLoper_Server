@@ -20,8 +20,7 @@ public class RoomFindQueryRepository {
     public List<Room> findAllWithOwnerAndParticipant() {
         return queryFactory.selectFrom(room)
                 .distinct()
-                .innerJoin(room.owner).fetchJoin()
-                .innerJoin(room.participantSet).fetchJoin()
+                .leftJoin(room.userSet).fetchJoin()
                 .innerJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
     }
@@ -30,8 +29,7 @@ public class RoomFindQueryRepository {
         return queryFactory.selectFrom(room)
                 .distinct()
                 .where(room.status.eq(RoomStatus.OPEN))
-                .innerJoin(room.owner).fetchJoin()
-                .innerJoin(room.participantSet).fetchJoin()
+                .innerJoin(room.userSet).fetchJoin()
                 .innerJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
     }
@@ -39,8 +37,7 @@ public class RoomFindQueryRepository {
     public Optional<Room> findByIdWithOwnerAndParticipant(Long roomId) {
         return Optional.ofNullable(queryFactory.selectFrom(room)
                 .where(room.id.eq(roomId))
-                .innerJoin(room.owner).fetchJoin()
-                .innerJoin(room.participantSet).fetchJoin()
+                .innerJoin(room.userSet).fetchJoin()
                 .innerJoin(room.requiredPositionList).fetchJoin()
                 .fetchOne());
     }
