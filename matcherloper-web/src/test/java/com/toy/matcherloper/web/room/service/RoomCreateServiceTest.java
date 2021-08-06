@@ -7,7 +7,6 @@ import com.toy.matcherloper.core.user.model.*;
 import com.toy.matcherloper.core.user.repository.OwnerRepository;
 import com.toy.matcherloper.web.room.api.dto.RoomPositionDto;
 import com.toy.matcherloper.web.room.api.dto.request.CreateRoomRequest;
-import com.toy.matcherloper.web.room.exception.NotCreateRoomException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
