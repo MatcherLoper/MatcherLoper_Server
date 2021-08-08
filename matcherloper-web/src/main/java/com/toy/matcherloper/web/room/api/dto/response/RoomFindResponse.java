@@ -22,6 +22,7 @@ public class RoomFindResponse {
     private RoomStatus status;
     private String possibleOfflineArea;
     private int requiredUserNumber;
+    private Long createUserId;
     private Set<ParticipantWithoutPasswordDto> users;
     private List<RoomPositionDto> roomPositions;
 
@@ -31,6 +32,7 @@ public class RoomFindResponse {
         this.status = room.getStatus();
         this.possibleOfflineArea = room.getPossibleOfflineArea();
         this.requiredUserNumber = room.getRequiredUserNumber();
+        this.createUserId = room.getCreateUserId();
         this.users = toUserDtoSet(room.getUserSet());
         this.roomPositions = toRoomPositionList(room.getRequiredPositionList());
     }
