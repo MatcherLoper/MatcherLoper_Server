@@ -27,23 +27,23 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "username")
+    @Column(name = "username", nullable = false)
     private String name;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", nullable = false)
     private String phoneNumber;
 
     @Column(name = "introduction")
     private String introduction;
 
     @Enumerated(value = EnumType.STRING)
-    @Column(name = "role_type")
+    @Column(name = "role_type", nullable = false)
     private RoleType roleType;
 
     @OneToMany(mappedBy = "user", fetch = EAGER)
