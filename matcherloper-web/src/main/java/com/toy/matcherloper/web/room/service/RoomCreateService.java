@@ -6,7 +6,7 @@ import com.toy.matcherloper.core.room.repository.RoomRepository;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.web.room.api.dto.RoomPositionDto;
 import com.toy.matcherloper.web.room.api.dto.request.CreateRoomRequest;
-import com.toy.matcherloper.web.room.exception.NotCreateRoomException;
+import com.toy.matcherloper.web.room.exception.RoomNotCreateException;
 import com.toy.matcherloper.web.user.service.UserFindService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,9 +34,9 @@ public class RoomCreateService {
     }
 
     private void checkOwnerHaveAnotherOpenRoom(User user) {
-        final Optional<Room> room = roomRepository.findByUser(user);
+        final Optional<Room> room = roomRepository.findOpenedRoomByOwner(user.getId());
         if (room.isPresent() && room.get().isOpen()) {
-            throw new NotCreateRoomException("user already have another open room");
+            throw new RoomNotCreateException("user already have another open room");
         }
     }
 
