@@ -16,4 +16,9 @@ public class SignInRequest {
 
     @NotBlank(message = "비밀번호가 공백이면 안됩니다.")
     private String password;
+
+    public SignInRequest(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 }

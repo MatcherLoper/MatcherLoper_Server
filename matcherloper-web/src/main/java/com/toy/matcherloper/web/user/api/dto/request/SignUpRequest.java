@@ -1,8 +1,8 @@
 package com.toy.matcherloper.web.user.api.dto.request;
 
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
-import com.toy.matcherloper.web.user.api.dto.UserPositionDto;
 import com.toy.matcherloper.web.user.api.dto.SkillDto;
+import com.toy.matcherloper.web.user.api.dto.UserPositionDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,4 +39,16 @@ public class SignUpRequest {
 
     @NotNull(message = "주소를 입력해주세요.")
     private AddressDto addressDto;
+
+    public SignUpRequest(String email, String password, String name, String phoneNumber, String introduction,
+                         List<UserPositionDto> userPositionDtoList, List<SkillDto> skillDtoList, AddressDto addressDto) {
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.introduction = introduction;
+        this.userPositionDtoList = userPositionDtoList;
+        this.skillDtoList = skillDtoList;
+        this.addressDto = addressDto;
+    }
 }
