@@ -12,71 +12,83 @@ import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.room.api.dto.RoomPositionDto;
 import com.toy.matcherloper.web.room.api.dto.request.CreateRoomRequest;
-import com.toy.matcherloper.web.room.exception.RoomNotCreateException;
+import com.toy.matcherloper.web.room.exception.RoomNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-@Transactional
-class RoomCreateServiceTest {
+class RoomFindServiceTest {
 
     @Autowired
     RoomCreateService roomCreateService;
 
     @Autowired
-    UserRepository userRepository;
+    RoomFindService roomFindService;
 
     @Autowired
     RoomRepository roomRepository;
 
-    User user;
+    @Autowired
+    UserRepository userRepository;
+
+    private Long roomId;
 
     @BeforeEach
-    public void init() {
+    void init() {
         saveData();
     }
 
     @Test
-    @DisplayName("방을 개설한다.")
-    public void create() throws Exception {
+    @DisplayName("id를 통한 Room 조회")
+    public void findOneRoomWithUser_test() throws Exception {
         //given
-        CreateRoomRequest createRoomRequest = getCreateRoomRequest();
+        Room findOne = roomFindService.findByIdWithUser(roomId);
 
         //when
-        final Long createdRoomId = roomCreateService.create(createRoomRequest);
-        final Room room = roomRepository.findById(createdRoomId).get();
 
         //then
-        assertThat(room.getName()).isEqualTo(createRoomRequest.getName());
-        assertThat(room.getCreateUserId()).isEqualTo(createRoomRequest.getUserId());
-        assertThat(room.getRequiredUserNumber()).isEqualTo(createRoomRequest.getRequiredUserNumber());
+        assertThat(findOne.getId()).isEqualTo(roomId);
     }
 
     @Test
-    @DisplayName("방장이 다른 방을 가지고 있을 때, 방을 생성하면 오류가 발생한다.")
-    public void checkOwnerHaveAnotherOpenRoom() throws Exception {
+    @DisplayName("모든 방을 조회할때 getCreateRoomRequest()에 의해 만들어진 방도 포함하는지 조회")
+    public void findAllRoomTest() throws Exception {
         //given
-        CreateRoomRequest createRoomRequest = getCreateRoomRequest();
-
+        List<Room> allWithUser = roomFindService.findAllWithUser();
         //when
-        roomCreateService.create(createRoomRequest);
 
         //then
-        assertThatThrownBy(() -> roomCreateService.create(createRoomRequest))
-                .isInstanceOf(RoomNotCreateException.class);
+        assertThat(allWithUser).extracting(Room::getName).contains("room1");
+    }
+
+
+    @ParameterizedTest
+    @CsvSource("1000")
+    @DisplayName("존재하지 않는 Room을 조회하면 오류가 발생한다.")
+    public void roomNotFoundTest(Long notExistRoomId) throws Exception {
+        //given
+
+        //when
+
+        //then
+        assertThatThrownBy(() -> roomFindService.findByIdWithUser(notExistRoomId))
+                .isInstanceOf(RoomNotFoundException.class);
     }
 
     private void saveData() {
-        user = User.builder()
+
+        User user = User.builder()
                 .email("test@test.com")
                 .password("1234")
                 .name("진민")
@@ -88,10 +100,12 @@ class RoomCreateServiceTest {
                 .skillSet(Collections.singleton(new Skill("spring")))
                 .build();
 
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        roomId = roomCreateService.create(getCreateRoomRequest(savedUser));
     }
 
-    private CreateRoomRequest getCreateRoomRequest() {
+    private CreateRoomRequest getCreateRoomRequest(User user) {
         RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, false);
         RoomPositionDto roomPositionDto = new RoomPositionDto(roomPosition);
         return new CreateRoomRequest(user.getId(),
