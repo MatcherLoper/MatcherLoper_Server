@@ -5,13 +5,13 @@ import com.toy.matcherloper.core.user.model.Address;
 import com.toy.matcherloper.core.user.model.Skill;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.UserPosition;
-import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
 import com.toy.matcherloper.web.user.api.dto.SkillDto;
 import com.toy.matcherloper.web.user.api.dto.UserPositionDto;
 import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
 import com.toy.matcherloper.web.user.api.dto.request.SignUpRequest;
+import com.toy.matcherloper.web.user.exception.EmailDuplicateException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserSignService {
+public class UserLoginService {
 
     private final UserRepository userRepository;
     private final UserFindService userFindService;
@@ -30,17 +30,9 @@ public class UserSignService {
     @Transactional
     public Long signUp(SignUpRequest signUpRequest) {
         checkDuplicatedEmail(signUpRequest.getEmail());
-        User user = User.builder()
-                .email(signUpRequest.getEmail())
-                .password(signUpRequest.getPassword())
-                .name(signUpRequest.getName())
-                .phoneNumber(signUpRequest.getPhoneNumber())
-                .introduction(signUpRequest.getIntroduction())
-                .roleType(RoleType.NONE)
-                .userPositionSet(toUserPositionSet(signUpRequest.getUserPositionDtoList()))
-                .skillSet(toSkillSet(signUpRequest.getSkillDtoList()))
-                .address(toAddress(signUpRequest.getAddressDto()))
-                .build();
+        User user = User.create(signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getName(),
+                signUpRequest.getPhoneNumber(), signUpRequest.getIntroduction(), toUserPositionSet(signUpRequest.getUserPositionDtoList()),
+                toSkillSet(signUpRequest.getSkillDtoList()), toAddress(signUpRequest.getAddressDto()));
         userRepository.save(user);
         return user.getId();
     }
@@ -56,7 +48,7 @@ public class UserSignService {
 
     private void checkDuplicatedEmail(String email) {
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new IllegalArgumentException(String.format("%s is duplicated email", email));
+            throw new EmailDuplicateException(String.format("%s is duplicated email", email));
         }
     }
 

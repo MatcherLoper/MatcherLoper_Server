@@ -3,7 +3,7 @@ package com.toy.matcherloper.web.user.api;
 import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
 import com.toy.matcherloper.web.user.api.dto.request.SignUpRequest;
-import com.toy.matcherloper.web.user.service.UserSignService;
+import com.toy.matcherloper.web.user.service.UserLoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,14 +17,14 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserSignApi {
+public class UserLoginApi {
 
-    private final UserSignService userSignService;
+    private final UserLoginService userLoginService;
 
     @PostMapping("/signup")
     public ApiResult<Long> signUp(@Valid @RequestBody SignUpRequest signUpRequest) {
         try {
-            Long signUpUserId = userSignService.signUp(signUpRequest);
+            Long signUpUserId = userLoginService.signUp(signUpRequest);
             return ApiResult.succeed(signUpUserId);
         } catch (Exception e) {
             log.error(e.getMessage());
@@ -35,7 +35,7 @@ public class UserSignApi {
     @PostMapping("/signin")
     public ApiResult<Long> signIn(@Valid @RequestBody SignInRequest signInRequest) {
         try {
-            return ApiResult.succeed(userSignService.signIn(signInRequest));
+            return ApiResult.succeed(userLoginService.signIn(signInRequest));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());
