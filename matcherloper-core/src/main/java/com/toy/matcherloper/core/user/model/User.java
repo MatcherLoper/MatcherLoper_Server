@@ -74,6 +74,24 @@ public class User extends BaseEntity {
         this.address = address;
     }
 
+    public static User create(String email, String password, String name, String phoneNumber, String introduction,
+                              Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
+        return new User(email, password, name, phoneNumber, introduction, RoleType.NONE, userPositionSet, skillSet, address);
+    }
+
+    public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
+                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
+        for (UserPosition userPosition : userPositionSet) addUserPosition(userPosition);
+        for (Skill skill : skillSet) addSkill(skill);
+        this.email = email;
+        this.password = password;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+        this.introduction = introduction;
+        this.roleType = roleType;
+        this.address = address;
+    }
+
     public void addUserPosition(UserPosition position) {
         this.userPositionSet.add(position);
         position.changeUser(this);
