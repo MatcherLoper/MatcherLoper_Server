@@ -15,9 +15,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 class UserTest {
 
     @ParameterizedTest
-    @DisplayName("User의 패스워드와 입력받은 패스워드가 일치하면 true, 일치하지 않으면 false를 리턴한다.")
-    @CsvSource(value = {"1234, 1234, true", "1234, 123, false"})
-    public void isMatchingPassword(String password, String inputPassword, boolean expected) {
+    @DisplayName("User의 패스워드와 입력받은 패스워드가 일치하지 않으면 true, 일치하면 false를 리턴한다.")
+    @CsvSource(value = {"1234, 123, true", "1234, 1234, false"})
+    public void isNotMatchingPassword(String password, String inputPassword, boolean expected) {
         //given
         final User user = User.builder()
                 .email("test@test.com")
@@ -28,9 +28,9 @@ class UserTest {
                 .build();
 
         //when
-        final boolean actual = user.isMatchingPassword(inputPassword);
+        final boolean actual = user.isNotMatchingPassword(inputPassword);
 
-        //thne
+        //then
         assertThat(actual).isEqualTo(expected);
     }
 
