@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.NoSuchElementException;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -18,7 +16,7 @@ public class UserFindService {
 
     public User findById(Long userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("사용자가 존재하지 않습니다. User id = " + userId));
+                .orElseThrow(() -> new UserNotFoundException(String.format("존재하지 않는 사용자입니다. User id: %d", userId)));
     }
 
     /**
@@ -26,6 +24,6 @@ public class UserFindService {
      */
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new UserNotFoundException(String.format("존재하지 않는 사용자입니다. User email: %s", email)));
     }
 }
