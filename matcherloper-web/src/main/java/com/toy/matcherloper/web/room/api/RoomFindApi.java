@@ -3,7 +3,6 @@ package com.toy.matcherloper.web.room.api;
 import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.room.api.dto.response.RoomFindResponse;
-import com.toy.matcherloper.web.room.repository.RoomFindQueryRepository;
 import com.toy.matcherloper.web.room.service.RoomFindService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +21,11 @@ import java.util.stream.Collectors;
 public class RoomFindApi {
 
     private final RoomFindService roomFindService;
-    private final RoomFindQueryRepository roomFindQueryRepository;
 
     @GetMapping("/{roomId}")
     public ApiResult<RoomFindResponse> showOne(@PathVariable Long roomId) {
         try {
-            return ApiResult.succeed(new RoomFindResponse(roomFindService.findOne(roomId)));
+            return ApiResult.succeed(new RoomFindResponse(roomFindService.findByIdWithUser(roomId)));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());
@@ -37,7 +35,7 @@ public class RoomFindApi {
     @GetMapping
     public ApiResult<List<RoomFindResponse>> showAll() {
         try {
-            return ApiResult.succeed(toRoomFindResponseList(roomFindQueryRepository.findAllWithOwnerAndParticipant()));
+            return ApiResult.succeed(toRoomFindResponseList(roomFindService.findAllWithUser()));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());
@@ -47,7 +45,7 @@ public class RoomFindApi {
     @GetMapping("/open")
     public ApiResult<List<RoomFindResponse>> showAllByOpen() {
         try {
-            return ApiResult.succeed(toRoomFindResponseList(roomFindQueryRepository.findAllByOpenWithOwnerAndParticipant()));
+            return ApiResult.succeed(toRoomFindResponseList(roomFindService.findAllByOpenWithUser()));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());

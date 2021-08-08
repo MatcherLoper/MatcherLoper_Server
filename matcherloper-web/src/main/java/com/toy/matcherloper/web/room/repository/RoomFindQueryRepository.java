@@ -11,34 +11,33 @@ import java.util.Optional;
 
 import static com.toy.matcherloper.core.room.model.QRoom.room;
 
+
 @Repository
 @RequiredArgsConstructor
 public class RoomFindQueryRepository {
 
     private final JPAQueryFactory queryFactory;
 
-    public List<Room> findAllWithOwnerAndParticipant() {
+    public List<Room> findAllWithUser() {
         return queryFactory.selectFrom(room)
-                .distinct()
-                .leftJoin(room.userSet).fetchJoin()
-                .innerJoin(room.requiredPositionList).fetchJoin()
+                .innerJoin(room.userSet).fetchJoin()
+                .leftJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
     }
 
-    public List<Room> findAllByOpenWithOwnerAndParticipant() {
+    public List<Room> findAllByOpenWithUser() {
         return queryFactory.selectFrom(room)
-                .distinct()
                 .where(room.status.eq(RoomStatus.OPEN))
                 .innerJoin(room.userSet).fetchJoin()
-                .innerJoin(room.requiredPositionList).fetchJoin()
+                .leftJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
     }
 
-    public Optional<Room> findByIdWithOwnerAndParticipant(Long roomId) {
+    public Optional<Room> findByIdWithUser(Long roomId) {
         return Optional.ofNullable(queryFactory.selectFrom(room)
                 .where(room.id.eq(roomId))
                 .innerJoin(room.userSet).fetchJoin()
-                .innerJoin(room.requiredPositionList).fetchJoin()
+                .leftJoin(room.requiredPositionList).fetchJoin()
                 .fetchOne());
     }
 }
