@@ -43,7 +43,7 @@ public class UserLoginService {
     @Transactional(readOnly = true)
     public Long signIn(SignInRequest signInRequest) {
         User user = userFindService.findByEmail(signInRequest.getEmail());
-        if (user.isMatchingPassword(signInRequest.getPassword())) {
+        if (user.isNotMatchingPassword(signInRequest.getPassword())) {
             throw new PasswordNotMatchedException("Password is not matched!");
         }
         return user.getId();

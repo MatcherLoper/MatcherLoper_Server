@@ -119,7 +119,7 @@ public class User extends BaseEntity {
         this.room = Room.create(this, this.getId(), roomPositionList, name, possibleOfflineArea, requiredUserNumber);
     }
 
-    public boolean isMatchingPassword(String password) {
-        return this.password.equals(password);
+    public boolean isNotMatchingPassword(String password) {
+        return !this.password.equals(password);
     }
 }
