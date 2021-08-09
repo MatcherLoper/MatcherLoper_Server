@@ -20,6 +20,7 @@ public class RoomFindQueryRepository {
 
     public List<Room> findAllWithUser() {
         return queryFactory.selectFrom(room)
+                .distinct()
                 .innerJoin(room.userSet).fetchJoin()
                 .leftJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
@@ -27,6 +28,7 @@ public class RoomFindQueryRepository {
 
     public List<Room> findAllByOpenWithUser() {
         return queryFactory.selectFrom(room)
+                .distinct()
                 .where(room.status.eq(RoomStatus.OPEN))
                 .innerJoin(room.userSet).fetchJoin()
                 .leftJoin(room.requiredPositionList).fetchJoin()
