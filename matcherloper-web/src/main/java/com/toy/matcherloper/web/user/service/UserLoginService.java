@@ -4,6 +4,7 @@ import com.toy.matcherloper.core.user.exception.PasswordNotMatchedException;
 import com.toy.matcherloper.core.user.model.Skill;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.repository.SkillRepository;
+import com.toy.matcherloper.core.user.repository.UserPositionRepository;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
 import com.toy.matcherloper.web.user.api.dto.request.SignUpRequest;
@@ -23,6 +24,7 @@ public class UserLoginService {
     private final UserRepository userRepository;
     private final UserFindService userFindService;
     private final SkillRepository skillRepository;
+    private final UserPositionRepository userPositionRepository;
 
     @Transactional
     public Long signUp(SignUpRequest signUpRequest) {
@@ -36,6 +38,7 @@ public class UserLoginService {
                 toSkillSet(signUpRequest.getSkillDtoList()),
                 toAddress(signUpRequest.getAddressDto()));
         saveSkills(user.getSkillSet());
+        userPositionRepository.saveAll(user.getUserPositionSet());
         userRepository.save(user);
         return user.getId();
     }

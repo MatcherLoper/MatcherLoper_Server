@@ -3,6 +3,7 @@ package com.toy.matcherloper.web.user.service;
 import com.toy.matcherloper.core.user.model.Skill;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.repository.SkillRepository;
+import com.toy.matcherloper.core.user.repository.UserPositionRepository;
 import com.toy.matcherloper.web.user.api.dto.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ public class UserUpdateService {
 
     private final UserFindService userFindService;
     private final SkillRepository skillRepository;
+    private final UserPositionRepository userPositionRepository;
 
     @Transactional
     public Long update(Long userId, UserUpdateRequest userUpdateRequest) {
@@ -31,6 +33,7 @@ public class UserUpdateService {
                 toSkillSet(userUpdateRequest.getSkillDtoList()),
                 toAddress(userUpdateRequest.getAddressDto()));
         saveSkills(user.getSkillSet());
+        userPositionRepository.saveAll(user.getUserPositionSet());
         return user.getId();
     }
 
