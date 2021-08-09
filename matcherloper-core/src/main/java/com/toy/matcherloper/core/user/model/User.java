@@ -4,10 +4,7 @@ import com.toy.matcherloper.core.common.entity.BaseEntity;
 import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.room.model.RoomPosition;
 import com.toy.matcherloper.core.user.model.type.RoleType;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -19,6 +16,8 @@ import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
+@ToString(exclude = {"room"})
+@EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
 
@@ -27,7 +26,7 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     @Column(name = "password", nullable = false)
