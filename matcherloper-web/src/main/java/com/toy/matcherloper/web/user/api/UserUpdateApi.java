@@ -15,7 +15,6 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserUpdateApi {
 
-
     private final UserUpdateService userUpdateService;
 
     @PutMapping("/{userId}")
