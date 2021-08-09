@@ -28,9 +28,6 @@ class UserLoginServiceTest {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserFindService userFindService;
-
     @AfterEach
     public void tearDown() {
         userRepository.deleteAll();
@@ -45,7 +42,7 @@ class UserLoginServiceTest {
 
         //when
         final Long userId = loginService.signUp(signUpRequest);
-        final User user = userFindService.findById(userId);
+        final User user = userRepository.findById(userId).get();
 
         //then
         assertThat(user.getId()).isEqualTo(userId);
