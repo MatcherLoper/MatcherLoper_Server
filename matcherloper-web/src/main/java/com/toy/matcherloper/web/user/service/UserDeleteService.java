@@ -15,9 +15,8 @@ public class UserDeleteService {
 
     @Transactional
     public Long delete(Long userId) {
-        User user = userFindService.findById(userId);
-        userRepository.deleteById(userId);
-
+        final User user = userFindService.findById(userId);
+        userRepository.delete(user);
         return user.getId();
     }
 }
