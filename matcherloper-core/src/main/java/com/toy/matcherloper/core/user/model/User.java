@@ -103,14 +103,40 @@ public class User extends BaseEntity {
 
     public void update(String email, String password, String name, String phoneNumber, String introduction,
                        Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
-        for (UserPosition userPosition : userPositionSet) addUserPosition(userPosition);
-        for (Skill skill : skillSet) addSkill(skill);
+        updateSkills(skillSet);
+        updatePositions(userPositionSet);
+        this.userPositionSet = userPositionSet;
+        this.skillSet = skillSet;
         this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
         this.address = address;
+    }
+
+    private void updateSkills(Set<Skill> skillSet) {
+        resetSkills();
+        skillSet.forEach(this::addSkill);
+    }
+
+    private void updatePositions(Set<UserPosition> userPositionSet) {
+        resetUserPositions();
+        userPositionSet.forEach(this::addUserPosition);
+    }
+
+    private void resetSkills() {
+        for (Skill skill : this.skillSet) {
+            skill.changeUser(null);
+        }
+        this.skillSet.clear();
+    }
+
+    private void resetUserPositions() {
+        for (UserPosition position : this.userPositionSet) {
+            position.changeUser(null);
+        }
+        this.userPositionSet.clear();
     }
 
     public void createRoom(List<RoomPosition> roomPositionList, String name, int requiredUserNumber, String possibleOfflineArea) {
