@@ -3,6 +3,7 @@ package com.toy.matcherloper.web.user.api;
 import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
 import com.toy.matcherloper.web.user.api.dto.request.SignUpRequest;
+import com.toy.matcherloper.web.user.api.dto.response.SignInResponse;
 import com.toy.matcherloper.web.user.service.UserLoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,9 +34,9 @@ public class UserLoginApi {
     }
 
     @PostMapping("/signin")
-    public ApiResult<Long> signIn(@Valid @RequestBody SignInRequest signInRequest) {
+    public ApiResult<SignInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) {
         try {
-            return ApiResult.succeed(userLoginService.signIn(signInRequest));
+            return ApiResult.succeed(new SignInResponse(userLoginService.signIn(signInRequest)));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());
