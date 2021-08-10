@@ -19,7 +19,7 @@ import static com.toy.matcherloper.web.utils.DtoConverter.*;
 
 @Service
 @RequiredArgsConstructor
-public class UserLoginService {
+public class UserSignService {
 
     private final UserRepository userRepository;
     private final UserFindService userFindService;
