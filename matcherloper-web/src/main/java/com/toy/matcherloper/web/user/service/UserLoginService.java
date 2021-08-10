@@ -29,8 +29,8 @@ public class UserLoginService {
     @Transactional
     public Long signUp(SignUpRequest signUpRequest) {
         checkDuplicatedEmail(signUpRequest.getEmail());
-        User user = User.create(signUpRequest.getEmail()
-                , signUpRequest.getPassword(),
+        User user = User.create(signUpRequest.getEmail(),
+                signUpRequest.getPassword(),
                 signUpRequest.getName(),
                 signUpRequest.getPhoneNumber(),
                 signUpRequest.getIntroduction(),
