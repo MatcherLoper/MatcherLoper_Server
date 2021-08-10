@@ -1,8 +1,8 @@
 package com.toy.matcherloper.web.room.service;
 
 import com.toy.matcherloper.core.room.model.Room;
-import com.toy.matcherloper.core.room.model.RoomPosition;
 import com.toy.matcherloper.core.room.model.RoomStatus;
+import com.toy.matcherloper.core.room.repository.RoomRepository;
 import com.toy.matcherloper.core.user.model.Address;
 import com.toy.matcherloper.core.user.model.Skill;
 import com.toy.matcherloper.core.user.model.User;
@@ -10,8 +10,6 @@ import com.toy.matcherloper.core.user.model.UserPosition;
 import com.toy.matcherloper.core.user.model.type.PositionType;
 import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
-import com.toy.matcherloper.web.room.api.dto.RoomPositionDto;
-import com.toy.matcherloper.web.room.api.dto.request.CreateRoomRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,11 +17,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class RoomStartServiceTest {
+
+    @Autowired
+    RoomRepository roomRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -33,9 +36,6 @@ class RoomStartServiceTest {
 
     @Autowired
     RoomStartService roomStartService;
-
-    @Autowired
-    RoomCreateService roomCreateService;
 
     private User user;
 
@@ -48,15 +48,14 @@ class RoomStartServiceTest {
     @DisplayName("방이 프로젝트를 시작하면 방 상태가 CLOSED로 변경")
     public void startRoomTest() throws Exception {
         //given
-        CreateRoomRequest createRoomRequest = getCreateRoomRequest(user);
-        Long createRoomId = roomCreateService.create(createRoomRequest);
+        Long savedRoomId = saveRoom();
 
         //when
-        Long startRoomId = roomStartService.start(createRoomId);
+        Long startRoomId = roomStartService.start(savedRoomId);
         Room findRoom = roomFindService.findByIdWithUser(startRoomId);
 
         //then
-        assertThat(findRoom).extracting(Room::getStatus).contains(RoomStatus.CLOSED);
+        assertThat(findRoom.getStatus()).isEqualTo(RoomStatus.CLOSED);
     }
 
     private void save() {
@@ -75,10 +74,44 @@ class RoomStartServiceTest {
         userRepository.save(user);
     }
 
-    private CreateRoomRequest getCreateRoomRequest(User user) {
-        RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, false);
-        RoomPositionDto roomPositionDto = new RoomPositionDto(roomPosition);
-        return new CreateRoomRequest(user.getId(),
-                Collections.singletonList(roomPositionDto), "room1", "부", 4);
+    private Long saveRoom() {
+        Room room = Room.builder()
+                .name("test Room")
+                .possibleOfflineArea("부천")
+                .requiredUserNumber(4)
+                .status(RoomStatus.OPEN)
+                .build();
+
+        Room savedRoom = roomRepository.save(room);
+
+        User user1 = User.builder()
+                .address(new Address("1", "1"))
+                .email("test@test.com")
+                .introduction("")
+                .name("ㅋㅋ")
+                .room(room)
+                .password("1234")
+                .phoneNumber("1-1-1")
+                .roleType(RoleType.NONE)
+                .build();
+
+        User user2 = User.builder()
+                .address(new Address("2", "21"))
+                .email("test2@test.com")
+                .introduction("")
+                .name("ㅋㅋ")
+                .room(room)
+                .password("4321")
+                .phoneNumber("2-2-2")
+                .roleType(RoleType.NONE)
+                .build();
+
+        Set<User> userSet = new HashSet<>();
+        userSet.add(user1);
+        userSet.add(user2);
+
+        userRepository.saveAll(userSet);
+
+        return savedRoom.getId();
     }
 }
