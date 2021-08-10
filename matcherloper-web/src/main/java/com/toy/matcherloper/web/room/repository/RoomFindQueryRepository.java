@@ -37,6 +37,7 @@ public class RoomFindQueryRepository {
 
     public Optional<Room> findByIdWithUser(Long roomId) {
         return Optional.ofNullable(queryFactory.selectFrom(room)
+                .distinct()
                 .where(room.id.eq(roomId))
                 .innerJoin(room.userSet).fetchJoin()
                 .leftJoin(room.requiredPositionList).fetchJoin()
