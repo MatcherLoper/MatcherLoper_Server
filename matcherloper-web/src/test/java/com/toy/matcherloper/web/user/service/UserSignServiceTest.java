@@ -20,10 +20,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-class UserLoginServiceTest {
+class UserSignServiceTest {
 
     @Autowired
-    private UserLoginService loginService;
+    private UserSignService loginService;
 
     @Autowired
     private UserRepository userRepository;
