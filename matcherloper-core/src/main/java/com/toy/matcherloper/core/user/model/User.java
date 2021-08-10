@@ -116,23 +116,23 @@ public class User extends BaseEntity {
     }
 
     private void updateSkills(Set<Skill> skillSet) {
-        resetSkills();
+        clearSkills();
         skillSet.forEach(this::addSkill);
     }
 
     private void updatePositions(Set<UserPosition> userPositionSet) {
-        resetUserPositions();
+        clearUserPositions();
         userPositionSet.forEach(this::addUserPosition);
     }
 
-    private void resetSkills() {
+    private void clearSkills() {
         for (Skill skill : this.skillSet) {
             skill.changeUser(null);
         }
         this.skillSet.clear();
     }
 
-    private void resetUserPositions() {
+    private void clearUserPositions() {
         for (UserPosition position : this.userPositionSet) {
             position.changeUser(null);
         }
