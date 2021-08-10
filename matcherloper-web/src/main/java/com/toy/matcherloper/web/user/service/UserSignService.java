@@ -1,5 +1,6 @@
 package com.toy.matcherloper.web.user.service;
 
+import com.toy.matcherloper.core.user.exception.PasswordNotMatchedException;
 import com.toy.matcherloper.core.user.model.Address;
 import com.toy.matcherloper.core.user.model.Skill;
 import com.toy.matcherloper.core.user.model.User;
@@ -7,13 +8,15 @@ import com.toy.matcherloper.core.user.model.UserPosition;
 import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
+import com.toy.matcherloper.web.user.api.dto.SkillDto;
+import com.toy.matcherloper.web.user.api.dto.UserPositionDto;
 import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
 import com.toy.matcherloper.web.user.api.dto.request.SignUpRequest;
-import com.toy.matcherloper.web.user.api.dto.response.SignInResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,19 +37,21 @@ public class UserSignService {
                 .phoneNumber(signUpRequest.getPhoneNumber())
                 .introduction(signUpRequest.getIntroduction())
                 .roleType(RoleType.NONE)
-                .userPositionSet(toUserPositionSet(signUpRequest))
-                .skillSet(toSkillSet(signUpRequest))
-                .address(toAddress(signUpRequest))
+                .userPositionSet(toUserPositionSet(signUpRequest.getUserPositionDtoList()))
+                .skillSet(toSkillSet(signUpRequest.getSkillDtoList()))
+                .address(toAddress(signUpRequest.getAddressDto()))
                 .build();
         userRepository.save(user);
         return user.getId();
     }
 
     @Transactional(readOnly = true)
-    public SignInResponse signIn(SignInRequest signInRequest) {
+    public Long signIn(SignInRequest signInRequest) {
         User user = userFindService.findByEmail(signInRequest.getEmail());
-        user.checkMatchedPassword(signInRequest.getPassword());
-        return new SignInResponse(user.getId());
+        if (user.isMatchingPassword(signInRequest.getPassword())) {
+            throw new PasswordNotMatchedException("Password is not matched!");
+        }
+        return user.getId();
     }
 
     private void checkDuplicatedEmail(String email) {
@@ -55,21 +60,19 @@ public class UserSignService {
         }
     }
 
-    private Set<UserPosition> toUserPositionSet(SignUpRequest signUpRequest) {
-        return signUpRequest.getUserPositionDtoList().stream()
+    private Set<UserPosition> toUserPositionSet(List<UserPositionDto> userPositions) {
+        return userPositions.stream()
                 .map(p -> new UserPosition(p.getType()))
                 .collect(Collectors.toSet());
     }
 
-    private Set<Skill> toSkillSet(SignUpRequest signUpRequest) {
-        return signUpRequest.getSkillDtoList().stream()
+    private Set<Skill> toSkillSet(List<SkillDto> skills) {
+        return skills.stream()
                 .map(s -> new Skill(s.getName()))
                 .collect(Collectors.toSet());
     }
 
-    private Address toAddress(SignUpRequest signUpRequest) {
-        AddressDto addressDto = signUpRequest.getAddressDto();
-
+    private Address toAddress(AddressDto addressDto) {
         return new Address(addressDto.getCity(), addressDto.getDetailed());
     }
 }
