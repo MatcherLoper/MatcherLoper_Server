@@ -1,11 +1,8 @@
 package com.toy.matcherloper.core.room.repository;
 
 import com.toy.matcherloper.core.room.model.Room;
-import com.toy.matcherloper.core.user.model.User;
+import com.toy.matcherloper.core.room.repository.query.RoomQueryRepository;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.Optional;
-
-public interface RoomRepository extends JpaRepository<Room, Long> {
-    Optional<Room> findByUser(User user);
+public interface RoomRepository extends JpaRepository<Room, Long>, RoomQueryRepository {
 }

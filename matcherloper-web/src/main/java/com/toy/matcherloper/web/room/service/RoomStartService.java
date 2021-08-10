@@ -13,7 +13,7 @@ public class RoomStartService {
     private final RoomFindService roomFindService;
 
     public Long start(Long roomId) {
-        final Room room = roomFindService.findOne(roomId);
+        final Room room = roomFindService.findByIdWithUser(roomId);
         room.start();
         return room.getId();
     }

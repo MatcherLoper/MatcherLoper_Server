@@ -8,14 +8,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static javax.persistence.EnumType.*;
-import static javax.persistence.FetchType.*;
+import static javax.persistence.EnumType.STRING;
 
 @Entity
 @Getter
@@ -43,10 +41,10 @@ public class Room extends BaseEntity {
     @Column(name = "create_user_id")
     private Long createUserId;
 
-    @OneToMany(mappedBy = "room", fetch = LAZY)
+    @OneToMany(mappedBy = "room")
     private Set<User> userSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "room", fetch = LAZY)
+    @OneToMany(mappedBy = "room")
     private List<RoomPosition> requiredPositionList = new ArrayList<>();
 
     @Builder
@@ -61,8 +59,9 @@ public class Room extends BaseEntity {
         this.requiredPositionList = requiredPositionList;
     }
 
-    public Room(User user, List<RoomPosition> positionList, String name, String possibleOfflineArea, int requiredUserNumber) {
+    public Room(User user, Long createUserId, List<RoomPosition> positionList, String name, String possibleOfflineArea, int requiredUserNumber) {
         this.userSet.add(user);
+        this.createUserId = createUserId;
         this.requiredPositionList = positionList;
         this.name = name;
         this.possibleOfflineArea = possibleOfflineArea;
@@ -70,9 +69,9 @@ public class Room extends BaseEntity {
         this.status = RoomStatus.OPEN;
     }
 
-    public static Room create(User user, List<RoomPosition> toPositionList, String name,
+    public static Room create(User user, Long createUserId, List<RoomPosition> toPositionList, String name,
                               String possibleOfflineArea, int requiredUserNumber) {
-        return new Room(user, toPositionList, name, possibleOfflineArea, requiredUserNumber);
+        return new Room(user, createUserId, toPositionList, name, possibleOfflineArea, requiredUserNumber);
     }
 
     public boolean isOpen() {

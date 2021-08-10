@@ -141,7 +141,7 @@ public class User extends BaseEntity {
 
     public void createRoom(List<RoomPosition> roomPositionList, String name, int requiredUserNumber, String possibleOfflineArea) {
         this.roleType = RoleType.OWNER;
-        this.room = Room.create(this, roomPositionList, name, possibleOfflineArea, requiredUserNumber);
+        this.room = Room.create(this, this.getId(), roomPositionList, name, possibleOfflineArea, requiredUserNumber);
     }
 
     public boolean isNotMatchingPassword(String password) {
