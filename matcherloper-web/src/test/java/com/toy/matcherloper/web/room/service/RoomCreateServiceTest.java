@@ -38,7 +38,7 @@ class RoomCreateServiceTest {
     @Autowired
     RoomRepository roomRepository;
 
-    User user;
+    private User user;
 
     @BeforeEach
     public void init() {
