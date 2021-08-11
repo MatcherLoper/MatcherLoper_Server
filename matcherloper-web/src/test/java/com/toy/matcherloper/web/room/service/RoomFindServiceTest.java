@@ -2,11 +2,13 @@ package com.toy.matcherloper.web.room.service;
 
 import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.room.model.RoomStatus;
+import com.toy.matcherloper.core.room.model.UserRoom;
 import com.toy.matcherloper.core.room.repository.RoomRepository;
 import com.toy.matcherloper.core.user.model.Address;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
+import com.toy.matcherloper.core.user.repository.UserRoomRepository;
 import com.toy.matcherloper.web.room.exception.RoomNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,6 +35,9 @@ class RoomFindServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserRoomRepository userRoomRepository;
 
     @Test
     @DisplayName("id를 통한 Room 조회")
@@ -88,7 +93,6 @@ class RoomFindServiceTest {
                 .email("test@test.com")
                 .introduction("")
                 .name("ㅋㅋ")
-                .room(room)
                 .password("1234")
                 .phoneNumber("1-1-1")
                 .roleType(RoleType.NONE)
@@ -99,7 +103,6 @@ class RoomFindServiceTest {
                 .email("test2@test.com")
                 .introduction("")
                 .name("ㅋㅋ")
-                .room(room)
                 .password("4321")
                 .phoneNumber("2-2-2")
                 .roleType(RoleType.NONE)
@@ -110,6 +113,9 @@ class RoomFindServiceTest {
         userSet.add(user2);
 
         userRepository.saveAll(userSet);
+
+        userRoomRepository.save(new UserRoom(user1, room));
+        userRoomRepository.save(new UserRoom(user2, room));
 
         return savedRoom.getId();
     }
