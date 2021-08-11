@@ -41,7 +41,7 @@ class RoomFindServiceTest {
 
     @Test
     @DisplayName("id를 통한 Room 조회")
-    public void findOneRoomWithUser_test() throws Exception {
+    public void findOneRoomWithUserTest() throws Exception {
         //given
         Long roomId = saveRoom();
         Room findOne = roomFindService.findOne(roomId);

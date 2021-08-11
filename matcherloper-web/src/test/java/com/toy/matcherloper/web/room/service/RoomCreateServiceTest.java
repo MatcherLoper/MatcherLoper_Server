@@ -45,7 +45,7 @@ class RoomCreateServiceTest {
 
     @Test
     @DisplayName("방을 개설한다.")
-    public void create() throws Exception {
+    public void createTest() throws Exception {
         //given
         CreateRoomRequest createRoomRequest = getCreateRoomRequest();
 
@@ -61,7 +61,7 @@ class RoomCreateServiceTest {
 
     @Test
     @DisplayName("방장이 다른 방을 가지고 있을 때, 방을 생성하면 오류가 발생한다.")
-    public void checkOwnerHaveAnotherOpenRoom() throws Exception {
+    public void checkOwnerHaveAnotherOpenRoomTest() throws Exception {
         //given
         CreateRoomRequest createRoomRequest = getCreateRoomRequest();
 

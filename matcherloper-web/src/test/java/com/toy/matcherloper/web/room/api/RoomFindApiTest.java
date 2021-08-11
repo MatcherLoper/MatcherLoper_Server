@@ -63,7 +63,7 @@ class RoomFindApiTest {
 
     @Test
     @DisplayName("방 id를 통한 방 조회")
-    public void room_find_one_Test() throws Exception {
+    public void findOneTest() throws Exception {
         //given
         Long roomId = room.getId();
 
@@ -83,7 +83,7 @@ class RoomFindApiTest {
 
     @Test
     @DisplayName("모든 방 조회, 저장된 방의 정보가 List 에 포함된지 확인")
-    public void room_find_all_test() throws Exception {
+    public void findAllTest() throws Exception {
         //given
         Long roomId = room.getId();
 
