@@ -96,13 +96,10 @@ public class User extends BaseEntity {
         skill.changeUser(this);
     }
 
-    public void update(String email, String password, String name, String phoneNumber, String introduction,
+    public void update(String password, String name, String phoneNumber, String introduction,
                        Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
         updateSkills(skillSet);
         updatePositions(userPositionSet);
-        this.userPositionSet = userPositionSet;
-        this.skillSet = skillSet;
-        this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
