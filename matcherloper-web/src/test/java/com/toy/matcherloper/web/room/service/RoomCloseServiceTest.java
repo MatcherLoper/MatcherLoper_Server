@@ -20,7 +20,10 @@ import java.util.Set;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class RoomStartServiceTest {
+class RoomCloseServiceTest {
+
+    @Autowired
+    private RoomCloseService roomCloseService;
 
     @Autowired
     private RoomRepository roomRepository;
@@ -32,23 +35,22 @@ class RoomStartServiceTest {
     private RoomFindService roomFindService;
 
     @Autowired
-    private RoomStartService roomStartService;
-
-    @Autowired
     private UserRoomRepository userRoomRepository;
 
     @Test
-    @DisplayName("방이 프로젝트를 시작하면 방 상태가 START로 변경")
-    public void startTest() throws Exception {
+    @DisplayName("프로젝트가 끝나면 방 상태가 CLOSED로 변경된다.")
+    public void closeTest() throws Exception {
         //given
-        Long savedRoomId = saveRoom();
+        final Long roomId = saveRoom();
 
         //when
-        Long startRoomId = roomStartService.start(savedRoomId);
-        Room findRoom = roomFindService.findOne(startRoomId);
+        final Long closeRoomId = roomCloseService.close(roomId);
+        final Room actual = roomFindService.findOne(closeRoomId);
+        final Set<UserRoom> userRooms = actual.getUserRooms();
 
         //then
-        assertThat(findRoom.getStatus()).isEqualTo(RoomStatus.START);
+        assertThat(actual.getStatus()).isEqualTo(RoomStatus.CLOSED);
+        assertThat(userRooms).extracting(userRoom -> userRoom.getUser().getRoleType()).containsOnly(RoleType.NONE);
     }
 
     private Long saveRoom() {
@@ -68,7 +70,7 @@ class RoomStartServiceTest {
                 .name("ㅋㅋ")
                 .password("1234")
                 .phoneNumber("1-1-1")
-                .roleType(RoleType.NONE)
+                .roleType(RoleType.PARTICIPANT)
                 .build();
 
         User user2 = User.builder()
@@ -78,7 +80,7 @@ class RoomStartServiceTest {
                 .name("ㅋㅋ")
                 .password("4321")
                 .phoneNumber("2-2-2")
-                .roleType(RoleType.NONE)
+                .roleType(RoleType.PARTICIPANT)
                 .build();
 
         Set<User> userSet = new HashSet<>();
