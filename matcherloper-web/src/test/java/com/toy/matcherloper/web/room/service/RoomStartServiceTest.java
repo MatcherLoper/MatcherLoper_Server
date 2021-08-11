@@ -26,16 +26,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 class RoomStartServiceTest {
 
     @Autowired
-    RoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoomFindService roomFindService;
+    private RoomFindService roomFindService;
 
     @Autowired
-    RoomStartService roomStartService;
+    private RoomStartService roomStartService;
 
     private User user;
 
@@ -52,7 +52,7 @@ class RoomStartServiceTest {
 
         //when
         Long startRoomId = roomStartService.start(savedRoomId);
-        Room findRoom = roomFindService.findByIdWithUser(startRoomId);
+        Room findRoom = roomFindService.findOne(startRoomId);
 
         //then
         assertThat(findRoom.getStatus()).isEqualTo(RoomStatus.CLOSED);

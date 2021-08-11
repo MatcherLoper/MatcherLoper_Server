@@ -40,19 +40,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RoomCreateApiTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    WebApplicationContext webApplicationContext;
+    private WebApplicationContext webApplicationContext;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    RoomFindService roomFindService;
+    private RoomFindService roomFindService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @BeforeEach
     void setUp() {
@@ -100,7 +100,7 @@ class RoomCreateApiTest {
         ApiResult<Long> longApiResult = objectMapper.readValue(responseString, new TypeReference<ApiResult<Long>>() {
         });
 
-        Room createRoomFind = roomFindService.findByIdWithUser(longApiResult.getData());
+        Room createRoomFind = roomFindService.findOne(longApiResult.getData());
 
         //then
         assertThat(createRoomFind.getCreateUserId()).isEqualTo(user.getId());

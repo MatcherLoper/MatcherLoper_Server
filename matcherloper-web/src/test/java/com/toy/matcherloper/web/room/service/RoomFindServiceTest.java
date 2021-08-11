@@ -26,20 +26,20 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class RoomFindServiceTest {
 
     @Autowired
-    RoomFindService roomFindService;
+    private RoomFindService roomFindService;
 
     @Autowired
-    RoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     @DisplayName("id를 통한 Room 조회")
     public void findOneRoomWithUser_test() throws Exception {
         //given
         Long roomId = saveRoom();
-        Room findOne = roomFindService.findByIdWithUser(roomId);
+        Room findOne = roomFindService.findOne(roomId);
 
         //when
 
@@ -69,7 +69,7 @@ class RoomFindServiceTest {
         //when
 
         //then
-        assertThatThrownBy(() -> roomFindService.findByIdWithUser(notExistRoomId))
+        assertThatThrownBy(() -> roomFindService.findOne(notExistRoomId))
                 .isInstanceOf(RoomNotFoundException.class);
     }
 

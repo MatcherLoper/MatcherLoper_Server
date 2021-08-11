@@ -28,13 +28,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class RoomCreateServiceTest {
 
     @Autowired
-    RoomCreateService roomCreateService;
+    private RoomCreateService roomCreateService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     private User user;
 
