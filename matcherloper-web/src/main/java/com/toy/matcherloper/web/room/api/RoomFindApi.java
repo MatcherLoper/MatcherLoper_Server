@@ -25,7 +25,7 @@ public class RoomFindApi {
     @GetMapping("/{roomId}")
     public ApiResult<RoomFindResponse> showOne(@PathVariable Long roomId) {
         try {
-            return ApiResult.succeed(new RoomFindResponse(roomFindService.findByIdWithUser(roomId)));
+            return ApiResult.succeed(new RoomFindResponse(roomFindService.findOne(roomId)));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());

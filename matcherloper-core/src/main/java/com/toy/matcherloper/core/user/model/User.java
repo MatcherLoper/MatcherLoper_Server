@@ -12,11 +12,9 @@ import java.util.List;
 import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@ToString(exclude = {"room"})
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
@@ -51,16 +49,13 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = EAGER)
     private Set<Skill> skillSet = new HashSet<>();
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
-
     @Embedded
     private Address address;
 
     @Builder
-    public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
-                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Room room, Address address) {
+    public User(Long id, String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
+                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -69,7 +64,6 @@ public class User extends BaseEntity {
         this.roleType = roleType;
         this.userPositionSet = userPositionSet;
         this.skillSet = skillSet;
-        this.room = room;
         this.address = address;
     }
 
@@ -139,9 +133,13 @@ public class User extends BaseEntity {
         this.userPositionSet.clear();
     }
 
-    public void createRoom(List<RoomPosition> roomPositionList, String name, int requiredUserNumber, String possibleOfflineArea) {
+    public Room createRoom(List<RoomPosition> roomPositionList, String name, int requiredUserNumber, String possibleOfflineArea) {
         this.roleType = RoleType.OWNER;
-        this.room = Room.create(this, this.getId(), roomPositionList, name, possibleOfflineArea, requiredUserNumber);
+        return Room.create(this.getId(),
+                roomPositionList,
+                name,
+                possibleOfflineArea,
+                requiredUserNumber);
     }
 
     public boolean isNotMatchingPassword(String password) {

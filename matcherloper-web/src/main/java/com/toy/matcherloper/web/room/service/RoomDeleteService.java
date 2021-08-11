@@ -15,7 +15,7 @@ public class RoomDeleteService {
     private final RoomFindService roomFindService;
 
     public Long delete(Long roomId) {
-        final Room room = roomFindService.findByIdWithUser(roomId);
+        final Room room = roomFindService.findOne(roomId);
         roomRepository.delete(room);
         return room.getId();
     }
