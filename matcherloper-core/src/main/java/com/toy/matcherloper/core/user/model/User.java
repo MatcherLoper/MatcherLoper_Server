@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.toy.matcherloper.core.user.model.type.RoleType.*;
 import static javax.persistence.FetchType.EAGER;
 
 @Entity
@@ -69,7 +70,7 @@ public class User extends BaseEntity {
 
     public static User create(String email, String password, String name, String phoneNumber, String introduction,
                               Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
-        return new User(email, password, name, phoneNumber, introduction, RoleType.NONE, userPositionSet, skillSet, address);
+        return new User(email, password, name, phoneNumber, introduction, NONE, userPositionSet, skillSet, address);
     }
 
     public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
@@ -134,7 +135,7 @@ public class User extends BaseEntity {
     }
 
     public Room createRoom(List<RoomPosition> roomPositionList, String name, int requiredUserNumber, String possibleOfflineArea) {
-        this.roleType = RoleType.OWNER;
+        this.roleType = OWNER;
         return Room.create(this.getId(),
                 roomPositionList,
                 name,
@@ -144,5 +145,9 @@ public class User extends BaseEntity {
 
     public boolean isNotMatchingPassword(String password) {
         return !this.password.equals(password);
+    }
+
+    public void finishProject() {
+        this.roleType = NONE;
     }
 }

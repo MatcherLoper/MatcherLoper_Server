@@ -81,6 +81,13 @@ public class Room extends BaseEntity {
     }
 
     public void start() {
+        this.status = RoomStatus.START;
+    }
+
+    public void close() {
         this.status = RoomStatus.CLOSED;
+        for (UserRoom userRoom : this.userRooms) {
+            userRoom.close();
+        }
     }
 }

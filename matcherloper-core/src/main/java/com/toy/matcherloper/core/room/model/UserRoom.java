@@ -33,4 +33,8 @@ public class UserRoom {
         this.room = room;
         room.addUserRoom(this);
     }
+
+    public void close() {
+        this.user.finishProject();
+    }
 }
