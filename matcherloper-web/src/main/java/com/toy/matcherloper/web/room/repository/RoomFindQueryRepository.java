@@ -20,42 +20,31 @@ public class RoomFindQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public List<Room> findAllWithUser() {
-        queryFactory.selectFrom(userRoom)
-                .innerJoin(userRoom.user).fetchJoin()
-                .fetch();
-
         return queryFactory.selectFrom(room)
                 .distinct()
-                .innerJoin(room.userRooms).fetchJoin()
+                .innerJoin(room.userRooms, userRoom).fetchJoin()
+                .innerJoin(userRoom.user).fetchJoin()
                 .leftJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
     }
 
     public List<Room> findAllByOpenWithUser() {
-        queryFactory.selectFrom(userRoom)
-                .innerJoin(userRoom.user).fetchJoin()
-                .where(userRoom.room.status.eq(RoomStatus.OPEN))
-                .fetch();
-
         return queryFactory.selectFrom(room)
                 .distinct()
-                .where(room.status.eq(RoomStatus.OPEN))
-                .innerJoin(room.userRooms).fetchJoin()
+                .innerJoin(room.userRooms, userRoom).fetchJoin()
+                .innerJoin(userRoom.user).fetchJoin()
                 .leftJoin(room.requiredPositionList).fetchJoin()
+                .where(room.status.eq(RoomStatus.OPEN))
                 .fetch();
     }
 
     public Optional<Room> findOne(Long roomId) {
-        queryFactory.selectFrom(userRoom)
-                .innerJoin(userRoom.user).fetchJoin()
-                .where(userRoom.room.id.eq(roomId))
-                .fetch();
-
         return Optional.ofNullable(queryFactory.selectFrom(room)
                 .distinct()
-                .where(room.id.eq(roomId))
-                .innerJoin(room.userRooms).fetchJoin()
+                .innerJoin(room.userRooms, userRoom).fetchJoin()
+                .innerJoin(userRoom.user).fetchJoin()
                 .leftJoin(room.requiredPositionList).fetchJoin()
+                .where(room.id.eq(roomId))
                 .fetchOne());
     }
 }
