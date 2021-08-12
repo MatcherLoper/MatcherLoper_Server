@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 public class RoomPositionDto {
 
     private PositionType position;
-    private boolean isExist;
+    private int count;
 
     public RoomPositionDto(RoomPosition roomPosition) {
         this.position = roomPosition.getPosition();
-        this.isExist = roomPosition.isExist();
+        this.count = roomPosition.getCount();
     }
 }
