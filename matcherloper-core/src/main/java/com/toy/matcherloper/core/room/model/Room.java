@@ -43,7 +43,7 @@ public class Room extends BaseEntity {
     @OneToMany(mappedBy = "room")
     private Set<UserRoom> userRooms = new HashSet<>();
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomPosition> requiredPositionList = new ArrayList<>();
 
     @Builder
@@ -57,23 +57,30 @@ public class Room extends BaseEntity {
         this.requiredPositionList = requiredPositionList;
     }
 
-    public Room(Long createUserId, List<RoomPosition> positionList, String name,
+    public Room(Long createUserId, List<RoomPosition> roomPositions, String name,
                 String possibleOfflineArea, int requiredUserNumber) {
+        addRoomPositions(roomPositions);
         this.createUserId = createUserId;
-        this.requiredPositionList = positionList;
         this.name = name;
         this.possibleOfflineArea = possibleOfflineArea;
         this.requiredUserNumber = requiredUserNumber;
         this.status = RoomStatus.OPEN;
     }
 
-    public static Room create(Long createUserId, List<RoomPosition> toPositionList, String name,
+    public static Room create(Long createUserId, List<RoomPosition> roomPositions, String name,
                               String possibleOfflineArea, int requiredUserNumber) {
-        return new Room(createUserId, toPositionList, name, possibleOfflineArea, requiredUserNumber);
+        return new Room(createUserId, roomPositions, name, possibleOfflineArea, requiredUserNumber);
     }
 
     public void addUserRoom(UserRoom userRoom) {
         this.userRooms.add(userRoom);
+    }
+
+    private void addRoomPositions(List<RoomPosition> roomPositions) {
+        for(RoomPosition roomPosition: roomPositions){
+            this.requiredPositionList.add(roomPosition);
+            roomPosition.changeRoom(this);
+        }
     }
 
     public boolean isOpen() {

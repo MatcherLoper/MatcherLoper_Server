@@ -42,4 +42,11 @@ public class RoomPosition {
         this.position = position;
         this.count = count;
     }
+
+    public void changeRoom(Room room) {
+        if (this.room != null) {
+            this.room = null;
+        }
+        this.room = room;
+    }
 }

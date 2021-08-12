@@ -3,6 +3,7 @@ package com.toy.matcherloper.web.room.service;
 import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.room.model.RoomPosition;
 import com.toy.matcherloper.core.room.model.UserRoom;
+import com.toy.matcherloper.core.room.repository.RoomPositionRepository;
 import com.toy.matcherloper.core.room.repository.RoomRepository;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.repository.UserRoomRepository;
@@ -25,14 +26,18 @@ public class RoomCreateService {
 
     private final RoomRepository roomRepository;
     private final UserRoomRepository userRoomRepository;
+    private final RoomPositionRepository roomPositionRepository;
     private final UserFindService userFindService;
 
     public Long create(CreateRoomRequest request) {
         User user = userFindService.findById(request.getUserId());
         checkOwnerHaveAnotherOpenRoom(user);
-        Room room = user.createRoom(toPositionList(request.getRoomPositionList()), request.getName(),
-                request.getRequiredUserNumber(), request.getPossibleOfflineArea());
+        Room room = user.createRoom(toPositionList(request.getRoomPositionList()),
+                request.getName(),
+                request.getRequiredUserNumber(),
+                request.getPossibleOfflineArea());
         roomRepository.save(room);
+        roomPositionRepository.saveAll(room.getRequiredPositionList());
         userRoomRepository.save(new UserRoom(user, room));
         return room.getId();
     }
@@ -46,7 +51,7 @@ public class RoomCreateService {
 
     private List<RoomPosition> toPositionList(List<RoomPositionDto> roomPositionList) {
         return roomPositionList.stream()
-                .map(dto -> new RoomPosition(dto.getPosition(), dto.isExist()))
+                .map(dto -> new RoomPosition(dto.getPosition(), dto.getCount()))
                 .collect(Collectors.toList());
     }
 }
