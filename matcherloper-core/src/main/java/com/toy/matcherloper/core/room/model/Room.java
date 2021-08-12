@@ -77,7 +77,7 @@ public class Room extends BaseEntity {
     }
 
     private void addRoomPositions(List<RoomPosition> roomPositions) {
-        for(RoomPosition roomPosition: roomPositions){
+        for (RoomPosition roomPosition : roomPositions) {
             this.requiredPositionList.add(roomPosition);
             roomPosition.changeRoom(this);
         }
@@ -95,6 +95,12 @@ public class Room extends BaseEntity {
         this.status = RoomStatus.CLOSED;
         for (UserRoom userRoom : this.userRooms) {
             userRoom.close();
+        }
+    }
+
+    public void delete() {
+        for (UserRoom userRoom : this.userRooms) {
+            userRoom.deleteRoom();
         }
     }
 }

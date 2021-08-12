@@ -37,4 +37,9 @@ public class UserRoom {
     public void close() {
         this.user.finishProject();
     }
+
+    public void deleteRoom() {
+        this.room = null;
+        close();
+    }
 }
