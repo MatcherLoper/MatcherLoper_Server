@@ -9,26 +9,21 @@ import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.core.user.repository.UserRoomRepository;
-import com.toy.matcherloper.web.room.exception.RoomNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
-class RoomFindServiceTest {
+class RoomCloseServiceTest {
 
     @Autowired
-    private RoomFindService roomFindService;
+    private RoomCloseService roomCloseService;
 
     @Autowired
     private RoomRepository roomRepository;
@@ -37,45 +32,25 @@ class RoomFindServiceTest {
     private UserRepository userRepository;
 
     @Autowired
+    private RoomFindService roomFindService;
+
+    @Autowired
     private UserRoomRepository userRoomRepository;
 
     @Test
-    @DisplayName("id를 통한 Room 조회")
-    public void findOneRoomWithUserTest() throws Exception {
+    @DisplayName("프로젝트가 끝나면 방 상태가 CLOSED로 변경된다.")
+    public void closeTest() throws Exception {
         //given
-        Long roomId = saveRoom();
-        Room findOne = roomFindService.findOne(roomId);
+        final Long roomId = saveRoom();
 
         //when
+        final Long closeRoomId = roomCloseService.close(roomId);
+        final Room actual = roomFindService.findOne(closeRoomId);
+        final Set<UserRoom> userRooms = actual.getUserRooms();
 
         //then
-        assertThat(findOne.getId()).isEqualTo(roomId);
-    }
-
-    @Test
-    @DisplayName("모든 방을 조회, 조회시 저장된 데이터의 룸이 포함된지 확인")
-    public void findAllRoomTest() throws Exception {
-        //given
-        Long roomId = saveRoom();
-        List<Room> allWithUser = roomFindService.findAllWithUser();
-        //when
-
-        //then
-        assertThat(allWithUser).extracting(Room::getName).contains("test Room");
-    }
-
-
-    @ParameterizedTest
-    @CsvSource("1000")
-    @DisplayName("존재하지 않는 Room을 조회하면 오류가 발생한다.")
-    public void roomNotFoundTest(Long notExistRoomId) throws Exception {
-        //given
-        Long saveRoomId = saveRoom();
-        //when
-
-        //then
-        assertThatThrownBy(() -> roomFindService.findOne(notExistRoomId))
-                .isInstanceOf(RoomNotFoundException.class);
+        assertThat(actual.getStatus()).isEqualTo(RoomStatus.CLOSED);
+        assertThat(userRooms).extracting(userRoom -> userRoom.getUser().getRoleType()).containsOnly(RoleType.NONE);
     }
 
     private Long saveRoom() {
@@ -95,7 +70,7 @@ class RoomFindServiceTest {
                 .name("ㅋㅋ")
                 .password("1234")
                 .phoneNumber("1-1-1")
-                .roleType(RoleType.NONE)
+                .roleType(RoleType.PARTICIPANT)
                 .build();
 
         User user2 = User.builder()
@@ -105,7 +80,7 @@ class RoomFindServiceTest {
                 .name("ㅋㅋ")
                 .password("4321")
                 .phoneNumber("2-2-2")
-                .roleType(RoleType.NONE)
+                .roleType(RoleType.PARTICIPANT)
                 .build();
 
         Set<User> userSet = new HashSet<>();

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.room.model.RoomStatus;
+import com.toy.matcherloper.core.room.model.UserRoom;
 import com.toy.matcherloper.core.room.repository.RoomRepository;
 import com.toy.matcherloper.core.user.model.Address;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
+import com.toy.matcherloper.core.user.repository.UserRoomRepository;
 import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.room.api.dto.response.RoomFindResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,19 +39,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class RoomFindApiTest {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    WebApplicationContext webApplicationContext;
+    private WebApplicationContext webApplicationContext;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoomRepository roomRepository;
+    private RoomRepository roomRepository;
+
+    @Autowired
+    private UserRoomRepository userRoomRepository;
 
     private Room room;
 
@@ -63,7 +68,7 @@ class RoomFindApiTest {
 
     @Test
     @DisplayName("방 id를 통한 방 조회")
-    public void room_find_one_Test() throws Exception {
+    public void findOneTest() throws Exception {
         //given
         Long roomId = room.getId();
 
@@ -83,7 +88,7 @@ class RoomFindApiTest {
 
     @Test
     @DisplayName("모든 방 조회, 저장된 방의 정보가 List 에 포함된지 확인")
-    public void room_find_all_test() throws Exception {
+    public void findAllTest() throws Exception {
         //given
         Long roomId = room.getId();
 
@@ -116,7 +121,6 @@ class RoomFindApiTest {
                 .email("test@test.com")
                 .introduction("")
                 .name("ㅋㅋ")
-                .room(room)
                 .password("1234")
                 .phoneNumber("1-1-1")
                 .roleType(RoleType.NONE)
@@ -127,7 +131,6 @@ class RoomFindApiTest {
                 .email("test2@test.com")
                 .introduction("")
                 .name("ㅋㅋ")
-                .room(room)
                 .password("4321")
                 .phoneNumber("2-2-2")
                 .roleType(RoleType.NONE)
@@ -138,5 +141,8 @@ class RoomFindApiTest {
         userSet.add(user2);
 
         userRepository.saveAll(userSet);
+
+        userRoomRepository.save(new UserRoom(user1, room));
+        userRoomRepository.save(new UserRoom(user2, room));
     }
 }

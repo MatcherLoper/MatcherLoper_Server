@@ -2,8 +2,11 @@ package com.toy.matcherloper.web.room.service;
 
 import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.room.model.RoomPosition;
+import com.toy.matcherloper.core.room.model.UserRoom;
+import com.toy.matcherloper.core.room.repository.RoomPositionRepository;
 import com.toy.matcherloper.core.room.repository.RoomRepository;
 import com.toy.matcherloper.core.user.model.User;
+import com.toy.matcherloper.core.user.repository.UserRoomRepository;
 import com.toy.matcherloper.web.room.api.dto.RoomPositionDto;
 import com.toy.matcherloper.web.room.api.dto.request.CreateRoomRequest;
 import com.toy.matcherloper.web.room.exception.RoomNotCreateException;
@@ -22,27 +25,33 @@ import java.util.stream.Collectors;
 public class RoomCreateService {
 
     private final RoomRepository roomRepository;
+    private final UserRoomRepository userRoomRepository;
+    private final RoomPositionRepository roomPositionRepository;
     private final UserFindService userFindService;
 
     public Long create(CreateRoomRequest request) {
         User user = userFindService.findById(request.getUserId());
         checkOwnerHaveAnotherOpenRoom(user);
-        user.createRoom(toPositionList(request.getRoomPositionList()), request.getName(),
-                request.getRequiredUserNumber(), request.getPossibleOfflineArea());
-        Room room = roomRepository.save(user.getRoom());
+        Room room = user.createRoom(toPositionList(request.getRoomPositionList()),
+                request.getName(),
+                request.getRequiredUserNumber(),
+                request.getPossibleOfflineArea());
+        roomRepository.save(room);
+        roomPositionRepository.saveAll(room.getRequiredPositionList());
+        userRoomRepository.save(new UserRoom(user, room));
         return room.getId();
     }
 
     private void checkOwnerHaveAnotherOpenRoom(User user) {
         final Optional<Room> room = roomRepository.findOpenedRoomByOwner(user.getId());
-        if (room.isPresent() && room.get().isOpen()) {
+        if (room.isPresent()) {
             throw new RoomNotCreateException("user already have another open room");
         }
     }
 
     private List<RoomPosition> toPositionList(List<RoomPositionDto> roomPositionList) {
         return roomPositionList.stream()
-                .map(dto -> new RoomPosition(dto.getPosition(), dto.isExist()))
+                .map(dto -> new RoomPosition(dto.getPosition(), dto.getCount()))
                 .collect(Collectors.toList());
     }
 }

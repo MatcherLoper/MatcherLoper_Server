@@ -11,12 +11,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static com.toy.matcherloper.core.user.model.type.RoleType.*;
 import static javax.persistence.FetchType.EAGER;
-import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
-@ToString(exclude = {"room"})
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
@@ -51,16 +50,13 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user", fetch = EAGER)
     private Set<Skill> skillSet = new HashSet<>();
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "room_id")
-    private Room room;
-
     @Embedded
     private Address address;
 
     @Builder
-    public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
-                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Room room, Address address) {
+    public User(Long id, String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
+                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.name = name;
@@ -69,13 +65,12 @@ public class User extends BaseEntity {
         this.roleType = roleType;
         this.userPositionSet = userPositionSet;
         this.skillSet = skillSet;
-        this.room = room;
         this.address = address;
     }
 
     public static User create(String email, String password, String name, String phoneNumber, String introduction,
                               Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
-        return new User(email, password, name, phoneNumber, introduction, RoleType.NONE, userPositionSet, skillSet, address);
+        return new User(email, password, name, phoneNumber, introduction, NONE, userPositionSet, skillSet, address);
     }
 
     public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
@@ -101,13 +96,10 @@ public class User extends BaseEntity {
         skill.changeUser(this);
     }
 
-    public void update(String email, String password, String name, String phoneNumber, String introduction,
+    public void update(String password, String name, String phoneNumber, String introduction,
                        Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
         updateSkills(skillSet);
         updatePositions(userPositionSet);
-        this.userPositionSet = userPositionSet;
-        this.skillSet = skillSet;
-        this.email = email;
         this.password = password;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -139,12 +131,20 @@ public class User extends BaseEntity {
         this.userPositionSet.clear();
     }
 
-    public void createRoom(List<RoomPosition> roomPositionList, String name, int requiredUserNumber, String possibleOfflineArea) {
-        this.roleType = RoleType.OWNER;
-        this.room = Room.create(this, this.getId(), roomPositionList, name, possibleOfflineArea, requiredUserNumber);
+    public Room createRoom(List<RoomPosition> roomPositionList, String name, int requiredUserNumber, String possibleOfflineArea) {
+        this.roleType = OWNER;
+        return Room.create(this.getId(),
+                roomPositionList,
+                name,
+                possibleOfflineArea,
+                requiredUserNumber);
     }
 
     public boolean isNotMatchingPassword(String password) {
         return !this.password.equals(password);
+    }
+
+    public void finishProject() {
+        this.roleType = NONE;
     }
 }

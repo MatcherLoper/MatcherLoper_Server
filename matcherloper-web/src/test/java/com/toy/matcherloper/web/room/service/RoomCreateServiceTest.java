@@ -28,13 +28,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class RoomCreateServiceTest {
 
     @Autowired
-    RoomCreateService roomCreateService;
+    private RoomCreateService roomCreateService;
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    RoomRepository roomRepository;
+    private RoomRepository roomRepository;
 
     private User user;
 
@@ -45,7 +45,7 @@ class RoomCreateServiceTest {
 
     @Test
     @DisplayName("방을 개설한다.")
-    public void create() throws Exception {
+    public void createTest() throws Exception {
         //given
         CreateRoomRequest createRoomRequest = getCreateRoomRequest();
 
@@ -61,7 +61,7 @@ class RoomCreateServiceTest {
 
     @Test
     @DisplayName("방장이 다른 방을 가지고 있을 때, 방을 생성하면 오류가 발생한다.")
-    public void checkOwnerHaveAnotherOpenRoom() throws Exception {
+    public void checkOwnerHaveAnotherOpenRoomTest() throws Exception {
         //given
         CreateRoomRequest createRoomRequest = getCreateRoomRequest();
 
@@ -90,7 +90,7 @@ class RoomCreateServiceTest {
     }
 
     private CreateRoomRequest getCreateRoomRequest() {
-        RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, false);
+        RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, 2);
         RoomPositionDto roomPositionDto = new RoomPositionDto(roomPosition);
         return new CreateRoomRequest(user.getId(),
                 Collections.singletonList(roomPositionDto), "room1", "부", 4);

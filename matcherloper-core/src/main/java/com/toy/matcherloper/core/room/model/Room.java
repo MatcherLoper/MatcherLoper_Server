@@ -1,7 +1,6 @@
 package com.toy.matcherloper.core.room.model;
 
 import com.toy.matcherloper.core.common.entity.BaseEntity;
-import com.toy.matcherloper.core.user.model.User;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -42,36 +41,46 @@ public class Room extends BaseEntity {
     private Long createUserId;
 
     @OneToMany(mappedBy = "room")
-    private Set<User> userSet = new HashSet<>();
+    private Set<UserRoom> userRooms = new HashSet<>();
 
-    @OneToMany(mappedBy = "room")
+    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RoomPosition> requiredPositionList = new ArrayList<>();
 
     @Builder
     public Room(String name, RoomStatus status, String possibleOfflineArea, int requiredUserNumber, Long createUserId,
-                Set<User> userSet, List<RoomPosition> requiredPositionList) {
+                List<RoomPosition> requiredPositionList) {
         this.name = name;
         this.status = status;
         this.possibleOfflineArea = possibleOfflineArea;
         this.requiredUserNumber = requiredUserNumber;
         this.createUserId = createUserId;
-        this.userSet = userSet;
         this.requiredPositionList = requiredPositionList;
     }
 
-    public Room(User user, Long createUserId, List<RoomPosition> positionList, String name, String possibleOfflineArea, int requiredUserNumber) {
-        this.userSet.add(user);
+    public Room(Long createUserId, List<RoomPosition> roomPositions, String name,
+                String possibleOfflineArea, int requiredUserNumber) {
+        addRoomPositions(roomPositions);
         this.createUserId = createUserId;
-        this.requiredPositionList = positionList;
         this.name = name;
         this.possibleOfflineArea = possibleOfflineArea;
         this.requiredUserNumber = requiredUserNumber;
         this.status = RoomStatus.OPEN;
     }
 
-    public static Room create(User user, Long createUserId, List<RoomPosition> toPositionList, String name,
+    public static Room create(Long createUserId, List<RoomPosition> roomPositions, String name,
                               String possibleOfflineArea, int requiredUserNumber) {
-        return new Room(user, createUserId, toPositionList, name, possibleOfflineArea, requiredUserNumber);
+        return new Room(createUserId, roomPositions, name, possibleOfflineArea, requiredUserNumber);
+    }
+
+    public void addUserRoom(UserRoom userRoom) {
+        this.userRooms.add(userRoom);
+    }
+
+    private void addRoomPositions(List<RoomPosition> roomPositions) {
+        for (RoomPosition roomPosition : roomPositions) {
+            this.requiredPositionList.add(roomPosition);
+            roomPosition.changeRoom(this);
+        }
     }
 
     public boolean isOpen() {
@@ -79,6 +88,19 @@ public class Room extends BaseEntity {
     }
 
     public void start() {
+        this.status = RoomStatus.START;
+    }
+
+    public void close() {
         this.status = RoomStatus.CLOSED;
+        for (UserRoom userRoom : this.userRooms) {
+            userRoom.close();
+        }
+    }
+
+    public void delete() {
+        for (UserRoom userRoom : this.userRooms) {
+            userRoom.deleteRoom();
+        }
     }
 }

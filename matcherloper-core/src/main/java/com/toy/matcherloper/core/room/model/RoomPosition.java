@@ -28,18 +28,25 @@ public class RoomPosition {
     @Enumerated(value = STRING)
     private PositionType position;
 
-    @Column(name = "is_exist")
-    private boolean isExist;
+    @Column(name = "count")
+    private int count;
 
     @Builder
-    public RoomPosition(Room room, PositionType position, boolean isExist) {
+    public RoomPosition(Room room, PositionType position, int count) {
         this.room = room;
         this.position = position;
-        this.isExist = isExist;
+        this.count = count;
     }
 
-    public RoomPosition(PositionType position, boolean isExist) {
+    public RoomPosition(PositionType position, int count) {
         this.position = position;
-        this.isExist = isExist;
+        this.count = count;
+    }
+
+    public void changeRoom(Room room) {
+        if (this.room != null) {
+            this.room = null;
+        }
+        this.room = room;
     }
 }

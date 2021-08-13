@@ -16,8 +16,8 @@ public class RoomFindService {
 
     private final RoomFindQueryRepository roomFindQueryRepository;
 
-    public Room findByIdWithUser(Long roomId) {
-        return roomFindQueryRepository.findByIdWithUser(roomId)
+    public Room findOne(Long roomId) {
+        return roomFindQueryRepository.findOne(roomId)
                 .orElseThrow(() -> new RoomNotFoundException(String.format("Not found room. room id: %d", roomId)));
     }
 
