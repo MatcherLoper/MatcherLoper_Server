@@ -4,11 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.room.model.RoomStatus;
+import com.toy.matcherloper.core.room.model.UserRoom;
 import com.toy.matcherloper.core.room.repository.RoomRepository;
 import com.toy.matcherloper.core.user.model.Address;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
+import com.toy.matcherloper.core.user.repository.UserRoomRepository;
 import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.room.api.dto.response.RoomFindResponse;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,6 +52,9 @@ class RoomFindApiTest {
 
     @Autowired
     private RoomRepository roomRepository;
+
+    @Autowired
+    private UserRoomRepository userRoomRepository;
 
     private Room room;
 
@@ -136,5 +141,8 @@ class RoomFindApiTest {
         userSet.add(user2);
 
         userRepository.saveAll(userSet);
+
+        userRoomRepository.save(new UserRoom(user1, room));
+        userRoomRepository.save(new UserRoom(user2, room));
     }
 }

@@ -90,7 +90,7 @@ class RoomCreateServiceTest {
     }
 
     private CreateRoomRequest getCreateRoomRequest() {
-        RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, false);
+        RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, 2);
         RoomPositionDto roomPositionDto = new RoomPositionDto(roomPosition);
         return new CreateRoomRequest(user.getId(),
                 Collections.singletonList(roomPositionDto), "room1", "부", 4);

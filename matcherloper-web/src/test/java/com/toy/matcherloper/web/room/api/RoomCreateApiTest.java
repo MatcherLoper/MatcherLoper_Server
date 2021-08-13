@@ -79,7 +79,7 @@ class RoomCreateApiTest {
 
         userRepository.save(user);
 
-        RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, false);
+        RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, 2);
         RoomPositionDto roomPositionDto = new RoomPositionDto(roomPosition);
         CreateRoomRequest createRoomRequest = new CreateRoomRequest(user.getId(),
                 Collections.singletonList(roomPositionDto), "room1", "부", 4);
