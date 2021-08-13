@@ -47,7 +47,7 @@ class UserTest {
                 .build();
 
         //when
-        user.createRoom(Arrays.asList(new RoomPosition(PositionType.BACKEND, 2)), "test", 1, "인천");
+        user.createRoom(Arrays.asList(new RoomPosition(PositionType.BACKEND, 2)), "test", "인천");
 
         //then
         assertThat(user.getRoleType()).isEqualTo(RoleType.OWNER);

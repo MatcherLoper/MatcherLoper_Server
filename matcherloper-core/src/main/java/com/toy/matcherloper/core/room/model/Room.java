@@ -47,33 +47,38 @@ public class Room extends BaseEntity {
     private List<RoomPosition> requiredPositionList = new ArrayList<>();
 
     @Builder
-    public Room(String name, RoomStatus status, String possibleOfflineArea, int requiredUserNumber, Long createUserId,
-                List<RoomPosition> requiredPositionList) {
+    public Room(String name, RoomStatus status, String possibleOfflineArea, Long createUserId,
+                int requiredUserNumber, List<RoomPosition> requiredPositionList) {
         this.name = name;
         this.status = status;
         this.possibleOfflineArea = possibleOfflineArea;
         this.requiredUserNumber = requiredUserNumber;
+        this.requiredUserNumber = calculateRequiredUserNumber(requiredPositionList);
         this.createUserId = createUserId;
         this.requiredPositionList = requiredPositionList;
     }
 
-    public Room(Long createUserId, List<RoomPosition> roomPositions, String name,
-                String possibleOfflineArea, int requiredUserNumber) {
+    public Room(Long createUserId, List<RoomPosition> roomPositions, String name, String possibleOfflineArea) {
         addRoomPositions(roomPositions);
         this.createUserId = createUserId;
         this.name = name;
         this.possibleOfflineArea = possibleOfflineArea;
-        this.requiredUserNumber = requiredUserNumber;
+        this.requiredUserNumber = calculateRequiredUserNumber(requiredPositionList);
         this.status = RoomStatus.OPEN;
     }
 
-    public static Room create(Long createUserId, List<RoomPosition> roomPositions, String name,
-                              String possibleOfflineArea, int requiredUserNumber) {
-        return new Room(createUserId, roomPositions, name, possibleOfflineArea, requiredUserNumber);
+    public static Room create(Long createUserId, List<RoomPosition> roomPositions, String name, String possibleOfflineArea) {
+        return new Room(createUserId, roomPositions, name, possibleOfflineArea);
     }
 
     public void addUserRoom(UserRoom userRoom) {
         this.userRooms.add(userRoom);
+    }
+
+    private int calculateRequiredUserNumber(List<RoomPosition> requiredPositionList) {
+        return requiredPositionList.stream()
+                .mapToInt(RoomPosition::getCount)
+                .sum();
     }
 
     private void addRoomPositions(List<RoomPosition> roomPositions) {
