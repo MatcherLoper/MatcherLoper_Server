@@ -49,4 +49,12 @@ public class RoomPosition {
         }
         this.room = room;
     }
+
+    public void reduceCount() {
+        this.count--;
+    }
+
+    public boolean canJoin(PositionType position) {
+        return this.position.equals(position) && this.count > 0;
+    }
 }

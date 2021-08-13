@@ -146,4 +146,12 @@ public class User extends BaseEntity {
     public void finishProject() {
         this.roleType = NONE;
     }
+
+    public void join() {
+        this.roleType = PARTICIPANT;
+    }
+
+    public boolean canJoin() {
+        return this.roleType.equals(NONE);
+    }
 }

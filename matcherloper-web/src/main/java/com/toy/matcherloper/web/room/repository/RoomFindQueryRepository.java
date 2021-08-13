@@ -24,7 +24,7 @@ public class RoomFindQueryRepository {
                 .distinct()
                 .innerJoin(room.userRooms, userRoom).fetchJoin()
                 .innerJoin(userRoom.user).fetchJoin()
-                .leftJoin(room.requiredPositionList).fetchJoin()
+                .innerJoin(room.requiredPositionList).fetchJoin()
                 .fetch();
     }
 
@@ -33,7 +33,7 @@ public class RoomFindQueryRepository {
                 .distinct()
                 .innerJoin(room.userRooms, userRoom).fetchJoin()
                 .innerJoin(userRoom.user).fetchJoin()
-                .leftJoin(room.requiredPositionList).fetchJoin()
+                .innerJoin(room.requiredPositionList).fetchJoin()
                 .where(room.status.eq(RoomStatus.OPEN))
                 .fetch();
     }
@@ -43,7 +43,7 @@ public class RoomFindQueryRepository {
                 .distinct()
                 .innerJoin(room.userRooms, userRoom).fetchJoin()
                 .innerJoin(userRoom.user).fetchJoin()
-                .leftJoin(room.requiredPositionList).fetchJoin()
+                .innerJoin(room.requiredPositionList).fetchJoin()
                 .where(room.id.eq(roomId))
                 .fetchOne());
     }

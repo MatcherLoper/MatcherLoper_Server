@@ -1,16 +1,15 @@
 package com.toy.matcherloper.core.room.model;
 
 import com.toy.matcherloper.core.common.entity.BaseEntity;
+import com.toy.matcherloper.core.user.model.User;
+import com.toy.matcherloper.core.user.model.type.PositionType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -106,6 +105,28 @@ public class Room extends BaseEntity {
     public void delete() {
         for (UserRoom userRoom : this.userRooms) {
             userRoom.deleteRoom();
+        }
+    }
+
+    public boolean canJoin(PositionType position) {
+        return this.requiredPositionList.stream()
+                .anyMatch(roomPosition -> roomPosition.canJoin(position));
+    }
+
+    public void joinUser(User user, PositionType position) {
+        final RoomPosition roomPosition = this.requiredPositionList.stream()
+                .filter(rp -> rp.canJoin(position))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("not found room position"));
+        roomPosition.reduceCount();
+        reduceRequiredNumber();
+        user.join();
+    }
+
+    private void reduceRequiredNumber() {
+        this.requiredUserNumber--;
+        if (this.requiredUserNumber == 0) {
+            this.status = RoomStatus.FULL;
         }
     }
 }
