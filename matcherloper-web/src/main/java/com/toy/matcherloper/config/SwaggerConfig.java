@@ -26,7 +26,7 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.toy.matcherloper"))
-                .paths(PathSelectors.ant("/api/**"))
+                .paths(PathSelectors.any())
                 .build();
     }
 
