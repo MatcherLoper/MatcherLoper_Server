@@ -131,13 +131,12 @@ public class User extends BaseEntity {
         this.userPositionSet.clear();
     }
 
-    public Room createRoom(List<RoomPosition> roomPositionList, String name, int requiredUserNumber, String possibleOfflineArea) {
+    public Room createRoom(List<RoomPosition> roomPositionList, String name, String possibleOfflineArea) {
         this.roleType = OWNER;
         return Room.create(this.getId(),
                 roomPositionList,
                 name,
-                possibleOfflineArea,
-                requiredUserNumber);
+                possibleOfflineArea);
     }
 
     public boolean isNotMatchingPassword(String password) {
@@ -146,5 +145,13 @@ public class User extends BaseEntity {
 
     public void finishProject() {
         this.roleType = NONE;
+    }
+
+    public void join() {
+        this.roleType = PARTICIPANT;
+    }
+
+    public boolean canJoin() {
+        return this.roleType.equals(NONE);
     }
 }

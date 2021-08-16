@@ -1,16 +1,15 @@
 package com.toy.matcherloper.core.room.model;
 
 import com.toy.matcherloper.core.common.entity.BaseEntity;
+import com.toy.matcherloper.core.user.model.User;
+import com.toy.matcherloper.core.user.model.type.PositionType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -47,33 +46,38 @@ public class Room extends BaseEntity {
     private List<RoomPosition> requiredPositionList = new ArrayList<>();
 
     @Builder
-    public Room(String name, RoomStatus status, String possibleOfflineArea, int requiredUserNumber, Long createUserId,
-                List<RoomPosition> requiredPositionList) {
+    public Room(String name, RoomStatus status, String possibleOfflineArea, Long createUserId,
+                int requiredUserNumber, List<RoomPosition> requiredPositionList) {
         this.name = name;
         this.status = status;
         this.possibleOfflineArea = possibleOfflineArea;
         this.requiredUserNumber = requiredUserNumber;
+        this.requiredUserNumber = calculateRequiredUserNumber(requiredPositionList);
         this.createUserId = createUserId;
         this.requiredPositionList = requiredPositionList;
     }
 
-    public Room(Long createUserId, List<RoomPosition> roomPositions, String name,
-                String possibleOfflineArea, int requiredUserNumber) {
+    public Room(Long createUserId, List<RoomPosition> roomPositions, String name, String possibleOfflineArea) {
         addRoomPositions(roomPositions);
         this.createUserId = createUserId;
         this.name = name;
         this.possibleOfflineArea = possibleOfflineArea;
-        this.requiredUserNumber = requiredUserNumber;
+        this.requiredUserNumber = calculateRequiredUserNumber(requiredPositionList);
         this.status = RoomStatus.OPEN;
     }
 
-    public static Room create(Long createUserId, List<RoomPosition> roomPositions, String name,
-                              String possibleOfflineArea, int requiredUserNumber) {
-        return new Room(createUserId, roomPositions, name, possibleOfflineArea, requiredUserNumber);
+    public static Room create(Long createUserId, List<RoomPosition> roomPositions, String name, String possibleOfflineArea) {
+        return new Room(createUserId, roomPositions, name, possibleOfflineArea);
     }
 
     public void addUserRoom(UserRoom userRoom) {
         this.userRooms.add(userRoom);
+    }
+
+    private int calculateRequiredUserNumber(List<RoomPosition> requiredPositionList) {
+        return requiredPositionList.stream()
+                .mapToInt(RoomPosition::getCount)
+                .sum();
     }
 
     private void addRoomPositions(List<RoomPosition> roomPositions) {
@@ -101,6 +105,28 @@ public class Room extends BaseEntity {
     public void delete() {
         for (UserRoom userRoom : this.userRooms) {
             userRoom.deleteRoom();
+        }
+    }
+
+    public boolean canJoin(PositionType position) {
+        return this.requiredPositionList.stream()
+                .anyMatch(roomPosition -> roomPosition.canJoin(position));
+    }
+
+    public void joinUser(User user, PositionType position) {
+        final RoomPosition roomPosition = this.requiredPositionList.stream()
+                .filter(rp -> rp.canJoin(position))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("not found room position"));
+        roomPosition.reduceCount();
+        reduceRequiredNumber();
+        user.join();
+    }
+
+    private void reduceRequiredNumber() {
+        this.requiredUserNumber--;
+        if (this.requiredUserNumber == 0) {
+            this.status = RoomStatus.FULL;
         }
     }
 }

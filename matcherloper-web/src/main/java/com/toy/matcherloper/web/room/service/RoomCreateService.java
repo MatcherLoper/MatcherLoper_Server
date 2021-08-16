@@ -34,7 +34,6 @@ public class RoomCreateService {
         checkOwnerHaveAnotherOpenRoom(user);
         Room room = user.createRoom(toPositionList(request.getRoomPositionList()),
                 request.getName(),
-                request.getRequiredUserNumber(),
                 request.getPossibleOfflineArea());
         roomRepository.save(room);
         roomPositionRepository.saveAll(room.getRequiredPositionList());

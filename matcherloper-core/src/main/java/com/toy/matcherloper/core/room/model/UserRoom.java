@@ -17,7 +17,7 @@ public class UserRoom {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "user_room_entity")
+    @Column(name = "user_room_id")
     private Long id;
 
     @ManyToOne(fetch = LAZY)
