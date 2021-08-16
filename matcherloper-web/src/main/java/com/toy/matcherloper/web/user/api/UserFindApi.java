@@ -1,5 +1,8 @@
 package com.toy.matcherloper.web.user.api;
 
+import com.toy.matcherloper.auth.security.model.UserPrincipal;
+import com.toy.matcherloper.core.user.model.User;
+import com.toy.matcherloper.web.auth.annotation.CurrentUser;
 import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.user.api.dto.response.UserFindResponse;
 import com.toy.matcherloper.web.user.service.UserFindService;
@@ -28,5 +31,8 @@ public class UserFindApi {
         }
     }
 
-    //필요한 포지션 or 스킬을 가지고 있는 회원 찾는 api
+    @GetMapping("/user/me")
+    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
+        return userFindService.findById(userPrincipal.getId());
+    }
 }
