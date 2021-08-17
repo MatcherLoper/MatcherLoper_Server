@@ -3,6 +3,8 @@ package com.toy.matcherloper.core.room.model;
 import com.toy.matcherloper.core.common.entity.BaseEntity;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.PositionType;
+import com.toy.matcherloper.event.dispatcher.Events;
+import com.toy.matcherloper.event.message.MatchingEvent;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,6 +69,7 @@ public class Room extends BaseEntity {
     }
 
     public static Room create(Long createUserId, List<RoomPosition> roomPositions, String name, String possibleOfflineArea) {
+        Events.raise(new MatchingEvent(Arrays.asList("token"), "alert!!"));
         return new Room(createUserId, roomPositions, name, possibleOfflineArea);
     }
 
