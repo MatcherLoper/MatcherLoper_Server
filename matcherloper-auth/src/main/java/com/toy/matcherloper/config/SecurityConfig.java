@@ -69,7 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .cors()
                 .and()
-                    .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                     .csrf().disable()
                     .formLogin().disable()
@@ -82,7 +83,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                     .oauth2Login()
                         .authorizationEndpoint()
-                        .baseUri("/oauth2/authorize/google") //첫 로그인
+                        .baseUri("/oauth2/authorize") //첫 로그인
                         .authorizationRequestRepository(getCookieAuthorizationFromRequest())
                 .and()
                     .userInfoEndpoint()
