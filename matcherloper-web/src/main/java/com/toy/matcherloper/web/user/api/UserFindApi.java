@@ -1,8 +1,5 @@
 package com.toy.matcherloper.web.user.api;
 
-import com.toy.matcherloper.auth.security.model.UserPrincipal;
-import com.toy.matcherloper.core.user.model.User;
-import com.toy.matcherloper.web.auth.annotation.CurrentUser;
 import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.user.api.dto.response.UserFindResponse;
 import com.toy.matcherloper.web.user.service.UserFindService;
@@ -29,10 +26,5 @@ public class UserFindApi {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());
         }
-    }
-
-    @GetMapping("/user/me")
-    public User getCurrentUser(@CurrentUser UserPrincipal userPrincipal) {
-        return userFindService.findById(userPrincipal.getId());
     }
 }

@@ -7,15 +7,12 @@ import com.toy.matcherloper.web.user.api.dto.response.SignInResponse;
 import com.toy.matcherloper.web.user.service.UserSignService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -33,21 +30,6 @@ public class UserSignApi {
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());
-        }
-    }
-
-    @PostMapping("/signup2")
-    public ResponseEntity<?> signUpIncludeUri(@RequestBody SignUpRequest signUpRequest) {
-        try {
-            Long signUpUserId = userSignService.signUp(signUpRequest);
-            URI uri = ServletUriComponentsBuilder
-                    .fromCurrentContextPath().path("/api/v1/users/user/me")
-                    .buildAndExpand(signUpUserId).toUri();
-
-            return ResponseEntity.created(uri).body(ApiResult.succeed(signUpUserId));
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            return ResponseEntity.ok(ApiResult.failed(e.getMessage()));
         }
     }
 
