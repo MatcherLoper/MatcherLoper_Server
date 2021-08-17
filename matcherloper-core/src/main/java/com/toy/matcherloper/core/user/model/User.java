@@ -44,10 +44,10 @@ public class User extends BaseEntity {
     @Column(name = "role_type", nullable = false)
     private RoleType roleType;
 
-    @OneToMany(mappedBy = "user", fetch = EAGER)
+    @OneToMany(mappedBy = "user", fetch = EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserPosition> userPositionSet = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", fetch = EAGER)
+    @OneToMany(mappedBy = "user", fetch = EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Skill> skillSet = new HashSet<>();
 
     @Embedded

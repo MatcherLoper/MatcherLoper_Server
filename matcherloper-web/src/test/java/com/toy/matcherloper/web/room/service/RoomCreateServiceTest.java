@@ -56,7 +56,6 @@ class RoomCreateServiceTest {
         //then
         assertThat(room.getName()).isEqualTo(createRoomRequest.getName());
         assertThat(room.getCreateUserId()).isEqualTo(createRoomRequest.getUserId());
-        assertThat(room.getRequiredUserNumber()).isEqualTo(createRoomRequest.getRequiredUserNumber());
     }
 
     @Test
@@ -93,6 +92,6 @@ class RoomCreateServiceTest {
         RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, 2);
         RoomPositionDto roomPositionDto = new RoomPositionDto(roomPosition);
         return new CreateRoomRequest(user.getId(),
-                Collections.singletonList(roomPositionDto), "room1", "부", 4);
+                Collections.singletonList(roomPositionDto), "room1", "부");
     }
 }
