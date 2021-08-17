@@ -48,7 +48,7 @@ public class UserSignService {
                 toUserPositionSet(signUpRequest.getUserPositionDtoList()),
                 toSkillSet(signUpRequest.getSkillDtoList()),
                 toAddress(signUpRequest.getAddressDto()),
-                AuthProviderType.LOCAL);
+                AuthProviderType.local);
 
         saveSkills(user.getSkillSet());
         userPositionRepository.saveAll(user.getUserPositionSet());
