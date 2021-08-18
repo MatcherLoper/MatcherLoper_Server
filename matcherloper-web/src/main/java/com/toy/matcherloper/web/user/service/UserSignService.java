@@ -2,7 +2,6 @@ package com.toy.matcherloper.web.user.service;
 
 import com.toy.matcherloper.auth.jwt.JwtTokenProvider;
 import com.toy.matcherloper.core.user.exception.PasswordNotMatchedException;
-import com.toy.matcherloper.core.user.model.Skill;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.AuthProviderType;
 import com.toy.matcherloper.core.user.repository.SkillRepository;
@@ -20,8 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Set;
 
 import static com.toy.matcherloper.web.utils.DtoConverter.*;
 
@@ -49,7 +46,6 @@ public class UserSignService {
                 toSkillSet(signUpRequest.getSkillDtoList()),
                 toAddress(signUpRequest.getAddressDto()),
                 AuthProviderType.local);
-
         saveSkills(user.getSkillSet());
         userPositionRepository.saveAll(user.getUserPositionSet());
         userRepository.save(user);
@@ -71,8 +67,6 @@ public class UserSignService {
                 )
         );
 
-        //System.out.println(authentication.getPrincipal().toString());
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenProvider.createToken(authentication);
 
@@ -83,11 +77,5 @@ public class UserSignService {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new EmailDuplicateException(String.format("%s is duplicated email", email));
         }
-    }
-
-    private void saveSkills(Set<Skill> skillSet) {
-        skillSet.stream()
-                .filter(skill -> !skillRepository.findByName(skill.getName()).isPresent())
-                .forEach(skillRepository::save);
     }
 }

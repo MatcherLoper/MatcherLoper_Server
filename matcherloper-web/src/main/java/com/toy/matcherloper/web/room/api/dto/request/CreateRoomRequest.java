@@ -24,15 +24,10 @@ public class CreateRoomRequest {
     @NotNull(message = "오프라인 모임이 가능한 지역은 널이면 안됩니다.")
     private String possibleOfflineArea;
 
-    @NotNull(message = "필요한 참가자 수를 입력해 주세요.")
-    private int requiredUserNumber;
-
-    public CreateRoomRequest(Long userId, List<RoomPositionDto> roomPositionList,
-                             String name, String possibleOfflineArea, int requiredUserNumber) {
+    public CreateRoomRequest(Long userId, List<RoomPositionDto> roomPositionList, String name, String possibleOfflineArea) {
         this.userId = userId;
         this.roomPositionList = roomPositionList;
         this.name = name;
         this.possibleOfflineArea = possibleOfflineArea;
-        this.requiredUserNumber = requiredUserNumber;
     }
 }

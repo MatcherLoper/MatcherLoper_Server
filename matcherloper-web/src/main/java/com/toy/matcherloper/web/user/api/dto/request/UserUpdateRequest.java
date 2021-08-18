@@ -13,9 +13,6 @@ import java.util.List;
 @NoArgsConstructor
 public class UserUpdateRequest {
 
-    @Email(message = "잘못된 형식의 이메일입니다.")
-    private String email;
-
     @NotBlank(message = "비밀번호가 공백이면 안됩니다.")
     private String password;
 
