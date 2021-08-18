@@ -3,3 +3,5 @@ include 'matcherloper-core'
 include 'matcherloper-common'
 include 'matcherloper-web'
 include 'matcherloper-event'
+include 'matcherloper-auth'
+

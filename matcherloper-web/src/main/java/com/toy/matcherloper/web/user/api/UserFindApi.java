@@ -27,6 +27,4 @@ public class UserFindApi {
             return ApiResult.failed(e.getMessage());
         }
     }
-
-    //필요한 포지션 or 스킬을 가지고 있는 회원 찾는 api
 }

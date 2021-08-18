@@ -9,6 +9,6 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ComponentScan(basePackages = "com.toy.matcherloper.web")
-@Import(value = {CoreConfig.class})
+@Import(value = {CoreConfig.class, AuthConfig.class})
 public class WebConfig {
 }

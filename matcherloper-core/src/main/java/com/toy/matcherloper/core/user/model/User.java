@@ -1,8 +1,10 @@
 package com.toy.matcherloper.core.user.model;
 
+import com.sun.istack.NotNull;
 import com.toy.matcherloper.core.common.entity.BaseEntity;
 import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.room.model.RoomPosition;
+import com.toy.matcherloper.core.user.model.type.AuthProviderType;
 import com.toy.matcherloper.core.user.model.type.RoleType;
 import lombok.*;
 
@@ -53,10 +55,15 @@ public class User extends BaseEntity {
     @Embedded
     private Address address;
 
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    private AuthProviderType authProvider;
+    private String providerId;
+
     @Builder
-    public User(Long id, String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
-                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
-        this.id = id;
+    public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
+                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Room room, Address address,
+                AuthProviderType provider, String providerId) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -66,15 +73,19 @@ public class User extends BaseEntity {
         this.userPositionSet = userPositionSet;
         this.skillSet = skillSet;
         this.address = address;
+        this.authProvider = provider;
+        this.providerId = providerId;
     }
 
     public static User create(String email, String password, String name, String phoneNumber, String introduction,
-                              Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
-        return new User(email, password, name, phoneNumber, introduction, NONE, userPositionSet, skillSet, address);
+                              Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address,
+                              AuthProviderType authProvider) {
+        return new User(email, password, name, phoneNumber, introduction, RoleType.NONE,
+                userPositionSet, skillSet, address, authProvider);
     }
 
     public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
-                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address) {
+                Set<UserPosition> userPositionSet, Set<Skill> skillSet, Address address, AuthProviderType authProvider) {
         for (UserPosition userPosition : userPositionSet) addUserPosition(userPosition);
         for (Skill skill : skillSet) addSkill(skill);
         this.email = email;
@@ -84,6 +95,7 @@ public class User extends BaseEntity {
         this.introduction = introduction;
         this.roleType = roleType;
         this.address = address;
+        this.authProvider = authProvider;
     }
 
     public void addUserPosition(UserPosition position) {
@@ -105,6 +117,11 @@ public class User extends BaseEntity {
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
         this.address = address;
+    }
+
+    public User update(String oAuth2Username) {
+        this.name = name;
+        return this;
     }
 
     private void updateSkills(Set<Skill> skillSet) {
