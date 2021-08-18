@@ -4,7 +4,6 @@ import com.toy.matcherloper.auth.jwt.JwtTokenProvider;
 import com.toy.matcherloper.core.user.exception.PasswordNotMatchedException;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.AuthProviderType;
-import com.toy.matcherloper.core.user.repository.SkillRepository;
 import com.toy.matcherloper.core.user.repository.UserPositionRepository;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
@@ -28,7 +27,6 @@ public class UserSignService {
 
     private final UserRepository userRepository;
     private final UserFindService userFindService;
-    private final SkillRepository skillRepository;
     private final UserPositionRepository userPositionRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
