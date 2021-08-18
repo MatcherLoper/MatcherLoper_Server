@@ -36,7 +36,7 @@ public class UserSignApi {
     @PostMapping("/signin")
     public ApiResult<SignInResponse> signIn(@Valid @RequestBody SignInRequest signInRequest) {
         try {
-            return ApiResult.succeed(new SignInResponse(userSignService.signIn(signInRequest)));
+            return ApiResult.succeed(userSignService.signIn(signInRequest));
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());

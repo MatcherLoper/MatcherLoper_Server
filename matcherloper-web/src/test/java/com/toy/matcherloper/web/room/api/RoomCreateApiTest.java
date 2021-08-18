@@ -82,7 +82,7 @@ class RoomCreateApiTest {
         RoomPosition roomPosition = new RoomPosition(PositionType.BACKEND, 2);
         RoomPositionDto roomPositionDto = new RoomPositionDto(roomPosition);
         CreateRoomRequest createRoomRequest = new CreateRoomRequest(user.getId(),
-                Collections.singletonList(roomPositionDto), "room1", "부", 4);
+                Collections.singletonList(roomPositionDto), "room1", "부");
 
         String requestJson = objectMapper.writeValueAsString(createRoomRequest);
 

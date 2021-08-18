@@ -7,6 +7,7 @@ import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.user.api.dto.AddressDto;
 import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
 import com.toy.matcherloper.web.user.api.dto.request.SignUpRequest;
+import com.toy.matcherloper.web.user.api.dto.response.SignInResponse;
 import com.toy.matcherloper.web.user.exception.EmailDuplicateException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
@@ -71,8 +72,8 @@ class UserSignServiceTest {
         loginService.signUp(signUpRequest);
 
         //when
-        final Long loginUserId = loginService.signIn(new SignInRequest(signUpRequest.getEmail(), signUpRequest.getPassword()));
-
+        SignInResponse signInResponse = loginService.signIn(new SignInRequest(signUpRequest.getEmail(), signUpRequest.getPassword()));
+        Long loginUserId = signInResponse.getId();
         //then
         assertThat(loginUserId).isEqualTo(1L);
     }
