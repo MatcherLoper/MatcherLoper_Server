@@ -1,5 +1,6 @@
 package com.toy.matcherloper.config;
 
+import com.toy.matcherloper.auth.jwt.JwtTokenProvider;
 import com.toy.matcherloper.auth.jwt.filter.TokenAuthenticationFilter;
 import com.toy.matcherloper.auth.oauth2.handler.FailureHandler;
 import com.toy.matcherloper.auth.oauth2.handler.SuccessHandler;
@@ -35,10 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final OAuth2UserLoadService oAuth2UserLoadService;
     private final SuccessHandler successHandler;
     private final FailureHandler failureHandler;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Bean
     public TokenAuthenticationFilter getJwtFilter() {
-        return new TokenAuthenticationFilter();
+        return new TokenAuthenticationFilter(jwtTokenProvider);
     }
 
     @Bean
