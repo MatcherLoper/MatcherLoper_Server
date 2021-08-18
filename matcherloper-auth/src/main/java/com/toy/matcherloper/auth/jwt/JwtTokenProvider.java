@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class JwtTokenProvider {
 
     private final AuthProperties properties;
@@ -23,8 +23,6 @@ public class JwtTokenProvider {
 
     public String createToken(Authentication authentication) {
         UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
-
-        //System.out.println("tokenSecret = " + properties.getAuth().getTokenSecret());
 
         Date nowDate = new Date();
         Date expiryDate = new Date(nowDate.getTime() + properties.getAuth().getTokenExpirationMsec());
