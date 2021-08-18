@@ -1,28 +1,32 @@
 package com.toy.matcherloper.config;
 
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.ConstructorBinding;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@RequiredArgsConstructor
+@ConstructorBinding
 @ConfigurationProperties(prefix = "auth.properties.key")
 public class AuthProperties {
-    private final Auth auth = new Auth();
-    private final OAuth2 oAuth2 = new OAuth2();
+    private final Auth auth;
+    private final OAuth2 oAuth2;
 
     @Getter
-    @Setter
+    @RequiredArgsConstructor
+    @ConstructorBinding
     public static class Auth {
-        private String tokenSecret;
-        private long tokenExpirationMsec;
+        private final String tokenSecret;
+        private final long tokenExpirationMsec;
     }
 
     @Getter
-    @Setter
+    @RequiredArgsConstructor
+    @ConstructorBinding
     public static class OAuth2 {
-        private List<String> authorizedRedirectUris = new ArrayList<>();
+        private final List<String> authorizedRedirectUris;
     }
 }
