@@ -63,7 +63,7 @@ public class SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
             throw new BadRequestException("승인되지 않은 리디렉션 URI가 있어 인증을 진행할 수 없습니다.");
         }
 
-        String targetUri = redirectUri.orElse(getDefaultTargetUrl());//"/"
+        String targetUri = redirectUri.orElse(getDefaultTargetUrl());
         String token = jwtTokenProvider.createToken(authentication);
 
         return UriComponentsBuilder.fromUriString(targetUri)
