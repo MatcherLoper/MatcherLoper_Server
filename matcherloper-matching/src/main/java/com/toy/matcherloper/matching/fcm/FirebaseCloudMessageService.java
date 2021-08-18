@@ -3,6 +3,8 @@ package com.toy.matcherloper.matching.fcm;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.auth.oauth2.GoogleCredentials;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +26,15 @@ public class FirebaseCloudMessageService {
     private final GoogleCredentials googleCredentials;
     private final OkHttpClient client;
     private final ObjectMapper objectMapper;
+
+    public void sendMessageBy(String topic) throws FirebaseMessagingException {
+        final Message message = Message.builder()
+                .setTopic(topic)
+                .build();
+        final String response = FirebaseMessaging.getInstance()
+                .send(message);
+        log.info(response);
+    }
 
     public void sendMessageTo(List<String> targetTokens, String title, String body) throws IOException {
         for (String targetToken : targetTokens) {
