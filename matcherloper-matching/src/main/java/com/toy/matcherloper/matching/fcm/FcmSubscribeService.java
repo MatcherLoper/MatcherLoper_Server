@@ -6,23 +6,36 @@ import com.google.firebase.messaging.TopicManagementResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Service
 public class FcmSubscribeService {
 
-    private static final String TOPIC = "matching";
-
-    public String subscribeToTopic(String token) {
+    public String subscribeToTopic(String token, String topic) {
         ApiFuture<TopicManagementResponse> response = FirebaseMessaging
                 .getInstance()
-                .subscribeToTopicAsync(Arrays.asList(token), TOPIC);
+                .subscribeToTopicAsync(Arrays.asList(token), topic);
         return response.toString();
     }
 
-    public String unSubscribeToTopic(String token) {
+    public String unSubscribeToTopic(String token, String topic) {
         ApiFuture<TopicManagementResponse> response = FirebaseMessaging
                 .getInstance()
-                .unsubscribeFromTopicAsync(Arrays.asList(token), TOPIC);
+                .unsubscribeFromTopicAsync(Arrays.asList(token), topic);
+        return response.toString();
+    }
+
+    public String subscribeToTopic(List<String> tokens, String topic) {
+        ApiFuture<TopicManagementResponse> response = FirebaseMessaging
+                .getInstance()
+                .subscribeToTopicAsync(tokens, topic);
+        return response.toString();
+    }
+
+    public String unSubscribeToTopic(List<String> tokens, String topic) {
+        ApiFuture<TopicManagementResponse> response = FirebaseMessaging
+                .getInstance()
+                .unsubscribeFromTopicAsync(tokens, topic);
         return response.toString();
     }
 }

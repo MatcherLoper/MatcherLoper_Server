@@ -27,8 +27,9 @@ public class FirebaseCloudMessageService {
     private final OkHttpClient client;
     private final ObjectMapper objectMapper;
 
-    public void sendMessageBy(String topic) throws FirebaseMessagingException {
+    public void sendMessageBy(String topic, String title, String body) throws FirebaseMessagingException {
         final Message message = Message.builder()
+                .setNotification(new Notification(title, body))
                 .setTopic(topic)
                 .build();
         final String response = FirebaseMessaging.getInstance()

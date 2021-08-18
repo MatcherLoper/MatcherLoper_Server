@@ -11,6 +11,6 @@ public class MatchingEventHandler implements EventHandler<MatchingEvent> {
 
     @Override
     public void handle(MatchingEvent event) {
-        matchingSystem.matching(event.getTokens(), event.getMessage());
+        matchingSystem.matching(event.getTopic(), event.getTitle());
     }
 }

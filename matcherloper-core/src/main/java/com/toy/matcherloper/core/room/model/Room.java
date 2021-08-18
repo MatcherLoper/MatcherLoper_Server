@@ -5,6 +5,8 @@ import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.PositionType;
 import com.toy.matcherloper.event.dispatcher.Events;
 import com.toy.matcherloper.event.message.MatchingEvent;
+import com.toy.matcherloper.matching.notification.NotificationTitle;
+import com.toy.matcherloper.matching.type.TopicType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -69,7 +71,7 @@ public class Room extends BaseEntity {
     }
 
     public static Room create(Long createUserId, List<RoomPosition> roomPositions, String name, String possibleOfflineArea) {
-        Events.raise(new MatchingEvent(Arrays.asList("token"), "alert!!"));
+        Events.raise(new MatchingEvent(TopicType.MATCHING.getToken(), NotificationTitle.ROOM_STATE_CHANGE_DETECTION));
         return new Room(createUserId, roomPositions, name, possibleOfflineArea);
     }
 
