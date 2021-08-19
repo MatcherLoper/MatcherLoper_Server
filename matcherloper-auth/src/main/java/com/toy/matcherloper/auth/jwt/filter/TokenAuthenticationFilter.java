@@ -36,7 +36,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
             log.error("Security Context 에서 사용자 인증을 설정할 수 없습니다.", e);
         }
-
         filterChain.doFilter(request, response);
     }
 
@@ -44,7 +43,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String bearerToken = request.getHeader("Authorization");
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
+            return bearerToken.substring(7);
         }
         return null;
     }
