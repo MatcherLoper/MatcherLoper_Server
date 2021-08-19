@@ -46,7 +46,7 @@ public class UserJoinRoomService {
         Events.handleAsync(new UnSubscribeEventHandler(fcmSubscribeService));
         canJoinRoom.joinUser(user, position);
 
-        final UserRoom userRoom = userRoomRepository.save(new UserRoom(user, canJoinRoom));
+        final UserRoom userRoom = userRoomRepository.save(new UserRoom(user, canJoinRoom, position));
         return userRoom.getId();
     }
 }

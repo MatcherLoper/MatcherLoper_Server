@@ -42,7 +42,7 @@ public class RoomCreateService {
                 request.getPossibleOfflineArea());
         roomRepository.save(room);
         roomPositionRepository.saveAll(room.getRequiredPositionList());
-        userRoomRepository.save(new UserRoom(user, room));
+        userRoomRepository.save(new UserRoom(user, room, null));
         return room.getId();
     }
 

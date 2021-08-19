@@ -119,13 +119,18 @@ public class Room extends BaseEntity {
     }
 
     public void joinUser(User user, PositionType position) {
-        final RoomPosition roomPosition = this.requiredPositionList.stream()
-                .filter(rp -> rp.canJoin(position))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("not found room position"));
+        final RoomPosition roomPosition = findCanJoinRoomPosition(position);
         roomPosition.reduceCount();
         reduceRequiredNumber();
         user.join();
+    }
+
+    public void leaveUser(UserRoom userRoom, User user, PositionType position) {
+        this.userRooms.remove(userRoom);
+        final RoomPosition roomPosition = findRoomPosition(position);
+        roomPosition.addCount();
+        addRequiredNumber();
+        user.leaveRoom();
     }
 
     private void reduceRequiredNumber() {
@@ -133,5 +138,24 @@ public class Room extends BaseEntity {
         if (this.requiredUserNumber == 0) {
             this.status = RoomStatus.FULL;
         }
+    }
+
+    private RoomPosition findCanJoinRoomPosition(PositionType position) {
+        return this.requiredPositionList.stream()
+                .filter(rp -> rp.canJoin(position))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("not found room position"));
+    }
+
+    private RoomPosition findRoomPosition(PositionType position) {
+        return this.requiredPositionList.stream()
+                .filter(rp -> rp.equalsPosition(position))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("not found room position"));
+    }
+
+    private void addRequiredNumber() {
+        this.requiredUserNumber++;
+        this.status = RoomStatus.OPEN;
     }
 }

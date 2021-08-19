@@ -7,7 +7,9 @@ import com.toy.matcherloper.core.room.model.RoomPosition;
 import com.toy.matcherloper.core.user.model.type.AuthProviderType;
 import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.event.dispatcher.Events;
+import com.toy.matcherloper.event.message.MatchingEvent;
 import com.toy.matcherloper.event.message.UnSubscribeEvent;
+import com.toy.matcherloper.matching.notification.NotificationTitle;
 import com.toy.matcherloper.matching.type.TopicType;
 import lombok.*;
 
@@ -173,6 +175,11 @@ public class User extends BaseEntity {
     public void join() {
         Events.raise(new UnSubscribeEvent(this.deviceToken, TopicType.MATCHING.getToken()));
         this.roleType = PARTICIPANT;
+    }
+
+    public void leaveRoom() {
+        Events.raise(new MatchingEvent(TopicType.MATCHING.getToken(), NotificationTitle.ROOM_STATE_CHANGE_DETECTION));
+        this.roleType = NONE;
     }
 
     public boolean canJoin() {
