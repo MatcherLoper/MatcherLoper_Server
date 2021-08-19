@@ -6,6 +6,7 @@ import com.toy.matcherloper.auth.oauth2.info.OAuth2UserInfoFactory;
 import com.toy.matcherloper.auth.security.model.UserPrincipal;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.AuthProviderType;
+import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -15,6 +16,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -37,14 +39,13 @@ public class OAuth2UserLoadService extends DefaultOAuth2UserService {
         }
     }
 
-    //사용자 정보 추출
     private OAuth2User extractOAuthUserFromRequest(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
 
         OAuth2UserInfo oAuth2UserInfo = OAuth2UserInfoFactory
                 .getOAuth2UserInfo(registrationId, oAuth2User.getAttributes());
 
-        if (oAuth2UserInfo.getEmail().isEmpty()) {
+        if (StringUtils.isEmpty(oAuth2UserInfo.getEmail())) {
             throw new OAuth2AuthenticationProcessingException("OAuth2 공급자(구글, 네이버 등)에서 이메일을 찾을 수 없습니다.");
         }
 
@@ -72,6 +73,7 @@ public class OAuth2UserLoadService extends DefaultOAuth2UserService {
                 User.builder()
                         .email(oAuth2UserInfo.getEmail())
                         .name(oAuth2UserInfo.getName())
+                        .roleType(RoleType.NONE)
                         .provider(AuthProviderType.valueOf(userRequest.getClientRegistration().getRegistrationId()))
                         .providerId(oAuth2UserInfo.getId())
                         .build()
