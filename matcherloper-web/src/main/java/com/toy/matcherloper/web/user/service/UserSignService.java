@@ -49,24 +49,20 @@ public class UserSignService {
         return user.getId();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public SignInResponse signIn(SignInRequest signInRequest) {
         User user = userFindService.findByEmail(signInRequest.getEmail());
-
         if (!passwordEncoder.matches(signInRequest.getPassword(), user.getPassword())) {
             throw new PasswordNotMatchedException("Password is not matched!");
         }
+        user.changeDeviceToken(signInRequest.getDeviceToken());
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         signInRequest.getEmail(),
-                        signInRequest.getPassword()
-                )
-        );
-
+                        signInRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenProvider.createToken(authentication);
-
         return new SignInResponse(user.getId(), token);
     }
 

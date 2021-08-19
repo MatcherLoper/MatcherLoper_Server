@@ -185,4 +185,8 @@ public class User extends BaseEntity {
     public boolean canJoin() {
         return this.roleType.equals(NONE);
     }
+
+    public void changeDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
 }
