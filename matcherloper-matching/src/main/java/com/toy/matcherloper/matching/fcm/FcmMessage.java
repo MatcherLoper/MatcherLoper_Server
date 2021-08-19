@@ -8,7 +8,7 @@ import lombok.Getter;
 @Getter
 public class FcmMessage {
 
-    @Key(value = "validate_onle")
+    @Key(value = "validate_only")
     private boolean validateOnly;
 
     @Key(value = "message")
