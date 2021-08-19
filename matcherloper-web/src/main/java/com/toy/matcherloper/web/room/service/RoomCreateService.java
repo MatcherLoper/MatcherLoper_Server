@@ -36,10 +36,10 @@ public class RoomCreateService {
     public Long create(CreateRoomRequest request) {
         User user = userFindService.findById(request.getUserId());
         checkOwnerHaveAnotherOpenRoom(user);
+        Events.handleAsync(new MatchingEventHandler(fcmMatchingSystem));
         Room room = user.createRoom(toPositionList(request.getRoomPositionList()),
                 request.getName(),
                 request.getPossibleOfflineArea());
-        Events.handleAsync(new MatchingEventHandler(fcmMatchingSystem));
         roomRepository.save(room);
         roomPositionRepository.saveAll(room.getRequiredPositionList());
         userRoomRepository.save(new UserRoom(user, room));
