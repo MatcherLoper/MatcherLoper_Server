@@ -27,16 +27,16 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username")
     private String name;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "introduction")
@@ -59,6 +59,9 @@ public class User extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private AuthProviderType authProvider;
     private String providerId;
+
+    @Column(name = "device_token_value")
+    private String deviceTokenValue;
 
     @Builder
     public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
