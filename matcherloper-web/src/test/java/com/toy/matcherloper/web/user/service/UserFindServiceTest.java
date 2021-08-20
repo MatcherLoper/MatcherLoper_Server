@@ -2,6 +2,7 @@ package com.toy.matcherloper.web.user.service;
 
 import com.toy.matcherloper.core.user.model.Address;
 import com.toy.matcherloper.core.user.model.User;
+import com.toy.matcherloper.core.user.model.type.AuthProviderType;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.user.exception.UserNotFoundException;
 import org.junit.jupiter.api.AfterEach;
@@ -83,7 +84,7 @@ class UserFindServiceTest {
 
     private void saveUser() {
         user = User.create("test@test.com", "1234", "user", "1234-5678", "hi",
-                new HashSet<>(), new HashSet<>(), new Address("인천", "아파트;"));
+                new HashSet<>(), new HashSet<>(), new Address("인천", "아파트;"), AuthProviderType.local);
         userRepository.save(user);
     }
 }
