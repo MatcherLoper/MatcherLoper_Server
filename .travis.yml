@@ -12,12 +12,12 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
-script: "./gradlew clean build"
+script: "./gradlew bootJar -p matcherloper-web clean"
 
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
-    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 ::설정된 값
     bucket: matcherloper-deploy # 6-3-3에서 생성한 S3 버킷
     region: ap-northeast-2
     skip_cleanup: true
