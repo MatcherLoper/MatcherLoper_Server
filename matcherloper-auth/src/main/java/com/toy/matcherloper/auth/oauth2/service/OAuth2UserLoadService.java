@@ -60,7 +60,6 @@ public class OAuth2UserLoadService extends DefaultOAuth2UserService {
                         user.getAuthProvider() + "계정을 사용하기 위해서 로그인이 필요합니다.");
             }
 
-            user = updateUser(user, oAuth2UserInfo);
         } else {
             user = registerUserFromRequest(userRequest, oAuth2UserInfo);
         }
@@ -75,14 +74,7 @@ public class OAuth2UserLoadService extends DefaultOAuth2UserService {
                         .name(oAuth2UserInfo.getName())
                         .roleType(RoleType.NONE)
                         .provider(AuthProviderType.valueOf(userRequest.getClientRegistration().getRegistrationId()))
-                        .providerId(oAuth2UserInfo.getId())
                         .build()
-        );
-    }
-
-    private User updateUser(User user, OAuth2UserInfo oAuth2UserInfo) {
-        return userRepository.save(
-                user.update(oAuth2UserInfo.getName())
         );
     }
 }

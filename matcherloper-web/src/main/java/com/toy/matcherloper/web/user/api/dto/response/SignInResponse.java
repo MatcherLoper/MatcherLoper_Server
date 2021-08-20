@@ -10,6 +10,9 @@ public class SignInResponse {
     private Long id;
     private String token;
 
+    public SignInResponse(Long id) {
+        this.id = id;
+    }
     public SignInResponse(Long id, String token) {
         this.id = id;
         this.token = token;

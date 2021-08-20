@@ -58,15 +58,14 @@ public class User extends BaseEntity {
     @NotNull
     @Enumerated(value = EnumType.STRING)
     private AuthProviderType authProvider;
-    private String providerId;
 
-    @Column(name = "device_token_value")
-    private String deviceTokenValue;
+    @Column(name = "device_token")
+    private String deviceToken;
 
     @Builder
     public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
                 Set<UserPosition> userPositionSet, Set<Skill> skillSet, Room room, Address address,
-                AuthProviderType provider, String providerId) {
+                AuthProviderType provider) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -77,7 +76,6 @@ public class User extends BaseEntity {
         this.skillSet = skillSet;
         this.address = address;
         this.authProvider = provider;
-        this.providerId = providerId;
     }
 
     public static User create(String email, String password, String name, String phoneNumber, String introduction,
@@ -120,11 +118,6 @@ public class User extends BaseEntity {
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
         this.address = address;
-    }
-
-    public User update(String oAuth2Username) {
-        this.name = name;
-        return this;
     }
 
     private void updateSkills(Set<Skill> skillSet) {
