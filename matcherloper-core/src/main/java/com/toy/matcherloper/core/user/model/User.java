@@ -99,6 +99,19 @@ public class User extends BaseEntity {
         this.authProvider = authProvider;
     }
 
+    public static User createFromOAuth2(String email, String name, String deviceToken,
+                                        AuthProviderType authProviderType, RoleType roleType) {
+        return new User(email, name, deviceToken, authProviderType, roleType);
+    }
+
+    public User(String email, String name, String deviceToken, AuthProviderType authProviderType, RoleType roleType) {
+        this.email = email;
+        this.name = name;
+        this.deviceToken = deviceToken;
+        this.authProvider = authProviderType;
+        this.roleType = roleType;
+    }
+
     public void addUserPosition(UserPosition position) {
         this.userPositionSet.add(position);
         position.changeUser(this);
@@ -166,5 +179,14 @@ public class User extends BaseEntity {
 
     public boolean canJoin() {
         return this.roleType.equals(NONE);
+    }
+
+    public void addProfileFromOAuth2(String phoneNumber, String introduction, Set<UserPosition> userPositionSet,
+                                     Set<Skill> skillSet, Address address) {
+        this.phoneNumber = phoneNumber;
+        this.introduction = introduction;
+        userPositionSet.forEach(this::addUserPosition);
+        skillSet.forEach(this::addSkill);
+        this.address = address;
     }
 }
