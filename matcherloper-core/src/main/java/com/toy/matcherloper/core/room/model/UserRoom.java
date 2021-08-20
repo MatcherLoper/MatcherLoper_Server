@@ -1,6 +1,7 @@
 package com.toy.matcherloper.core.room.model;
 
 import com.toy.matcherloper.core.user.model.User;
+import com.toy.matcherloper.core.user.model.type.PositionType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +29,13 @@ public class UserRoom {
     @JoinColumn(name = "room_id")
     private Room room;
 
-    public UserRoom(User user, Room room) {
+    @Column(name = "position")
+    private PositionType position;
+
+    public UserRoom(User user, Room room, PositionType position) {
         this.user = user;
         this.room = room;
+        this.position = position;
         room.addUserRoom(this);
     }
 
@@ -41,5 +46,10 @@ public class UserRoom {
     public void deleteRoom() {
         this.room = null;
         close();
+    }
+
+    public void leaveUser() {
+        this.room.leaveUser(this, user, this.position);
+        this.user = null;
     }
 }

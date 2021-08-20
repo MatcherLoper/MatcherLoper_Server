@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 public class SignInResponse {
 
     private Long id;
-    private String token;
+    private String authenticationToken;
 
-    public SignInResponse(Long id, String token) {
+    public SignInResponse(Long id, String authenticationToken) {
         this.id = id;
-        this.token = token;
+        this.authenticationToken = authenticationToken;
     }
 }

@@ -61,7 +61,7 @@ class RoomFindApiTest {
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .addFilter(new CharacterEncodingFilter("UTF-8",true))
+                .addFilter(new CharacterEncodingFilter("UTF-8", true))
                 .build();
         saveData();
     }
@@ -142,7 +142,7 @@ class RoomFindApiTest {
 
         userRepository.saveAll(userSet);
 
-        userRoomRepository.save(new UserRoom(user1, room));
-        userRoomRepository.save(new UserRoom(user2, room));
+        userRoomRepository.save(new UserRoom(user1, room, null));
+        userRoomRepository.save(new UserRoom(user2, room, null));
     }
 }

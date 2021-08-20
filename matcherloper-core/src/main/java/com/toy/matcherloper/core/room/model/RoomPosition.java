@@ -54,7 +54,15 @@ public class RoomPosition {
         this.count--;
     }
 
+    public void addCount() {
+        this.count++;
+    }
+
     public boolean canJoin(PositionType position) {
         return this.position.equals(position) && this.count > 0;
+    }
+
+    public boolean equalsPosition(PositionType position) {
+        return this.position.equals(position);
     }
 }
