@@ -4,7 +4,6 @@ import com.toy.matcherloper.auth.jwt.JwtTokenProvider;
 import com.toy.matcherloper.core.user.exception.PasswordNotMatchedException;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.AuthProviderType;
-import com.toy.matcherloper.core.user.repository.SkillRepository;
 import com.toy.matcherloper.core.user.repository.UserPositionRepository;
 import com.toy.matcherloper.core.user.repository.UserRepository;
 import com.toy.matcherloper.web.user.api.dto.request.SignInRequest;
@@ -28,7 +27,6 @@ public class UserSignService {
 
     private final UserRepository userRepository;
     private final UserFindService userFindService;
-    private final SkillRepository skillRepository;
     private final UserPositionRepository userPositionRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
@@ -46,30 +44,25 @@ public class UserSignService {
                 toSkillSet(signUpRequest.getSkillDtoList()),
                 toAddress(signUpRequest.getAddressDto()),
                 AuthProviderType.local);
-        saveSkills(user.getSkillSet());
         userPositionRepository.saveAll(user.getUserPositionSet());
         userRepository.save(user);
         return user.getId();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public SignInResponse signIn(SignInRequest signInRequest) {
         User user = userFindService.findByEmail(signInRequest.getEmail());
-
         if (!passwordEncoder.matches(signInRequest.getPassword(), user.getPassword())) {
             throw new PasswordNotMatchedException("Password is not matched!");
         }
+        user.changeDeviceToken(signInRequest.getDeviceToken());
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         signInRequest.getEmail(),
-                        signInRequest.getPassword()
-                )
-        );
-
+                        signInRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtTokenProvider.createToken(authentication);
-
         return new SignInResponse(user.getId(), token);
     }
 
