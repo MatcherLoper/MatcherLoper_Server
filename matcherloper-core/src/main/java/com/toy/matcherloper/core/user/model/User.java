@@ -181,6 +181,10 @@ public class User extends BaseEntity {
         return this.roleType.equals(NONE);
     }
 
+    public void changeDeviceToken(String deviceToken) {
+        this.deviceToken = deviceToken;
+    }
+
     public void addProfileFromOAuth2(String phoneNumber, String introduction, Set<UserPosition> userPositionSet,
                                      Set<Skill> skillSet, Address address) {
         this.phoneNumber = phoneNumber;
