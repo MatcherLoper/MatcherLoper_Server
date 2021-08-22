@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class RoomCreateEvent extends Event {
+public class SubscribeEvent extends Event {
 
-    private final String message;
     private final String token;
+    private final String topic;
 }

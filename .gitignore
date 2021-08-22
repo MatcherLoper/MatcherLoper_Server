@@ -37,4 +37,8 @@ out/
 .vscode/
 
 ### yml ###
-*.yml
+application-db.yml
+application-auth.yml
+
+### secret key ###
+**/firebase

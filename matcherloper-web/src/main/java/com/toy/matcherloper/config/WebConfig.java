@@ -1,5 +1,8 @@
 package com.toy.matcherloper.config;
 
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import com.toy.matcherloper.event.config.EventConfig;
+import com.toy.matcherloper.matching.config.MatchingConfig;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -9,6 +12,7 @@ import org.springframework.context.annotation.Import;
  */
 @Configuration
 @ComponentScan(basePackages = "com.toy.matcherloper.web")
-@Import(value = {CoreConfig.class, AuthConfig.class})
+@Import(value = {CoreConfig.class, EventConfig.class, AuthConfig.class, MatchingConfig.class})
+@EnableConfigurationProperties(OAuth2Properties.class)
 public class WebConfig {
 }

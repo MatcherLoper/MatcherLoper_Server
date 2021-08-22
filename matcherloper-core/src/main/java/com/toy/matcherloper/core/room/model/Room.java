@@ -3,6 +3,10 @@ package com.toy.matcherloper.core.room.model;
 import com.toy.matcherloper.core.common.entity.BaseEntity;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.PositionType;
+import com.toy.matcherloper.event.dispatcher.Events;
+import com.toy.matcherloper.event.message.MatchingEvent;
+import com.toy.matcherloper.matching.notification.NotificationTitle;
+import com.toy.matcherloper.matching.type.TopicType;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -67,6 +71,7 @@ public class Room extends BaseEntity {
     }
 
     public static Room create(Long createUserId, List<RoomPosition> roomPositions, String name, String possibleOfflineArea) {
+        Events.raise(new MatchingEvent(TopicType.MATCHING.getToken(), NotificationTitle.ROOM_STATE_CHANGE_DETECTION));
         return new Room(createUserId, roomPositions, name, possibleOfflineArea);
     }
 
@@ -114,13 +119,18 @@ public class Room extends BaseEntity {
     }
 
     public void joinUser(User user, PositionType position) {
-        final RoomPosition roomPosition = this.requiredPositionList.stream()
-                .filter(rp -> rp.canJoin(position))
-                .findFirst()
-                .orElseThrow(() -> new NoSuchElementException("not found room position"));
+        final RoomPosition roomPosition = findCanJoinRoomPosition(position);
         roomPosition.reduceCount();
         reduceRequiredNumber();
         user.join();
+    }
+
+    public void leaveUser(UserRoom userRoom, User user, PositionType position) {
+        this.userRooms.remove(userRoom);
+        final RoomPosition roomPosition = findRoomPosition(position);
+        roomPosition.addCount();
+        addRequiredNumber();
+        user.leaveRoom();
     }
 
     private void reduceRequiredNumber() {
@@ -128,5 +138,24 @@ public class Room extends BaseEntity {
         if (this.requiredUserNumber == 0) {
             this.status = RoomStatus.FULL;
         }
+    }
+
+    private RoomPosition findCanJoinRoomPosition(PositionType position) {
+        return this.requiredPositionList.stream()
+                .filter(rp -> rp.canJoin(position))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("not found room position"));
+    }
+
+    private RoomPosition findRoomPosition(PositionType position) {
+        return this.requiredPositionList.stream()
+                .filter(rp -> rp.equalsPosition(position))
+                .findFirst()
+                .orElseThrow(() -> new NoSuchElementException("not found room position"));
+    }
+
+    private void addRequiredNumber() {
+        this.requiredUserNumber++;
+        this.status = RoomStatus.OPEN;
     }
 }
