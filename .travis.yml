@@ -14,6 +14,11 @@ cache:
 
 script: "./gradlew bootJar -p matcherloper-web clean"
 
+before_deploy:
+  - zip -r matcherloper *
+  - mkdir -p deploy
+  - mv matcherloper.zip deploy/matcherloper.zip
+
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
@@ -22,6 +27,7 @@ deploy:
     region: ap-northeast-2
     skip_cleanup: true
     acl: public_read
+    local_dir: deploy
     wait-until-deployed: true
     on:
       repo: MatcherLoper/MatcherLoper_Server
