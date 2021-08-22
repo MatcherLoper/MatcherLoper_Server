@@ -21,8 +21,9 @@ public class SignInRequest {
     @NotNull(message = "기기 토큰값은 Null이면 안됩니다.")
     private String deviceToken;
 
-    public SignInRequest(String email, String password) {
+    public SignInRequest(String email, String password, String deviceToken) {
         this.email = email;
         this.password = password;
+        this.deviceToken = deviceToken;
     }
 }

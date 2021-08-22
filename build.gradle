@@ -5,8 +5,8 @@ plugins {
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
-def javaProjects = [project(":matcherloper-common"), project(":matcherloper-core"),
-                    project(":matcherloper-web"), project(":matcherloper-event"), project(":matcherloper-auth")]
+def javaProjects = [project(":matcherloper-common"), project(":matcherloper-core"), project(":matcherloper-auth"),
+                    project(":matcherloper-web"), project(":matcherloper-event"), project("matcherloper-matching")]
 
 configure(javaProjects) {
     apply plugin: "java"
@@ -36,8 +36,8 @@ configure(javaProjects) {
     }
 }
 
-def springProjects = [project(":matcherloper-core"), project(":matcherloper-web"),
-                      project(":matcherloper-event"), project(":matcherloper-auth")]
+def springProjects = [project(":matcherloper-core"), project(":matcherloper-web"), project(":matcherloper-auth"),
+                      project(":matcherloper-event"), project(":matcherloper-matching"),]
 
 configure(springProjects) {
 

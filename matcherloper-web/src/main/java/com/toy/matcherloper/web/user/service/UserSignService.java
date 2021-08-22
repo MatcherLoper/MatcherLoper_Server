@@ -46,7 +46,7 @@ public class UserSignService {
         return user.getId();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public SignInResponse signIn(SignInRequest signInRequest) {
         User user = userFindService.findByEmail(signInRequest.getEmail());
         checkMatchedPassword(signInRequest.getPassword(), user.getPassword());

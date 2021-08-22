@@ -2,6 +2,8 @@ bootJar { enabled = false }
 jar { enabled = true }
 
 dependencies {
+    compile project(path: ':matcherloper-matching', configuration: 'default')
+
     implementation 'net.jodah:typetools:0.6.3'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 }

@@ -2,12 +2,14 @@ package com.toy.matcherloper.event.dispatcher;
 
 import com.toy.matcherloper.event.handler.EventHandler;
 import com.toy.matcherloper.event.message.Event;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class Events {
     private static ThreadLocal<List<EventHandler<?>>> handlers =
             new ThreadLocal<>();
@@ -44,6 +46,7 @@ public class Events {
                 for (EventHandler handler : asyncEvtHandlers) {
                     if (handler.canHandle(event)) {
                         executor.submit(() -> handler.handle(event));
+                        log.info(String.format("이벤트 실행! Event: %s, time: %d", event.toString(), event.getTimestamp()));
                     }
                 }
             }
