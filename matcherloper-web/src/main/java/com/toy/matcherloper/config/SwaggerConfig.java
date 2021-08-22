@@ -1,7 +1,6 @@
 package com.toy.matcherloper.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.*;
@@ -20,11 +19,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SwaggerConfig {
 
-    @Value("${spring.security.oauth2.client.registration.google.clientId}")
-    private String clientId;
-    @Value("${spring.security.oauth2.client.registration.google.clientSecret}")
-    private String clientSecret;
-
+    private final OAuth2Properties oAuth2Properties;
     private static final String BASEURL = "localhost:8080";
 
     @Bean
@@ -45,8 +40,8 @@ public class SwaggerConfig {
     @Bean
     public SecurityConfiguration securityConfiguration() {
         return SecurityConfigurationBuilder.builder()
-                .clientId(clientId)
-                .clientSecret(clientSecret)
+                .clientId(oAuth2Properties.getClientId())
+                .clientSecret(oAuth2Properties.getClientSecret())
                 .scopeSeparator(",")
                 .useBasicAuthenticationWithAccessCodeGrant(true)
                 .build();
@@ -56,7 +51,8 @@ public class SwaggerConfig {
         GrantType grantType = new AuthorizationCodeGrantBuilder()
                 .tokenEndpoint(new TokenEndpoint(BASEURL + "/oauth/token", "oauthtoken"))
                 .tokenRequestEndpoint(
-                        new TokenRequestEndpoint(BASEURL + "/oauth/authorize", clientId, clientSecret)
+                        new TokenRequestEndpoint(BASEURL + "/oauth/authorize", oAuth2Properties.getClientId(),
+                                oAuth2Properties.getClientSecret())
                 )
                 .build();
         SecurityScheme oauth = new OAuthBuilder().name("spring_oauth")
