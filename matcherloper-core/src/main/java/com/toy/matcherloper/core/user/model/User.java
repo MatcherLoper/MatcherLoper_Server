@@ -32,16 +32,16 @@ public class User extends BaseEntity {
     @Column(name = "user_id")
     private Long id;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "password")
     private String password;
 
-    @Column(name = "username", nullable = false)
+    @Column(name = "username")
     private String name;
 
-    @Column(name = "phone_number", nullable = false)
+    @Column(name = "phone_number")
     private String phoneNumber;
 
     @Column(name = "introduction")
@@ -66,12 +66,14 @@ public class User extends BaseEntity {
     @NotNull
     @Enumerated(value = EnumType.STRING)
     private AuthProviderType authProvider;
-    private String providerId;
+
+    @Column(name = "device_token")
+    private String deviceToken;
 
     @Builder
     public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
                 Set<UserPosition> userPositionSet, Set<Skill> skillSet, Room room, Address address,
-                AuthProviderType provider, String providerId) {
+                AuthProviderType provider) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -82,7 +84,6 @@ public class User extends BaseEntity {
         this.skillSet = skillSet;
         this.address = address;
         this.authProvider = provider;
-        this.providerId = providerId;
     }
 
     public static User create(String email, String password, String name, String phoneNumber, String introduction,
@@ -106,6 +107,19 @@ public class User extends BaseEntity {
         this.authProvider = authProvider;
     }
 
+    public static User createFromOAuth2(String email, String name, String deviceToken,
+                                        AuthProviderType authProviderType, RoleType roleType) {
+        return new User(email, name, deviceToken, authProviderType, roleType);
+    }
+
+    public User(String email, String name, String deviceToken, AuthProviderType authProviderType, RoleType roleType) {
+        this.email = email;
+        this.name = name;
+        this.deviceToken = deviceToken;
+        this.authProvider = authProviderType;
+        this.roleType = roleType;
+    }
+
     public void addUserPosition(UserPosition position) {
         this.userPositionSet.add(position);
         position.changeUser(this);
@@ -125,11 +139,6 @@ public class User extends BaseEntity {
         this.phoneNumber = phoneNumber;
         this.introduction = introduction;
         this.address = address;
-    }
-
-    public User update(String oAuth2Username) {
-        this.name = oAuth2Username;
-        return this;
     }
 
     private void updateSkills(Set<Skill> skillSet) {
@@ -188,5 +197,14 @@ public class User extends BaseEntity {
 
     public void changeDeviceToken(String deviceToken) {
         this.deviceToken = deviceToken;
+    }
+
+    public void addProfileFromOAuth2(String phoneNumber, String introduction, Set<UserPosition> userPositionSet,
+                                     Set<Skill> skillSet, Address address) {
+        this.phoneNumber = phoneNumber;
+        this.introduction = introduction;
+        userPositionSet.forEach(this::addUserPosition);
+        skillSet.forEach(this::addSkill);
+        this.address = address;
     }
 }
