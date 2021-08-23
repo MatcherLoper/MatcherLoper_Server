@@ -1,6 +1,5 @@
 package com.toy.matcherloper.web.entry.repository;
 
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toy.matcherloper.core.user.model.type.PositionType;
 import com.toy.matcherloper.core.user.model.type.RoleType;
@@ -9,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import static com.toy.matcherloper.core.user.model.QUser.user;
 import static com.toy.matcherloper.core.user.model.QUserPosition.userPosition;
+import static com.toy.matcherloper.web.utils.PositionTypeAndRoleTypeCheck.isEqPositionType;
+import static com.toy.matcherloper.web.utils.PositionTypeAndRoleTypeCheck.isEqRoleType;
 
 @Repository
 @RequiredArgsConstructor
@@ -20,7 +21,8 @@ public class UserNoneCountQueryRepository {
         int backEndUserCnt = queryFactory.selectFrom(user)
                 .distinct()
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(isEqPositionTypeAndUserRoleTypeNone(PositionType.BACKEND))
+                .where(isEqPositionType(PositionType.BACKEND)
+                        .and(isEqRoleType(RoleType.NONE)))
                 .fetch()
                 .size();
         return backEndUserCnt;
@@ -30,7 +32,8 @@ public class UserNoneCountQueryRepository {
         int frontEndUserCnt = queryFactory.selectFrom(user)
                 .distinct()
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(isEqPositionTypeAndUserRoleTypeNone(PositionType.FRONTEND))
+                .where(isEqPositionType(PositionType.FRONTEND)
+                        .and(isEqRoleType(RoleType.NONE)))
                 .fetch()
                 .size();
         return frontEndUserCnt;
@@ -40,7 +43,8 @@ public class UserNoneCountQueryRepository {
         int androidUserCnt = queryFactory.selectFrom(user)
                 .distinct()
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(isEqPositionTypeAndUserRoleTypeNone(PositionType.ANDROID))
+                .where(isEqPositionType(PositionType.ANDROID)
+                        .and(isEqRoleType(RoleType.NONE)))
                 .fetch()
                 .size();
         return androidUserCnt;
@@ -50,13 +54,10 @@ public class UserNoneCountQueryRepository {
         int iosUserCnt = queryFactory.selectFrom(user)
                 .distinct()
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(isEqPositionTypeAndUserRoleTypeNone(PositionType.IOS))
+                .where(isEqPositionType(PositionType.IOS)
+                        .and(isEqRoleType(RoleType.NONE)))
                 .fetch()
                 .size();
         return iosUserCnt;
-    }
-
-    private BooleanExpression isEqPositionTypeAndUserRoleTypeNone(PositionType positionType) {
-        return userPosition.type.eq(positionType).and(user.roleType.eq(RoleType.NONE));
     }
 }
