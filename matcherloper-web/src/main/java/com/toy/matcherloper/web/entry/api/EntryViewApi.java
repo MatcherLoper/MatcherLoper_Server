@@ -2,7 +2,7 @@ package com.toy.matcherloper.web.entry.api;
 
 import com.toy.matcherloper.web.bind.ApiResult;
 import com.toy.matcherloper.web.entry.api.dto.response.EntryResponse;
-import com.toy.matcherloper.web.entry.service.EntryFindService;
+import com.toy.matcherloper.web.entry.service.EntryFindDataService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,15 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class EntryViewApi {
 
-    private final EntryFindService entryFindService;
+    private final EntryFindDataService entryFindDataService;
 
     @GetMapping("/")
     public ApiResult<EntryResponse> findEntryData() {
         try {
-            EntryResponse entryResponse = new EntryResponse(entryFindService.findEntryTotalData(),
-                    entryFindService.findNoneUserData(),
-                    entryFindService.findMatchingUserData());
-            return ApiResult.succeed(entryResponse);
+            return ApiResult.succeed(entryFindDataService.findEntryData());
         } catch (Exception e) {
             log.error(e.getMessage());
             return ApiResult.failed(e.getMessage());
