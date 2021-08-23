@@ -67,9 +67,6 @@ public class User extends BaseEntity {
     @Enumerated(value = EnumType.STRING)
     private AuthProviderType authProvider;
 
-    @Column(name = "device_token")
-    private String deviceToken;
-
     @Builder
     public User(String email, String password, String name, String phoneNumber, String introduction, RoleType roleType,
                 Set<UserPosition> userPositionSet, Set<Skill> skillSet, Room room, Address address,
@@ -206,5 +203,9 @@ public class User extends BaseEntity {
         userPositionSet.forEach(this::addUserPosition);
         skillSet.forEach(this::addSkill);
         this.address = address;
+    }
+
+    public void changeStatusMatching(RoleType matching) {
+        this.roleType = matching;
     }
 }

@@ -4,6 +4,7 @@ import com.toy.matcherloper.core.room.model.Room;
 import com.toy.matcherloper.core.room.model.UserRoom;
 import com.toy.matcherloper.core.user.model.User;
 import com.toy.matcherloper.core.user.model.type.PositionType;
+import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.core.user.repository.UserRoomRepository;
 import com.toy.matcherloper.event.dispatcher.Events;
 import com.toy.matcherloper.event.handler.SubscribeEventHandler;
@@ -36,6 +37,7 @@ public class UserJoinRoomService {
             throw new UserNotJoinRoomException(String.format("User can't join room. user role: %s", user.getRoleType()));
         }
         Events.handleAsync(new SubscribeEventHandler(fcmSubscribeService));
+        user.changeStatusMatching(RoleType.MATCHING);
         Events.raise(new SubscribeEvent(user.getDeviceToken(), TopicType.MATCHING.getToken()));
         final List<Room> openRooms = roomFindService.findAllByOpenWithUser();
 

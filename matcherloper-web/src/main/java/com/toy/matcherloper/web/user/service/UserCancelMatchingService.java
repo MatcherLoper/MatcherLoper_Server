@@ -1,6 +1,7 @@
 package com.toy.matcherloper.web.user.service;
 
 import com.toy.matcherloper.core.user.model.User;
+import com.toy.matcherloper.core.user.model.type.RoleType;
 import com.toy.matcherloper.event.dispatcher.Events;
 import com.toy.matcherloper.event.handler.UnSubscribeEventHandler;
 import com.toy.matcherloper.event.message.UnSubscribeEvent;
@@ -21,6 +22,7 @@ public class UserCancelMatchingService {
     public Long cancelMatching(Long userId) {
         final User user = userFindService.findById(userId);
         Events.handleAsync(new UnSubscribeEventHandler(fcmSubscribeService));
+        user.changeStatusMatching(RoleType.NONE);
         Events.raise(new UnSubscribeEvent(user.getDeviceToken(), TopicType.MATCHING.getToken()));
         return user.getId();
     }
