@@ -4,7 +4,7 @@ jdk:
 
 branches:
   only:
-    - infla/matcherloper-39
+    - develop
 
 # Travis CI 서버의 Home
 cache:
@@ -31,7 +31,7 @@ deploy:
     wait-until-deployed: true
     on:
       repo: MatcherLoper/MatcherLoper_Server
-      branch: infla/matcherloper-39
+      branch: develop
 
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
@@ -45,11 +45,11 @@ deploy:
     wait-until-deployed: true
     on:
       repo: MatcherLoper/MatcherLoper_Server
-      branch: infla/matcherloper-39
+      branch: develop
 
 # CI 실행 완료시 메일로 알람
 notifications:
   email:
     recipients:
-#      - bkh115819@gmail.com
-#      - jinmin2216@naver.com
+      - bkh115819@gmail.com
+      - jinmin2216@naver.com
