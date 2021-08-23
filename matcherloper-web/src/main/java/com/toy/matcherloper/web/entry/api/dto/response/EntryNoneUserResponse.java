@@ -5,20 +5,14 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class EntryResponse {
-
-    private int openedRoomCnt;
-    private int allUserCnt;
+public class EntryNoneUserResponse {
 
     private int backEndNoneUserCnt;
     private int frontEndUserCnt;
     private int androidUserCnt;
     private int iosUserCnt;
 
-    public EntryResponse(int openedRoomCnt, int allUserCnt, int backEndUserCnt, int frontEndUserCnt,
-                         int androidUserCnt, int iosUserCnt) {
-        this.openedRoomCnt = openedRoomCnt;
-        this.allUserCnt = allUserCnt;
+    public EntryNoneUserResponse(int backEndUserCnt, int frontEndUserCnt, int androidUserCnt, int iosUserCnt) {
         this.backEndNoneUserCnt = backEndUserCnt;
         this.frontEndUserCnt = frontEndUserCnt;
         this.androidUserCnt = androidUserCnt;
