@@ -14,10 +14,10 @@ public class EntryNoneUserFindService {
 
     @Transactional(readOnly = true)
     public EntryNoneUserResponse getNoneUserCnt() {
-        int backEndCnt = userNoneCountQueryRepository.getBackEndUserCnt();
+        int backEndUserCnt = userNoneCountQueryRepository.getBackEndUserCnt();
         int frontEndUserCnt = userNoneCountQueryRepository.getFrontEndUserCnt();
         int androidUserCnt = userNoneCountQueryRepository.getAndroidUserCnt();
         int iosUserCnt = userNoneCountQueryRepository.getIosUserCnt();
-        return new EntryNoneUserResponse(backEndCnt, frontEndUserCnt, androidUserCnt, iosUserCnt);
+        return new EntryNoneUserResponse(backEndUserCnt, frontEndUserCnt, androidUserCnt, iosUserCnt);
     }
 }

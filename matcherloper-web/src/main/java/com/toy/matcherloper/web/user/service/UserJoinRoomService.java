@@ -37,7 +37,7 @@ public class UserJoinRoomService {
             throw new UserNotJoinRoomException(String.format("User can't join room. user role: %s", user.getRoleType()));
         }
         Events.handleAsync(new SubscribeEventHandler(fcmSubscribeService));
-        user.changeStatusMatching(RoleType.MATCHING);
+        user.changeUserRoleTypeToMatching(RoleType.MATCHING);
         Events.raise(new SubscribeEvent(user.getDeviceToken(), TopicType.MATCHING.getToken()));
         final List<Room> openRooms = roomFindService.findAllByOpenWithUser();
 

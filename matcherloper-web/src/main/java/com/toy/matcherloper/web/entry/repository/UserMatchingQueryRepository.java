@@ -1,5 +1,6 @@
 package com.toy.matcherloper.web.entry.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toy.matcherloper.core.user.model.type.PositionType;
 import com.toy.matcherloper.core.user.model.type.RoleType;
@@ -16,46 +17,38 @@ public class UserMatchingQueryRepository {
     private final JPAQueryFactory queryFactory;
 
     public int getMatchingBackEndUserCnt() {
-        int backEndUserCnt = queryFactory.selectFrom(user)
-                .distinct()
+        return queryFactory.selectFrom(user)
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(userPosition.type.eq(PositionType.BACKEND)
-                        .and(user.roleType.eq(RoleType.MATCHING)))
+                .where(isEqPositionTypeAndUserRoleTypeMatching(PositionType.BACKEND))
                 .fetch()
                 .size();
-        return backEndUserCnt;
     }
 
     public int getMatchingFrontEndUserCnt() {
-        int frontEndUserCnt = queryFactory.selectFrom(user)
-                .distinct()
+        return queryFactory.selectFrom(user)
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(userPosition.type.eq(PositionType.FRONTEND)
-                        .and(user.roleType.eq(RoleType.MATCHING)))
+                .where(isEqPositionTypeAndUserRoleTypeMatching(PositionType.FRONTEND))
                 .fetch()
                 .size();
-        return frontEndUserCnt;
     }
 
     public int getMatchingAndroidUserCnt() {
-        int androidUserCnt = queryFactory.selectFrom(user)
-                .distinct()
+        return queryFactory.selectFrom(user)
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(userPosition.type.eq(PositionType.ANDROID)
-                        .and(user.roleType.eq(RoleType.MATCHING)))
+                .where(isEqPositionTypeAndUserRoleTypeMatching(PositionType.ANDROID))
                 .fetch()
                 .size();
-        return androidUserCnt;
     }
 
     public int getMatchingIosUserCnt() {
-        int iosUserCnt = queryFactory.selectFrom(user)
-                .distinct()
+        return queryFactory.selectFrom(user)
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(userPosition.type.eq(PositionType.IOS)
-                        .and(user.roleType.eq(RoleType.MATCHING)))
+                .where(isEqPositionTypeAndUserRoleTypeMatching(PositionType.IOS))
                 .fetch()
                 .size();
-        return iosUserCnt;
+    }
+
+    private BooleanExpression isEqPositionTypeAndUserRoleTypeMatching(PositionType positionType) {
+        return userPosition.type.eq(positionType).and(user.roleType.eq(RoleType.MATCHING));
     }
 }

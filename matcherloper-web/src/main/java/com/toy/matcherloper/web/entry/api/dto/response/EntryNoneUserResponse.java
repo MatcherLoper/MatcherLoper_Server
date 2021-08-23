@@ -8,14 +8,14 @@ import lombok.NoArgsConstructor;
 public class EntryNoneUserResponse {
 
     private int backEndNoneUserCnt;
-    private int frontEndUserCnt;
-    private int androidUserCnt;
-    private int iosUserCnt;
+    private int frontEndNoneUserCnt;
+    private int androidNoneUserCnt;
+    private int iosNoneUserCnt;
 
     public EntryNoneUserResponse(int backEndUserCnt, int frontEndUserCnt, int androidUserCnt, int iosUserCnt) {
         this.backEndNoneUserCnt = backEndUserCnt;
-        this.frontEndUserCnt = frontEndUserCnt;
-        this.androidUserCnt = androidUserCnt;
-        this.iosUserCnt = iosUserCnt;
+        this.frontEndNoneUserCnt = frontEndUserCnt;
+        this.androidNoneUserCnt = androidUserCnt;
+        this.iosNoneUserCnt = iosUserCnt;
     }
 }

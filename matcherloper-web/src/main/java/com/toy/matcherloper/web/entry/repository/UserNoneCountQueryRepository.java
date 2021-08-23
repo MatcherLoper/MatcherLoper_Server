@@ -1,5 +1,6 @@
 package com.toy.matcherloper.web.entry.repository;
 
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.toy.matcherloper.core.user.model.type.PositionType;
 import com.toy.matcherloper.core.user.model.type.RoleType;
@@ -19,8 +20,7 @@ public class UserNoneCountQueryRepository {
         int backEndUserCnt = queryFactory.selectFrom(user)
                 .distinct()
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(userPosition.type.eq(PositionType.BACKEND)
-                        .and(user.roleType.eq(RoleType.NONE)))
+                .where(isEqPositionTypeAndUserRoleTypeNone(PositionType.BACKEND))
                 .fetch()
                 .size();
         return backEndUserCnt;
@@ -30,8 +30,7 @@ public class UserNoneCountQueryRepository {
         int frontEndUserCnt = queryFactory.selectFrom(user)
                 .distinct()
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(userPosition.type.eq(PositionType.FRONTEND)
-                        .and(user.roleType.eq(RoleType.NONE)))
+                .where(isEqPositionTypeAndUserRoleTypeNone(PositionType.FRONTEND))
                 .fetch()
                 .size();
         return frontEndUserCnt;
@@ -41,8 +40,7 @@ public class UserNoneCountQueryRepository {
         int androidUserCnt = queryFactory.selectFrom(user)
                 .distinct()
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(userPosition.type.eq(PositionType.ANDROID)
-                        .and(user.roleType.eq(RoleType.NONE)))
+                .where(isEqPositionTypeAndUserRoleTypeNone(PositionType.ANDROID))
                 .fetch()
                 .size();
         return androidUserCnt;
@@ -52,10 +50,13 @@ public class UserNoneCountQueryRepository {
         int iosUserCnt = queryFactory.selectFrom(user)
                 .distinct()
                 .innerJoin(user.userPositionSet, userPosition).fetchJoin()
-                .where(userPosition.type.eq(PositionType.IOS)
-                        .and(user.roleType.eq(RoleType.NONE)))
+                .where(isEqPositionTypeAndUserRoleTypeNone(PositionType.IOS))
                 .fetch()
                 .size();
         return iosUserCnt;
+    }
+
+    private BooleanExpression isEqPositionTypeAndUserRoleTypeNone(PositionType positionType) {
+        return userPosition.type.eq(positionType).and(user.roleType.eq(RoleType.NONE));
     }
 }
