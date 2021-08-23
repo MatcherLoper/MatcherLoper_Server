@@ -22,7 +22,7 @@ public class UserCancelMatchingService {
     public Long cancelMatching(Long userId) {
         final User user = userFindService.findById(userId);
         Events.handleAsync(new UnSubscribeEventHandler(fcmSubscribeService));
-        user.changeMatchingState(RoleType.NONE);
+        user.changeRoleType(RoleType.NONE);
         Events.raise(new UnSubscribeEvent(user.getDeviceToken(), TopicType.MATCHING.getToken()));
         return user.getId();
     }

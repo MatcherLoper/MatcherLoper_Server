@@ -1,4 +1,4 @@
-package com.toy.matcherloper.web.utils;
+package com.toy.matcherloper.web.entry.repository.spec;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.toy.matcherloper.core.user.model.type.PositionType;

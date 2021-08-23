@@ -205,7 +205,7 @@ public class User extends BaseEntity {
         this.address = address;
     }
 
-    public void changeMatchingState(RoleType matching) {
-        this.roleType = matching;
+    public void changeRoleType(RoleType roleType) {
+        this.roleType = roleType;
     }
 }

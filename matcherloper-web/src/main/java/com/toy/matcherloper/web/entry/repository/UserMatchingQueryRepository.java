@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import static com.toy.matcherloper.core.user.model.QUser.user;
 import static com.toy.matcherloper.core.user.model.QUserPosition.userPosition;
-import static com.toy.matcherloper.web.utils.PositionTypeAndRoleTypeCheck.*;
+import static com.toy.matcherloper.web.entry.repository.spec.PositionTypeAndRoleTypeCheck.*;
 
 @Repository
 @RequiredArgsConstructor
