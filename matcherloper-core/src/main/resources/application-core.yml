@@ -4,7 +4,7 @@ spring:
 
 ---
 spring:
-  profiles: local
+  profiles: develop
   datasource:
     url: jdbc:h2:tcp://localhost/~/matcherloper
     username: sa
@@ -18,7 +18,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
-        show_sql: true
+#        show_sql: true
         default_batch_fetch_size: 100
     open-in-view: false
 
