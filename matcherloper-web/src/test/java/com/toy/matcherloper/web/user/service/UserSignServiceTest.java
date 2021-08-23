@@ -72,8 +72,9 @@ class UserSignServiceTest {
         loginService.signUp(signUpRequest);
 
         //when
-        SignInResponse signInResponse = loginService.signIn(new SignInRequest(signUpRequest.getEmail(), signUpRequest.getPassword()));
+        SignInResponse signInResponse = loginService.signIn(new SignInRequest(signUpRequest.getEmail(), signUpRequest.getPassword(), "testToken"));
         Long loginUserId = signInResponse.getId();
+
         //then
         assertThat(loginUserId).isEqualTo(1L);
     }
@@ -85,7 +86,7 @@ class UserSignServiceTest {
         final SignUpRequest signUpRequest = new SignUpRequest("test@test.com", "1234", "user", "1234-5678", "hi",
                 new ArrayList<>(), new ArrayList<>(), new AddressDto(new Address("인천", "아파트")));
         loginService.signUp(signUpRequest);
-        final SignInRequest signInRequest = new SignInRequest(signUpRequest.getEmail(), signUpRequest.getPassword() + "1");
+        final SignInRequest signInRequest = new SignInRequest(signUpRequest.getEmail(), signUpRequest.getPassword() + "1", "testToken");
 
         //when
         assertThatThrownBy(() -> loginService.signIn(signInRequest))
