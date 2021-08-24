@@ -35,6 +35,7 @@
 - QueryDsl
 - MySQL 8.0.23
 - AWS EC2, RDS, S3, CodeDelploy
+- Junit5
 
 - Travis CI
 
