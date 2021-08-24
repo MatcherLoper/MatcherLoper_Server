@@ -12,7 +12,9 @@ cache:
     - '$HOME/.m2/repository'
     - '$HOME/.gradle'
 
-script: "./gradlew bootJar -p matcherloper-web clean"
+script:
+    "./gradlew bootJar -p matcherloper-web clean",
+      "./gradlew bootJar -p matcherloper-web"
 
 before_deploy:
   - zip -r matcherloper *
