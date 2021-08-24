@@ -204,4 +204,8 @@ public class User extends BaseEntity {
         skillSet.forEach(this::addSkill);
         this.address = address;
     }
+
+    public void changeRoleType(RoleType roleType) {
+        this.roleType = roleType;
+    }
 }

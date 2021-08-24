@@ -2,6 +2,7 @@ package com.toy.matcherloper.core.user.model;
 
 import com.toy.matcherloper.core.user.model.type.PositionType;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EqualsAndHashCode(of = {"type"})
 public class UserPosition {
 
     @Id
