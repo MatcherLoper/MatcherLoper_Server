@@ -51,11 +51,10 @@ public class Room extends BaseEntity {
 
     @Builder
     public Room(String name, RoomStatus status, String possibleOfflineArea, Long createUserId,
-                int requiredUserNumber, List<RoomPosition> requiredPositionList) {
+                List<RoomPosition> requiredPositionList) {
         this.name = name;
         this.status = status;
         this.possibleOfflineArea = possibleOfflineArea;
-        this.requiredUserNumber = requiredUserNumber;
         this.requiredUserNumber = calculateRequiredUserNumber(requiredPositionList);
         this.createUserId = createUserId;
         this.requiredPositionList = requiredPositionList;

@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class UserOAuth2SignApi {
+public class UserExternalSignApi {
 
     private final UserOAuth2SaveService userOAuth2SaveService;
     private final UserOAuth2AddProfileService userOAuth2AddProfileService;
