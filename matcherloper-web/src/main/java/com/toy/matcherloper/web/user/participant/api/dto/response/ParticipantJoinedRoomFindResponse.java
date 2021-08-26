@@ -16,9 +16,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class ParticipantJoinedRoomFindResponse {
 
-    private Long userId;
     private String email;
-    private String password;
     private String name;
     private String phoneNumber;
     private String introduction;
@@ -26,9 +24,7 @@ public class ParticipantJoinedRoomFindResponse {
     private List<SkillDto> skills;
 
     public ParticipantJoinedRoomFindResponse(User participant) {
-        userId = participant.getId();
         email = participant.getEmail();
-        password = participant.getPassword();
         name = participant.getName();
         phoneNumber = participant.getPhoneNumber();
         introduction = participant.getIntroduction();
