@@ -29,6 +29,7 @@ public class UserRoom {
     @JoinColumn(name = "room_id")
     private Room room;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "position")
     private PositionType position;
 
