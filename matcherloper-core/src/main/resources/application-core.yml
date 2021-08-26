@@ -4,7 +4,7 @@ spring:
 
 ---
 spring:
-  profiles: develop
+  profiles: local
   datasource:
     url: jdbc:h2:tcp://localhost/~/matcherloper
     username: sa
