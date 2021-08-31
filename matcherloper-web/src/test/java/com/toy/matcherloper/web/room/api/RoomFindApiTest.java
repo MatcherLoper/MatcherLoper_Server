@@ -110,7 +110,6 @@ class RoomFindApiTest {
         room = Room.builder()
                 .name("test Room")
                 .possibleOfflineArea("부천")
-                .requiredUserNumber(4)
                 .status(RoomStatus.OPEN)
                 .build();
 

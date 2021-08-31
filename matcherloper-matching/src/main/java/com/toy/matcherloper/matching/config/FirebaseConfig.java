@@ -36,7 +36,6 @@ public class FirebaseConfig {
                         .createScoped(Arrays.asList("https://www.googleapis.com/auth/cloud-platform")))
                 .build();
 
-
         return FirebaseApp.initializeApp(options);
     }
 }
